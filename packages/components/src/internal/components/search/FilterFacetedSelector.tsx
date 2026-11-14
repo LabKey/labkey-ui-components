@@ -30,12 +30,16 @@ import { SelectInput } from '../forms/input/SelectInput';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { resolveFilterType } from '../../../public/QueryModel/grid/actions/Filter';
 
-const MAX_DISTINCT_FILTER_OPTIONS = 250;
+export const MAX_DISTINCT_FILTER_OPTIONS = 250;
 
 interface Props {
     api?: ComponentsAPIWrapper;
+    // The server's facts for this column are still loading, and may yet supply the values or rule them out
+    awaitingFacts?: boolean;
     canBeBlank: boolean;
     disabled?: boolean;
+    // Cached distinct values for this column, valid only when no other field is filtered
+    facetValues?: string[];
     field?: QueryColumn;
     fieldFilters: Filter.IFilter[];
     fieldKey: string;
@@ -52,8 +56,10 @@ const rendererFolderValue = (value: any): ReactNode => {
 export const FilterFacetedSelector: FC<Props> = memo(props => {
     const {
         api = getDefaultAPIWrapper(),
+        awaitingFacts,
         canBeBlank,
         disabled,
+        facetValues,
         selectDistinctOptions,
         fieldKey,
         fieldFilters,
@@ -72,8 +78,22 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const timer = useTimeout();
     const { requestHandler, resetRequestHandler } = useRequestHandler(true);
 
+    const multiChoices = field?.isMultiChoice ? field.validValues : null;
+
+    // Values already in hand, cached or declared, so no selectDistinct is needed. A multi-choice field's declared
+    // list wins: it is the set of allowed choices, where the cached facts hold only the values some row has.
+    const knownValues = useMemo(
+        () => multiChoices ?? (facetValues?.length ? facetValues : undefined),
+        [facetValues, multiChoices]
+    );
+
     useEffect(() => {
-        setDistinctValues(true);
+        if (awaitingFacts && !knownValues) {
+            // Hold the spinner rather than query: the facts may arrive with the values, or say not to ask for them
+            setLoading(true);
+        } else {
+            setDistinctValues(true);
+        }
         const fieldKeyLc = fieldKey.toLowerCase();
         if (
             fieldKeyLc === 'folder' ||
@@ -83,10 +103,11 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         ) {
             setIsFolderField(true);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- only on fieldKey change, reload selection values
-    }, [fieldKey]);
 
-    const multiChoices = field?.isMultiChoice ? field.validValues : null;
+        // knownValues and awaitingFacts are deps because the facts land after mount and decide between the
+        // cached list and the query
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- setDistinctValues must not re-run this on every change
+    }, [fieldKey, knownValues, awaitingFacts]);
 
     const filterOptions = useMemo(() => {
         return field?.isMultiChoice ? getFilterOptionsForType(field, false) : null;
@@ -101,8 +122,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 timer.clear();
 
                 let allValues: any[] = [];
-                if (!multiChoices) {
-                    const filterArray = selectDistinctOptions?.filterArray ?? [];
+                if (!knownValues) {
+                    const filterArray = [...(selectDistinctOptions?.filterArray ?? [])];
                     if (searchStr) filterArray.push(Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS));
 
                     // if multi value, get all options
@@ -115,9 +136,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     resetRequestHandler();
                     allValues = result.values;
                 } else {
-                    allValues = multiChoices;
+                    allValues = knownValues;
                     if (searchStr) {
-                        // filter multiChoices based on search string
+                        // filter knownValues based on search string
                         allValues = allValues.filter(val => {
                             if (val === null || val === undefined) {
                                 return EMPTY_VALUE_DISPLAY.includes(searchStr);
@@ -183,7 +204,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             resetRequestHandler,
             selectDistinctOptions,
             timer,
-            multiChoices,
+            knownValues,
         ]
     );
 
@@ -275,7 +296,16 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         return !!multiChoices && fieldFilters?.[0] && !fieldFilters?.[0]?.getFilterType().isDataValueRequired();
     }, [fieldFilters, multiChoices]);
 
-    if (!fieldDistinctValues || allShown === undefined) return <LoadingSpinner />;
+    // The values aren't in hand yet, whether a query is running or the facts are still being waited on
+    const busy = loading || !fieldDistinctValues || allShown === undefined;
+
+    const statusMessage = useMemo(() => {
+        if (busy) return 'Loading values';
+        if (hideOptions) return undefined;
+        const count = filteredFieldDistinctValues?.length ?? 0;
+        if (searchStr && count === 0) return `No value matches '${searchStr}'.`;
+        return `${count} ${count === 1 ? 'value' : 'values'}`;
+    }, [busy, filteredFieldDistinctValues, hideOptions, searchStr]);
 
     return (
         <>
@@ -309,7 +339,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         />
                     </div>
                 )}
-                {!allShown && (
+                {allShown === false && (
                     <div className="row">
                         <div className="col-xs-12 bottom-padding">
                             <div>
@@ -319,10 +349,15 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         </div>
                     </div>
                 )}
+                {/* Carries the state of the list below, which swaps as the user types. The list itself stays out of
+                    the live region: announcing 250 options on every keystroke would bury the status it reports. */}
+                <div aria-live="polite" className="sr-only" role="status">
+                    {statusMessage}
+                </div>
                 <div className="row">
                     <div className={`col-xs-${taggedValues?.length > 0 ? 6 : 12}`}>
-                        {loading && <LoadingSpinner />}
-                        {!loading && !hideOptions && (
+                        {busy && <LoadingSpinner />}
+                        {!busy && !hideOptions && (
                             <ul className="nav nav-stacked labkey-wizard-pills">
                                 {filteredFieldDistinctValues?.map((value, index) => {
                                     let displayValue = value;
@@ -340,12 +375,15 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                     onChange={event => onChange(value, event.target.checked)}
                                                     type="checkbox"
                                                 />
-                                                <div
+                                                <button
+                                                    aria-label={'Select only ' + displayValue}
                                                     className="filter-faceted__value"
+                                                    disabled={disabled}
                                                     onClick={() => onChange(value, true, true)}
+                                                    type="button"
                                                 >
                                                     {renderValue(displayValue)}
-                                                </div>
+                                                </button>
                                             </div>
                                         </li>
                                     );
@@ -368,10 +406,14 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     return (
                                         <li className="filter-status__faceted" key={index}>
                                             <div className="filter-status-value">
-                                                <i
-                                                    className="symbol fa fa-close"
+                                                <button
+                                                    aria-label={'Remove ' + displayValue}
+                                                    className="filter-status__remove"
                                                     onClick={() => onChange(value, false)}
-                                                />
+                                                    type="button"
+                                                >
+                                                    <i aria-hidden="true" className="symbol fa fa-close" />
+                                                </button>
                                                 <span>{displayValue}</span>
                                             </div>
                                         </li>

@@ -19,6 +19,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWr
 import { QueryModel } from './QueryModel';
 import { filtersEqual } from './utils';
 import { composeFieldToFilter } from './search/utils';
+import { useColumnFacets } from './search/useColumnFacets';
+import { isLargeGrid, useGridShapeRequest } from './search/gridShape';
 
 /** A filter to pre-fill on whichever field is active, until it is applied. Ops are keyed by display fieldKey. */
 export interface FilterDraft {
@@ -110,6 +112,9 @@ export const GridFilterModal: FC<Props> = memo(props => {
         skipDefaultViewCheck,
     } = props;
     const { queryInfo } = model;
+    const facetsRequest = useGridShapeRequest(model, 'model');
+    const { facets, largeTable, loading: factsLoading, pending: factsPending } = useColumnFacets(api, facetsRequest);
+    const isLargeDataset = isLargeGrid(model, largeTable);
     const [filterError, setFilterError] = useState<string>(undefined);
     const [initialState] = useState(() => {
         const initial = initFilters.map<EntityFieldFilter>(filter => ({ fieldKey: filter.getColumnName(), filter }));
@@ -224,10 +229,14 @@ export const GridFilterModal: FC<Props> = memo(props => {
             <QueryFilterPanel
                 api={api}
                 asRow
+                columnFacets={facets}
+                columnFactsLoading={factsLoading}
+                columnFactsPending={factsPending}
                 fieldKey={fieldKey}
                 fields={fields}
                 filters={{ [queryInfo.name.toLowerCase()]: filters }}
                 fullWidth
+                isLargeDataset={isLargeDataset}
                 onActiveFieldChange={onActiveFieldChange}
                 onChooseValues={onChooseValues}
                 onFilterUpdate={onFilterUpdate}

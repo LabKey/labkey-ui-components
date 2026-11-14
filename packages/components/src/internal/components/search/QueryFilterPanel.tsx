@@ -23,12 +23,15 @@ import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
 
 import { Tab, Tabs } from '../../Tabs';
 
-import { FilterFacetedSelector } from './FilterFacetedSelector';
+import { FilterFacetedSelector, MAX_DISTINCT_FILTER_OPTIONS } from './FilterFacetedSelector';
+import { ColumnFacets } from '../../../public/QueryModel/search/useColumnFacets';
 import { FilterExpressionView } from './FilterExpressionView';
 import { EntityFieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
 import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from './constants';
 import { stringToHtmlId } from '../../util/utils';
+
+type FacetingCost = 'cheap' | 'expensive' | 'unknown';
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -45,6 +48,12 @@ interface Props {
     altQueryName?: string;
     api?: ComponentsAPIWrapper;
     asRow?: boolean;
+    // What the server already knows about each column, so an expensive value list can be skipped or served from cache
+    columnFacets?: ColumnFacets;
+    // No facts response has arrived yet, so neither the grid's size nor any column's values are known
+    columnFactsLoading?: boolean;
+    // More facts may still arrive from the poll schedule, so a column with none yet may still turn out cheap
+    columnFactsPending?: boolean;
     emptyMsg?: string;
     // used for Sample Finder use case
     entityDataType?: EntityDataType;
@@ -56,6 +65,8 @@ interface Props {
     hasNotInQueryFilter?: boolean;
     hasNotInQueryFilterLabel?: string;
     isAncestor?: boolean;
+    // the grid has too many rows to list a column's distinct values speculatively
+    isLargeDataset?: boolean;
     metricFeatureArea?: string;
     onActiveFieldChange?: (field: QueryColumn) => void;
     onAllValuesInQueryChange?: (check: boolean) => void;
@@ -72,6 +83,30 @@ interface Props {
     viewName?: string;
 }
 
+/**
+ * A polite status region that stays mounted and takes its message a commit later. Assistive tech announces changes
+ * to a region it already knows about, and ignores one inserted with its text already inside.
+ */
+const StatusRegion: FC<{ message?: string }> = memo(({ message }) => {
+    const [announced, setAnnounced] = useState<string>(undefined);
+
+    useEffect(() => {
+        setAnnounced(message);
+    }, [message]);
+
+    return (
+        <div aria-live="polite" className="sr-only" role="status">
+            {announced}
+        </div>
+    );
+});
+
+StatusRegion.displayName = 'StatusRegion';
+
+// Undefined where valuesWorthOpening is: the tab stays unchosen rather than being chosen twice
+const chooseValuesIf = (worthOpening: boolean): FieldFilterTabs =>
+    worthOpening === undefined ? undefined : worthOpening ? FieldFilterTabs.ChooseValues : FieldFilterTabs.Filter;
+
 export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
         allowRelativeDateFilter,
@@ -79,6 +114,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         hasAllValuesInQuery,
         asRow,
         api = getDefaultAPIWrapper(),
+        columnFacets,
+        columnFactsLoading,
+        columnFactsPending,
         queryInfo,
         emptyMsg,
         skipDefaultViewCheck,
@@ -97,6 +135,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         altQueryName,
         fields,
         isAncestor,
+        isLargeDataset,
         onActiveFieldChange,
         onChooseValues,
         preferFilterTabFieldKey,
@@ -143,6 +182,62 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         [filterStatus, filterQueryKey]
     );
 
+    const getFacet = useCallback(
+        (field: QueryColumn) =>
+            columnFacets?.[field?.getDisplayFieldKey()?.toLowerCase()] ??
+            columnFacets?.[field?.fieldKey?.toLowerCase()],
+        [columnFacets]
+    );
+
+    // Faceting was asked for on this column, so its cost doesn't decide the tab
+    const isFacetingForced = useCallback(
+        (field: QueryColumn) => field.isMultiChoice || field.facetingBehaviorType === 'ALWAYS_ON',
+        []
+    );
+
+    /**
+     * Cached facts are read over the grid's own filters, so another field's filter leaves them describing rows the
+     * user is no longer looking at. The values then can't be served from cache and the real query runs instead.
+     */
+    const hasOtherFieldFilters = useCallback(
+        (field: QueryColumn) =>
+            !!filters?.[filterQueryKey]?.some(fieldFilter => fieldFilter.fieldKey !== field?.getDisplayFieldKey()),
+        [filters, filterQueryKey]
+    );
+
+    /**
+     * What the server's facts say listing this column's values would cost. 'cheap' means the values are in hand;
+     * 'expensive' means more were counted than the list can show; 'unknown' means the facts can't answer.
+     */
+    const getFacetingCost = useCallback(
+        (field: QueryColumn): FacetingCost => {
+            const facet = getFacet(field);
+            if (facet?.values && !facet.truncated && facet.valuesFromData) return 'cheap';
+            if (facet?.distinctCount > MAX_DISTINCT_FILTER_OPTIONS) return 'expensive';
+            return 'unknown';
+        },
+        [getFacet]
+    );
+
+    /**
+     * Whether opening this column's value list is worth what it costs, which doesn't depend on its own filters.
+     * Undefined while the answer can still change: the first facts response reports the table's size, so deciding
+     * before it lands would read a large grid as small and move the tab under the user a moment later.
+     */
+    const valuesWorthOpening = useCallback(
+        (field: QueryColumn): boolean => {
+            if (isFacetingForced(field)) return true;
+            const cost = getFacetingCost(field);
+            // Cheap only counts while the cached list can actually be used; otherwise the real query runs
+            if (cost === 'cheap' && !hasOtherFieldFilters(field)) return true;
+            if (cost === 'unknown' && columnFactsLoading) return undefined;
+            if (isLargeDataset) return false;
+            // Not large, so nothing says the list is expensive yet; open the tab and let the selector wait
+            return cost !== 'expensive';
+        },
+        [isFacetingForced, getFacetingCost, hasOtherFieldFilters, columnFactsLoading, isLargeDataset]
+    );
+
     const getDefaultActiveTab = useCallback(
         (field: QueryColumn) => {
             if (field.isMultiChoice) return FieldFilterTabs.ChooseValues;
@@ -151,7 +246,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 return FieldFilterTabs.Filter;
             }
             if (!hasFilters(field)) {
-                return FieldFilterTabs.ChooseValues;
+                return chooseValuesIf(valuesWorthOpening(field));
             }
             const currentFieldFilters = filters[filterQueryKey].filter(
                 filterField => filterField.fieldKey === field.resolveFieldKey()
@@ -159,11 +254,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
             if (currentFieldFilters.length > 1) {
                 return FieldFilterTabs.Filter;
             }
-            return isChooseValuesFilter(currentFieldFilters[0].filter)
-                ? FieldFilterTabs.ChooseValues
-                : FieldFilterTabs.Filter;
+            // An existing choose-values filter is edited on that tab, but only where opening it is worth the cost
+            if (!isChooseValuesFilter(currentFieldFilters[0].filter)) return FieldFilterTabs.Filter;
+            return chooseValuesIf(valuesWorthOpening(field));
         },
-        [hasFilters, filters, filterQueryKey, preferFilterTabFieldKey]
+        [hasFilters, filters, filterQueryKey, preferFilterTabFieldKey, valuesWorthOpening]
     );
 
     useEffect(() => {
@@ -204,9 +299,18 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         fields,
     ]);
 
+    /**
+     * On a large grid neither tab can be chosen until the facts are in: the values tab would run the scan this
+     * avoids, and the filter tab would be wrong for a column whose values are already cached. Waiting leaves the
+     * panel briefly indeterminate, which is better than deciding twice and moving the tab under the user.
+     */
+    const awaitingTabDecision = !!activeField && getDefaultActiveTab(activeField) === undefined;
+
     useEffect(() => {
-        if (activeField) setActiveTab(getDefaultActiveTab(activeField));
-    }, [activeField]); // don't include getDefaultActiveTab as we only want this to be triggered when the field selection changes
+        if (activeField && !awaitingTabDecision) setActiveTab(getDefaultActiveTab(activeField));
+        // getDefaultActiveTab is left out so the tab is decided once per field, not revised as its inputs settle
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeField, awaitingTabDecision]);
 
     const activeFieldKey = useMemo(() => {
         return activeField?.getDisplayFieldKey();
@@ -274,6 +378,23 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         [onFilterUpdate, activeField]
     );
 
+    // Cached facts are scoped to the grid's base filters, so they can't answer for a grid filtered on another field
+    const factsApply = !hasOtherFieldFilters(activeField);
+
+    const activeFacet = useMemo(
+        () => (factsApply ? getFacet(activeField) : undefined),
+        [activeField, factsApply, getFacet]
+    );
+    // A truncated list is missing values, so it can't stand in for the query. Neither can a list the server didn't
+    // read from the grid's own rows: a column's declared options, and a multi-valued lookup's values, include values
+    // no row on screen has, and the grid's filters never narrowed them.
+    const rawFacetValues = activeFacet?.truncated || !activeFacet?.valuesFromData ? undefined : activeFacet?.values;
+    // Cached lists never carry blanks, so the facts say whether to offer one. A copy: the array is the cache's own.
+    const facetValues = useMemo(
+        () => (rawFacetValues && activeFacet.hasBlank ? [...rawFacetValues, null] : rawFacetValues),
+        [activeFacet, rawFacetValues]
+    );
+
     const facetSelectDistinctOptions = useMemo(() => {
         return {
             ...selectDistinctOptions,
@@ -290,6 +411,13 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     } field-modal__col filter-modal__col_fields`;
     const valuesClassName = `col-xs-12 col-sm-${fullWidth ? 8 : 6} field-modal__col filter-modal__col_filter_exp`;
 
+    // Silent until a tab is settled on, so the one frame Tabs renders before the decision applies announces nothing
+    const valuesStatus = awaitingTabDecision
+        ? 'Loading field options'
+        : activeTab
+          ? `${activeTab === FieldFilterTabs.ChooseValues ? 'Choose values' : 'Filter'} tab selected`
+          : undefined;
+
     const body = (
         <>
             <div className={fieldsClassName}>
@@ -297,6 +425,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 {!queryName && emptyMsg && <div className="field-modal__empty-msg">{emptyMsg}</div>}
                 {queryName && (
                     <div className="list-group field-modal__col-content filter-modal__fields-col-content">
+                        <StatusRegion message={queryFields ? undefined : 'Loading fields'} />
                         {!queryFields && <LoadingSpinner wrapperClassName="loading-spinner" />}
                         {entityDataType?.supportAllValueInQuery &&
                             altQueryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query && (
@@ -370,43 +499,56 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                             'field-modal__col-content-disabled': hasNotInQueryFilter,
                         })}
                     >
-                        <Tabs activeKey={activeTab} className="field-modal__tabs content-tabs" onSelect={onTabChange}>
-                            {!activeField.isMultiChoice && (
-                                <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
-                                    <div className="field-modal__col-sub-title">
-                                        Find values for {activeField.caption}
-                                    </div>
-                                    {activeTab === FieldFilterTabs.Filter && (
-                                        <FilterExpressionView
-                                            allowRelativeDateFilter={allowRelativeDateFilter}
-                                            disabled={hasNotInQueryFilter}
-                                            field={activeField}
-                                            fieldFilters={fieldFilters}
-                                            includeAllAncestorFilter={includeAllAncestorFilter}
-                                            key={activeFieldKey}
-                                            onFieldFilterUpdate={onFieldFilterUpdate}
-                                        />
-                                    )}
-                                </Tab>
-                            )}
-                            {allowFaceting(activeField) && (
-                                <Tab eventKey={FieldFilterTabs.ChooseValues} title="Choose values">
-                                    <div className="field-modal__col-sub-title">
-                                        Find values for {activeField.caption}
-                                    </div>
-                                    <FilterFacetedSelector
-                                        canBeBlank={!activeField?.required && !activeField.nameExpression}
-                                        disabled={hasNotInQueryFilter}
-                                        field={activeField}
-                                        fieldFilters={fieldFilters}
-                                        fieldKey={activeFieldKey}
-                                        key={activeFieldKey}
-                                        onFieldFilterUpdate={onFieldFilterUpdate}
-                                        selectDistinctOptions={facetSelectDistinctOptions}
-                                    />
-                                </Tab>
-                            )}
-                        </Tabs>
+                        <StatusRegion message={valuesStatus} />
+                        {awaitingTabDecision && <LoadingSpinner wrapperClassName="loading-spinner" />}
+                        {!awaitingTabDecision && (
+                            <Tabs
+                                activeKey={activeTab}
+                                className="field-modal__tabs content-tabs"
+                                onSelect={onTabChange}
+                            >
+                                {!activeField.isMultiChoice && (
+                                    <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
+                                        <div className="field-modal__col-sub-title">
+                                            Find values for {activeField.caption}
+                                        </div>
+                                        {activeTab === FieldFilterTabs.Filter && (
+                                            <FilterExpressionView
+                                                allowRelativeDateFilter={allowRelativeDateFilter}
+                                                disabled={hasNotInQueryFilter}
+                                                field={activeField}
+                                                fieldFilters={fieldFilters}
+                                                includeAllAncestorFilter={includeAllAncestorFilter}
+                                                key={activeFieldKey}
+                                                onFieldFilterUpdate={onFieldFilterUpdate}
+                                            />
+                                        )}
+                                    </Tab>
+                                )}
+                                {allowFaceting(activeField) && (
+                                    <Tab eventKey={FieldFilterTabs.ChooseValues} title="Choose values">
+                                        <div className="field-modal__col-sub-title">
+                                            Find values for {activeField.caption}
+                                        </div>
+                                        {activeTab === FieldFilterTabs.ChooseValues && (
+                                            <FilterFacetedSelector
+                                                api={api}
+                                                awaitingFacts={columnFactsLoading || columnFactsPending}
+                                                canBeBlank={!activeField?.required && !activeField.nameExpression}
+                                                disabled={hasNotInQueryFilter}
+                                                facetValues={facetValues}
+                                                field={activeField}
+                                                fieldFilters={fieldFilters}
+                                                fieldKey={activeFieldKey}
+                                                key={activeFieldKey}
+                                                onFieldFilterUpdate={onFieldFilterUpdate}
+                                                selectDistinctOptions={facetSelectDistinctOptions}
+                                            />
+                                        )}
+                                    </Tab>
+                                )}
+                            </Tabs>
+                        )}
                     </div>
                 )}
             </div>

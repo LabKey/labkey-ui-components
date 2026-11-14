@@ -351,7 +351,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 )}
                 {/* Carries the state of the list below, which swaps as the user types. The list itself stays out of
                     the live region: announcing 250 options on every keystroke would bury the status it reports. */}
-                <div aria-busy={busy} aria-live="polite" className="sr-only" role="status">
+                <div aria-live="polite" className="sr-only" role="status">
                     {statusMessage}
                 </div>
                 <div className="row">

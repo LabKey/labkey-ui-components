@@ -314,6 +314,50 @@ describe('QueryFilterPanel', () => {
             expect(selectDistinctRows).toHaveBeenCalledTimes(1);
         });
 
+        const facetedValues = (): string[] =>
+            Array.from(document.querySelectorAll('button.filter-faceted__value')).map(button => button.textContent);
+
+        test('cached values are listed instead of being queried for', async () => {
+            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['queried'] });
+            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" />);
+
+            validate(10, false, true);
+            await act(async () => {
+                await Promise.resolve();
+            });
+
+            expect(selectDistinctRows).not.toHaveBeenCalled();
+            expect(facetedValues()).toEqual(['[All]', 'a', 'b']);
+        });
+
+        test('a cached blank is listed alongside the cached values', async () => {
+            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['queried'] });
+            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+            const facets = { text: { ...CHEAP_TEXT_FACET.text, hasBlank: true } };
+            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFacets={facets} fieldKey="Text" />);
+
+            await act(async () => {
+                await Promise.resolve();
+            });
+
+            expect(selectDistinctRows).not.toHaveBeenCalled();
+            expect(facetedValues()).toEqual(['[All]', '[blank]', 'a', 'b']);
+        });
+
+        test('a truncated cached list is missing values, so the column is queried', async () => {
+            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['queried'] });
+            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+            const facets = { text: { ...CHEAP_TEXT_FACET.text, truncated: true } };
+            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFacets={facets} fieldKey="Text" />);
+
+            await act(async () => {
+                await Promise.resolve();
+            });
+
+            expect(selectDistinctRows).toHaveBeenCalledTimes(1);
+        });
+
         test('declared values do not make a large grid worth opening on Choose values', () => {
             const facets = { text: { ...CHEAP_TEXT_FACET.text, valuesFromData: false } };
             render(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={facets} fieldKey="Text" isLargeDataset />);

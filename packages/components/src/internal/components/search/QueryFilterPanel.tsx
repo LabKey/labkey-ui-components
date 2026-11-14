@@ -50,9 +50,10 @@ interface Props {
     asRow?: boolean;
     // What the server already knows about each column, so an expensive value list can be skipped or served from cache
     columnFacets?: ColumnFacets;
-    // Those facts are still loading, so a column with none yet may still turn out cheap
     // No facts response has arrived yet, so neither the grid's size nor any column's values are known
     columnFactsLoading?: boolean;
+    // More facts may still arrive from the poll schedule, so a column with none yet may still turn out cheap
+    columnFactsPending?: boolean;
     emptyMsg?: string;
     // used for Sample Finder use case
     entityDataType?: EntityDataType;
@@ -82,6 +83,26 @@ interface Props {
     viewName?: string;
 }
 
+/**
+ * A polite status region that stays mounted and takes its message a commit later. Assistive tech announces changes
+ * to a region it already knows about, and ignores one inserted with its text already inside.
+ */
+const StatusRegion: FC<{ message?: string }> = memo(({ message }) => {
+    const [announced, setAnnounced] = useState<string>(undefined);
+
+    useEffect(() => {
+        setAnnounced(message);
+    }, [message]);
+
+    return (
+        <div aria-live="polite" className="sr-only" role="status">
+            {announced}
+        </div>
+    );
+});
+
+StatusRegion.displayName = 'StatusRegion';
+
 // Undefined where valuesWorthOpening is: the tab stays unchosen rather than being chosen twice
 const chooseValuesIf = (worthOpening: boolean): FieldFilterTabs =>
     worthOpening === undefined ? undefined : worthOpening ? FieldFilterTabs.ChooseValues : FieldFilterTabs.Filter;
@@ -95,6 +116,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         api = getDefaultAPIWrapper(),
         columnFacets,
         columnFactsLoading,
+        columnFactsPending,
         queryInfo,
         emptyMsg,
         skipDefaultViewCheck,
@@ -389,6 +411,13 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     } field-modal__col filter-modal__col_fields`;
     const valuesClassName = `col-xs-12 col-sm-${fullWidth ? 8 : 6} field-modal__col filter-modal__col_filter_exp`;
 
+    // Silent until a tab is settled on, so the one frame Tabs renders before the decision applies announces nothing
+    const valuesStatus = awaitingTabDecision
+        ? 'Loading field options'
+        : activeTab
+          ? `${activeTab === FieldFilterTabs.ChooseValues ? 'Choose values' : 'Filter'} tab selected`
+          : undefined;
+
     const body = (
         <>
             <div className={fieldsClassName}>
@@ -396,11 +425,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 {!queryName && emptyMsg && <div className="field-modal__empty-msg">{emptyMsg}</div>}
                 {queryName && (
                     <div className="list-group field-modal__col-content filter-modal__fields-col-content">
-                        {!queryFields && (
-                            <div aria-live="polite" role="status">
-                                <LoadingSpinner wrapperClassName="loading-spinner" />
-                            </div>
-                        )}
+                        <StatusRegion message={queryFields ? undefined : 'Loading fields'} />
+                        {!queryFields && <LoadingSpinner wrapperClassName="loading-spinner" />}
                         {entityDataType?.supportAllValueInQuery &&
                             altQueryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query && (
                                 <div className="form-check list-group-item">
@@ -473,11 +499,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                             'field-modal__col-content-disabled': hasNotInQueryFilter,
                         })}
                     >
-                        {awaitingTabDecision && (
-                            <div aria-live="polite" role="status">
-                                <LoadingSpinner wrapperClassName="loading-spinner" />
-                            </div>
-                        )}
+                        <StatusRegion message={valuesStatus} />
+                        {awaitingTabDecision && <LoadingSpinner wrapperClassName="loading-spinner" />}
                         {!awaitingTabDecision && (
                             <Tabs
                                 activeKey={activeTab}
@@ -510,7 +533,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         {activeTab === FieldFilterTabs.ChooseValues && (
                                             <FilterFacetedSelector
                                                 api={api}
-                                                awaitingFacts={columnFactsLoading}
+                                                awaitingFacts={columnFactsLoading || columnFactsPending}
                                                 canBeBlank={!activeField?.required && !activeField.nameExpression}
                                                 disabled={hasNotInQueryFilter}
                                                 facetValues={facetValues}

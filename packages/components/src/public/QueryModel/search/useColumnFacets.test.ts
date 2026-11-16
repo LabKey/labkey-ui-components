@@ -124,6 +124,22 @@ describe('useColumnFacets', () => {
         expect(getColumnFacets).toHaveBeenCalledTimes(1);
     });
 
+    test('stops waiting on an answer that never arrives', async () => {
+        // A hung request would otherwise leave every caller on a spinner with no way out
+        const getColumnFacets = jest.fn().mockReturnValue(new Promise<ColumnFacetsResponse>(() => undefined));
+        const { result } = renderFacets(getColumnFacets, REQUEST);
+
+        expect(result.current.loading).toBe(true);
+
+        await act(async () => {
+            jest.advanceTimersByTime(2_000);
+        });
+
+        expect(result.current.loading).toBe(false);
+        expect(result.current.facets).toEqual({});
+        expect(result.current.largeTable).toBeUndefined();
+    });
+
     test('no request means nothing to wait for', () => {
         const getColumnFacets = jest.fn();
         const { result } = renderFacets(getColumnFacets, undefined);

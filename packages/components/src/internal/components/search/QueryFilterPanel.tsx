@@ -25,6 +25,7 @@ import { Tab, Tabs } from '../../Tabs';
 
 import { FilterFacetedSelector, MAX_DISTINCT_FILTER_OPTIONS } from './FilterFacetedSelector';
 import { ColumnFacets } from '../../../public/QueryModel/search/useColumnFacets';
+import { ColumnFacet } from '../../../public/QueryModel/search/models';
 import { FilterExpressionView } from './FilterExpressionView';
 import { EntityFieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
@@ -84,6 +85,21 @@ interface Props {
 // Undefined where valuesWorthOpening is: the tab stays unchosen rather than being chosen twice
 const chooseValuesIf = (worthOpening: boolean): FieldFilterTabs =>
     worthOpening === undefined ? undefined : worthOpening ? FieldFilterTabs.ChooseValues : FieldFilterTabs.Filter;
+
+/**
+ * The cached values that can stand in for the query, or undefined when they can't. A truncated list is missing
+ * values; a list the server didn't read from the grid's own rows — a column's declared options, a multi-valued
+ * lookup's values — holds values no row on screen has, which the grid's filters never narrowed.
+ */
+const usableFacetValues = (facet: ColumnFacet): string[] | undefined =>
+    facet?.values && !facet.truncated && facet.valuesFromData ? facet.values : undefined;
+
+const isFilterOnField = (fieldFilter: EntityFieldFilter, field: QueryColumn): boolean => {
+    const key = fieldFilter?.fieldKey?.toLowerCase();
+    return (
+        !!key && (key === field?.getDisplayFieldKey()?.toLowerCase() || key === field?.resolveFieldKey()?.toLowerCase())
+    );
+};
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
@@ -177,8 +193,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
      * user is no longer looking at. The values then can't be served from cache and the real query runs instead.
      */
     const hasOtherFieldFilters = useCallback(
-        (field: QueryColumn) =>
-            !!filters?.[filterQueryKey]?.some(fieldFilter => fieldFilter.fieldKey !== field?.getDisplayFieldKey()),
+        (field: QueryColumn) => !!filters?.[filterQueryKey]?.some(fieldFilter => !isFilterOnField(fieldFilter, field)),
         [filters, filterQueryKey]
     );
 
@@ -189,7 +204,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const getFacetingCost = useCallback(
         (field: QueryColumn): FacetingCost => {
             const facet = getFacet(field);
-            if (facet?.values && !facet.truncated && facet.valuesFromData) return 'cheap';
+            if (usableFacetValues(facet)) return 'cheap';
             if (facet?.distinctCount > MAX_DISTINCT_FILTER_OPTIONS) return 'expensive';
             return 'unknown';
         },
@@ -225,8 +240,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
             if (!hasFilters(field)) {
                 return chooseValuesIf(valuesWorthOpening(field));
             }
-            const currentFieldFilters = filters[filterQueryKey].filter(
-                filterField => filterField.fieldKey === field.resolveFieldKey()
+            const currentFieldFilters = filters[filterQueryKey].filter(filterField =>
+                isFilterOnField(filterField, field)
             );
             if (currentFieldFilters.length > 1) {
                 return FieldFilterTabs.Filter;
@@ -391,10 +406,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         () => (factsApply ? getFacet(activeField) : undefined),
         [activeField, factsApply, getFacet]
     );
-    // A truncated list is missing values, so it can't stand in for the query. Neither can a list the server didn't
-    // read from the grid's own rows: a column's declared options, and a multi-valued lookup's values, include values
-    // no row on screen has, and the grid's filters never narrowed them.
-    const rawFacetValues = activeFacet?.truncated || !activeFacet?.valuesFromData ? undefined : activeFacet?.values;
+    const rawFacetValues = usableFacetValues(activeFacet);
     // Cached lists never carry blanks, so the facts say whether to offer one. A copy: the array is the cache's own.
     const facetValues = useMemo(
         () => (rawFacetValues && activeFacet.hasBlank ? [...rawFacetValues, null] : rawFacetValues),

@@ -7,6 +7,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ComponentsAPIWrapper } from '../../../internal/APIWrapper';
 import { ColumnFacet, ColumnFacetsRequest } from './models';
 
+const FACTS_WAIT_MS = 2000;
+
 // Keyed by lower-cased fieldKey AND gridFieldKey: a lookup is filtered on its display column, so the two differ
 // and the caller may hold either
 export type ColumnFacets = Record<string, ColumnFacet>;
@@ -26,12 +28,19 @@ export function useColumnFacets(api: ComponentsAPIWrapper, request: ColumnFacets
         request: undefined,
     });
     const requestId = useRef(0);
+    // The answer took too long to wait on; whatever arrives later still lands in facets for the next read
+    const [givenUp, setGivenUp] = useState(false);
 
     useEffect(() => {
         if (!request?.queryName) return undefined;
 
         const id = ++requestId.current;
         let cancelled = false;
+
+        setGivenUp(false);
+        const waited = setTimeout(() => {
+            if (!cancelled) setGivenUp(true);
+        }, FACTS_WAIT_MS);
 
         const load = async (): Promise<void> => {
             let facets: ColumnFacets = {};
@@ -61,6 +70,7 @@ export function useColumnFacets(api: ComponentsAPIWrapper, request: ColumnFacets
 
         return () => {
             cancelled = true;
+            clearTimeout(waited);
         };
     }, [api, request]);
 
@@ -68,7 +78,7 @@ export function useColumnFacets(api: ComponentsAPIWrapper, request: ColumnFacets
         // Nothing to ask for, so nothing to wait for
         if (!request?.queryName) return { facets: {}, loading: false };
         // Facts for a different grid shape name columns this one may not show
-        if (settled.request !== request) return { facets: {}, loading: true };
+        if (settled.request !== request) return { facets: {}, loading: !givenUp };
         return { facets: settled.facets, largeTable: settled.largeTable, loading: false };
-    }, [request, settled]);
+    }, [givenUp, request, settled]);
 }

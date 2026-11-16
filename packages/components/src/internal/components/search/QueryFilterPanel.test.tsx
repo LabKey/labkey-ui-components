@@ -406,6 +406,25 @@ describe('QueryFilterPanel', () => {
             validate(10, true, false);
         });
 
+        test("a field's own filter is recognised whatever case its key arrived in", () => {
+            // The grid's filters come in under the filter's own column name, which need not match the field's
+            // casing; counting one as another field's filter would throw away this column's cached values
+            render(
+                <QueryFilterPanel
+                    {...DEFAULT_PROPS}
+                    columnFacets={CHEAP_TEXT_FACET}
+                    fieldKey="Text"
+                    filters={{
+                        [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
+                            { fieldKey: 'text', filter: Filter.create('text', 'x') } as EntityFieldFilter,
+                        ],
+                    }}
+                    isLargeDataset
+                />
+            );
+            validate(10, false, true);
+        });
+
         test('an existing equals filter still opens on Choose values when the list is cheap', () => {
             render(
                 <QueryFilterPanel

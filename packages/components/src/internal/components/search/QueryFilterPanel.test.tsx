@@ -543,6 +543,43 @@ describe('QueryFilterPanel', () => {
         await waitFor(() => expect(selectDistinctRows).toHaveBeenCalledTimes(1));
     });
 
+    test('keeps the values mounted across a tab switch, so going back does not query again', async () => {
+        const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a', 'b'] });
+        const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+
+        render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" preferFilterTabFieldKey="Text" />);
+        const tab = (index: number): Element => document.querySelectorAll('a[role="tab"]')[index];
+
+        await userEvent.click(tab(1));
+        await waitFor(() => expect(selectDistinctRows).toHaveBeenCalledTimes(1));
+
+        // The values and the typed term survive the round trip only if the selector was never unmounted
+        await userEvent.click(tab(0));
+        await userEvent.click(tab(1));
+
+        expect(selectDistinctRows).toHaveBeenCalledTimes(1);
+    });
+
+    test('forgets a field once it is left, so returning does not query behind a hidden tab', async () => {
+        const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a', 'b'] });
+        const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+        const field = (caption: string): HTMLElement =>
+            Array.from(document.querySelectorAll<HTMLElement>('button.list-group-item')).find(
+                button => button.textContent === caption
+            );
+
+        render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" preferFilterTabFieldKey="Text" />);
+
+        await userEvent.click(document.querySelectorAll('a[role="tab"]')[1]);
+        await waitFor(() => expect(selectDistinctRows).toHaveBeenCalledTimes(1));
+
+        // Text reopens on Filter, so its value list must stay unmounted rather than query from the hidden pane
+        await userEvent.click(field('Integer'));
+        await userEvent.click(field('Text'));
+
+        expect(selectDistinctRows).toHaveBeenCalledTimes(1);
+    });
+
     test('clicking a field reports it via onActiveFieldChange', async () => {
         const onActiveFieldChange = jest.fn();
         render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" onActiveFieldChange={onActiveFieldChange} />);

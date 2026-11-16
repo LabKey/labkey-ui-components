@@ -310,14 +310,17 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const effectiveTab = activeField && decidedFor !== tabDecisionKey ? getDefaultActiveTab(activeField) : activeTab;
 
     // Nothing is fetched until the value list is first shown, but unmounting it again on a tab switch would throw
-    // away the values and the term the user typed, and re-run the query on the way back. Keyed per field, so a new
-    // field starts closed.
+    // away the values and the term the user typed, and re-run the query on the way back.
     const [valuesShownFor, setValuesShownFor] = useState<string>(undefined);
-    const valuesShown = valuesShownFor === tabDecisionKey;
+    const valuesShown = effectiveTab === FieldFilterTabs.ChooseValues || valuesShownFor === tabDecisionKey;
 
     useEffect(() => {
         if (effectiveTab === FieldFilterTabs.ChooseValues && tabDecisionKey) setValuesShownFor(tabDecisionKey);
     }, [effectiveTab, tabDecisionKey]);
+
+    useEffect(() => {
+        return () => setValuesShownFor(undefined);
+    }, [tabDecisionKey]);
 
     const currentFieldFilters = useMemo((): EntityFieldFilter[] => {
         if (!filters || !activeField) return null;

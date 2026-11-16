@@ -113,7 +113,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
     } = props;
     const { queryInfo } = model;
     const facetsRequest = useGridShapeRequest(model, 'model');
-    const { facets, largeTable, loading: factsLoading, pending: factsPending } = useColumnFacets(api, facetsRequest);
+    const { facets, largeTable, loading: factsLoading } = useColumnFacets(api, facetsRequest);
     const isLargeDataset = isLargeGrid(model, largeTable);
     const [filterError, setFilterError] = useState<string>(undefined);
     const [initialState] = useState(() => {
@@ -231,7 +231,6 @@ export const GridFilterModal: FC<Props> = memo(props => {
                 asRow
                 columnFacets={facets}
                 columnFactsLoading={factsLoading}
-                columnFactsPending={factsPending}
                 fieldKey={fieldKey}
                 fields={fields}
                 filters={{ [queryInfo.name.toLowerCase()]: filters }}

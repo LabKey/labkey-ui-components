@@ -52,8 +52,6 @@ interface Props {
     columnFacets?: ColumnFacets;
     // No facts response has arrived yet, so neither the grid's size nor any column's values are known
     columnFactsLoading?: boolean;
-    // More facts may still arrive from the poll schedule, so a column with none yet may still turn out cheap
-    columnFactsPending?: boolean;
     emptyMsg?: string;
     // used for Sample Finder use case
     entityDataType?: EntityDataType;
@@ -83,26 +81,6 @@ interface Props {
     viewName?: string;
 }
 
-/**
- * A polite status region that stays mounted and takes its message a commit later. Assistive tech announces changes
- * to a region it already knows about, and ignores one inserted with its text already inside.
- */
-const StatusRegion: FC<{ message?: string }> = memo(({ message }) => {
-    const [announced, setAnnounced] = useState<string>(undefined);
-
-    useEffect(() => {
-        setAnnounced(message);
-    }, [message]);
-
-    return (
-        <div aria-live="polite" className="sr-only" role="status">
-            {announced}
-        </div>
-    );
-});
-
-StatusRegion.displayName = 'StatusRegion';
-
 // Undefined where valuesWorthOpening is: the tab stays unchosen rather than being chosen twice
 const chooseValuesIf = (worthOpening: boolean): FieldFilterTabs =>
     worthOpening === undefined ? undefined : worthOpening ? FieldFilterTabs.ChooseValues : FieldFilterTabs.Filter;
@@ -116,7 +94,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         api = getDefaultAPIWrapper(),
         columnFacets,
         columnFactsLoading,
-        columnFactsPending,
         queryInfo,
         emptyMsg,
         skipDefaultViewCheck,
@@ -304,17 +281,33 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
      * avoids, and the filter tab would be wrong for a column whose values are already cached. Waiting leaves the
      * panel briefly indeterminate, which is better than deciding twice and moving the tab under the user.
      */
-    const awaitingTabDecision = !!activeField && getDefaultActiveTab(activeField) === undefined;
-
-    useEffect(() => {
-        if (activeField && !awaitingTabDecision) setActiveTab(getDefaultActiveTab(activeField));
-        // getDefaultActiveTab is left out so the tab is decided once per field, not revised as its inputs settle
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeField, awaitingTabDecision]);
-
     const activeFieldKey = useMemo(() => {
         return activeField?.getDisplayFieldKey();
     }, [activeField]);
+
+    // Once a field's tab is chosen it stays chosen. Falling back to indeterminate would unmount the tabs under a
+    // user who is already working in them, dropping focus to the document body. The query belongs in the key
+    // because Sample Finder reuses one panel across parent types, where a field name alone is not unique.
+    const [decidedFor, setDecidedFor] = useState<string>(undefined);
+    const tabDecisionKey = activeFieldKey ? `${filterQueryKey}|${activeFieldKey}` : undefined;
+
+    const awaitingTabDecision =
+        !!activeField && decidedFor !== tabDecisionKey && getDefaultActiveTab(activeField) === undefined;
+
+    useEffect(() => {
+        if (!activeField || awaitingTabDecision || decidedFor === tabDecisionKey) return;
+        setActiveTab(getDefaultActiveTab(activeField));
+        setDecidedFor(tabDecisionKey);
+        // getDefaultActiveTab is left out so the tab is decided once per field, not revised as its inputs settle
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeField, tabDecisionKey, awaitingTabDecision, decidedFor]);
+
+    /**
+     * The tab to render. Until the effect above latches a decision for this field, activeTab still holds the
+     * previous field's choice, so resolve it here instead: a stale tab would otherwise render for a frame, show an
+     * empty pane where the new field has no such tab, and be announced before the correction.
+     */
+    const effectiveTab = activeField && decidedFor !== tabDecisionKey ? getDefaultActiveTab(activeField) : activeTab;
 
     const currentFieldFilters = useMemo((): EntityFieldFilter[] => {
         if (!filters || !activeField) return null;
@@ -411,21 +404,18 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     } field-modal__col filter-modal__col_fields`;
     const valuesClassName = `col-xs-12 col-sm-${fullWidth ? 8 : 6} field-modal__col filter-modal__col_filter_exp`;
 
-    // Silent until a tab is settled on, so the one frame Tabs renders before the decision applies announces nothing
-    const valuesStatus = awaitingTabDecision
-        ? 'Loading field options'
-        : activeTab
-          ? `${activeTab === FieldFilterTabs.ChooseValues ? 'Choose values' : 'Filter'} tab selected`
-          : undefined;
-
     const body = (
         <>
             <div className={fieldsClassName}>
                 <div className="field-modal__col-title">Fields</div>
                 {!queryName && emptyMsg && <div className="field-modal__empty-msg">{emptyMsg}</div>}
                 {queryName && (
-                    <div className="list-group field-modal__col-content filter-modal__fields-col-content">
-                        <StatusRegion message={queryFields ? undefined : 'Loading fields'} />
+                    <div
+                        aria-busy={!queryFields}
+                        aria-label="Fields"
+                        className="list-group field-modal__col-content filter-modal__fields-col-content"
+                        role="group"
+                    >
                         {!queryFields && <LoadingSpinner wrapperClassName="loading-spinner" />}
                         {entityDataType?.supportAllValueInQuery &&
                             altQueryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query && (
@@ -495,15 +485,17 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 {queryName && !activeField && <div className="field-modal__empty-msg">Select a field.</div>}
                 {queryName && activeField && (
                     <div
+                        aria-busy={awaitingTabDecision}
+                        aria-label="Values"
                         className={classNames('field-modal__col-content field-modal__values', {
                             'field-modal__col-content-disabled': hasNotInQueryFilter,
                         })}
+                        role="group"
                     >
-                        <StatusRegion message={valuesStatus} />
                         {awaitingTabDecision && <LoadingSpinner wrapperClassName="loading-spinner" />}
                         {!awaitingTabDecision && (
                             <Tabs
-                                activeKey={activeTab}
+                                activeKey={effectiveTab}
                                 className="field-modal__tabs content-tabs"
                                 onSelect={onTabChange}
                             >
@@ -512,7 +504,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         <div className="field-modal__col-sub-title">
                                             Find values for {activeField.caption}
                                         </div>
-                                        {activeTab === FieldFilterTabs.Filter && (
+                                        {effectiveTab === FieldFilterTabs.Filter && (
                                             <FilterExpressionView
                                                 allowRelativeDateFilter={allowRelativeDateFilter}
                                                 disabled={hasNotInQueryFilter}
@@ -530,10 +522,10 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         <div className="field-modal__col-sub-title">
                                             Find values for {activeField.caption}
                                         </div>
-                                        {activeTab === FieldFilterTabs.ChooseValues && (
+                                        {effectiveTab === FieldFilterTabs.ChooseValues && (
                                             <FilterFacetedSelector
                                                 api={api}
-                                                awaitingFacts={columnFactsLoading || columnFactsPending}
+                                                awaitingFacts={columnFactsLoading}
                                                 canBeBlank={!activeField?.required && !activeField.nameExpression}
                                                 disabled={hasNotInQueryFilter}
                                                 facetValues={facetValues}

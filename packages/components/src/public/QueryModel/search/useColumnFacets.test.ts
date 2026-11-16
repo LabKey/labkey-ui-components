@@ -2,7 +2,7 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 
 import { getTestAPIWrapper } from '../../../internal/APIWrapper';
 import { getQueryTestAPIWrapper } from '../../../internal/query/APIWrapper';
@@ -30,35 +30,40 @@ describe('useColumnFacets', () => {
 
     const response = (complete: boolean): ColumnFacetsResponse => ({ columns: [FACET], complete, largeTable: false });
 
-    test('stops at one request when the server reports the facts finished', async () => {
+    // Past the last delay of the poll schedule this hook used to run ([500, 1500, 3000]), so a reinstated poll
+    // would have fired every one of its requests by the time an assertion below counts them
+    const settle = async (): Promise<void> => {
+        await act(async () => {
+            jest.advanceTimersByTime(10_000);
+        });
+    };
+
+    beforeEach(() => jest.useFakeTimers());
+    afterEach(() => jest.useRealTimers());
+
+    test('asks once and keeps what came back', async () => {
         const getColumnFacets = jest.fn().mockResolvedValue(response(true));
         const { result } = renderFacets(getColumnFacets, REQUEST);
 
-        await waitFor(() => expect(result.current.pending).toBe(false));
+        await waitFor(() => expect(result.current.loading).toBe(false));
         expect(getColumnFacets).toHaveBeenCalledTimes(1);
         expect(result.current.facets.name).toEqual(FACET);
     });
 
-    test('polls while the facts are unfinished, then gives up and stops waiting', async () => {
+    test('an unfinished answer is not asked for again', async () => {
         const getColumnFacets = jest.fn().mockResolvedValue(response(false));
         const { result } = renderFacets(getColumnFacets, REQUEST);
 
-        // Still expecting more facts while polls remain, so a caller waiting on them keeps waiting
-        await waitFor(() => expect(getColumnFacets).toHaveBeenCalledTimes(1));
-        expect(result.current.pending).toBe(true);
+        // Facts the server couldn't finish inside its budget finish into its cache for a later request; this caller
+        // takes what arrived and leaves the rest to the ordinary query
+        await waitFor(() => expect(result.current.loading).toBe(false));
+        await settle();
 
-        // One request plus the three scheduled polls, and then no more: waited past the longest delay (3000ms),
-        // so a fifth poll would have landed by now
-        await waitFor(() => expect(result.current.pending).toBe(false), { timeout: 10_000 });
-        expect(getColumnFacets).toHaveBeenCalledTimes(4);
-        await new Promise(resolve => setTimeout(resolve, 3_500));
-        expect(getColumnFacets).toHaveBeenCalledTimes(4);
-
-        // and whatever the polls did deliver is kept
+        expect(getColumnFacets).toHaveBeenCalledTimes(1);
         expect(result.current.facets.name).toEqual(FACET);
-    }, 20_000);
+    });
 
-    test('the first response settles largeTable, and a large table is not polled for the rest', async () => {
+    test('the answer settles largeTable', async () => {
         const getColumnFacets = jest.fn().mockResolvedValue({ columns: [], complete: false, largeTable: true });
         const { result } = renderFacets(getColumnFacets, REQUEST);
 
@@ -67,18 +72,16 @@ describe('useColumnFacets', () => {
 
         await waitFor(() => expect(result.current.loading).toBe(false));
         expect(result.current.largeTable).toBe(true);
-        // Facts the table is too big to have loaded in time won't arrive in the next few seconds either, so nothing
-        // waits on them: one request, and the caller is free to query
-        expect(result.current.pending).toBe(false);
-        await new Promise(resolve => setTimeout(resolve, 2_500));
         expect(getColumnFacets).toHaveBeenCalledTimes(1);
-    }, 10_000);
+    });
 
     test('a failed request stops waiting at once and is not retried', async () => {
         const getColumnFacets = jest.fn().mockRejectedValue(new Error('nope'));
         const { result } = renderFacets(getColumnFacets, REQUEST);
 
-        await waitFor(() => expect(result.current.pending).toBe(false));
+        await waitFor(() => expect(result.current.loading).toBe(false));
+        await settle();
+
         expect(getColumnFacets).toHaveBeenCalledTimes(1);
         expect(result.current.facets).toEqual({});
     });
@@ -92,37 +95,40 @@ describe('useColumnFacets', () => {
         // A different grid: its columns may be named the same but describe other rows
         rerender({ columns: ['Name'], queryName: 'Other', schemaName: 'samples' });
 
-        await waitFor(() => expect(result.current.pending).toBe(false));
+        await waitFor(() => expect(result.current.loading).toBe(false));
         expect(result.current.facets).toEqual({});
         expect(result.current.largeTable).toBeUndefined();
-    }, 10_000);
+    });
 
-    test('a failure after a good poll keeps what that poll delivered', async () => {
-        const getColumnFacets = jest.fn().mockResolvedValueOnce(response(false)).mockRejectedValue(new Error('nope'));
-        const { result } = renderFacets(getColumnFacets, REQUEST);
+    // Proves the answer is discarded without error and nothing is re-asked. React 18 makes a setState after
+    // unmount a silent no-op, so the cancelled guard itself cannot be observed from out here.
+    test('an answer that arrives after unmount is discarded', async () => {
+        let deliver: (value: ColumnFacetsResponse) => void;
+        const getColumnFacets = jest.fn().mockReturnValue(
+            new Promise<ColumnFacetsResponse>(resolve => {
+                deliver = resolve;
+            })
+        );
+        const { result, unmount } = renderFacets(getColumnFacets, REQUEST);
 
-        await waitFor(() => expect(result.current.pending).toBe(false), { timeout: 10_000 });
-        expect(getColumnFacets).toHaveBeenCalledTimes(2);
-        expect(result.current.facets.name).toEqual(FACET);
-    }, 15_000);
-
-    test('unmounting cancels the next poll', async () => {
-        const getColumnFacets = jest.fn().mockResolvedValue(response(false));
-        const { unmount } = renderFacets(getColumnFacets, REQUEST);
-
-        await waitFor(() => expect(getColumnFacets).toHaveBeenCalledTimes(1));
-        unmount();
-
-        await new Promise(resolve => setTimeout(resolve, 2_500));
+        // Still in flight, so unmounting below interrupts a real request rather than a settled one
         expect(getColumnFacets).toHaveBeenCalledTimes(1);
-    }, 10_000);
+        expect(result.current.loading).toBe(true);
+
+        unmount();
+        await act(async () => {
+            deliver(response(true));
+        });
+        await settle();
+
+        expect(getColumnFacets).toHaveBeenCalledTimes(1);
+    });
 
     test('no request means nothing to wait for', () => {
         const getColumnFacets = jest.fn();
         const { result } = renderFacets(getColumnFacets, undefined);
 
         expect(result.current.loading).toBe(false);
-        expect(result.current.pending).toBe(false);
         expect(getColumnFacets).not.toHaveBeenCalled();
     });
 });

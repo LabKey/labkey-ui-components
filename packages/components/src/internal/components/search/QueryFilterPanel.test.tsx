@@ -474,6 +474,59 @@ describe('QueryFilterPanel', () => {
             validate(10, false, true);
         });
 
+        // A polite region only announces text that arrives after the reader knows the region exists, so these
+        // assert the region is mounted and empty first, and carries a message naming its subject afterwards
+        describe('status regions', () => {
+            const statusText = (): string =>
+                Array.from(document.querySelectorAll('[role="status"]'))
+                    .map(node => node.textContent)
+                    .join('|');
+
+            test('says nothing about a tab until the facts decide one', () => {
+                const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading fieldKey="Text" />);
+
+                expect(document.querySelectorAll('[role="status"]').length).toBeGreaterThan(0);
+                expect(statusText()).not.toContain('tab');
+
+                rerender(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" />);
+
+                expect(statusText()).toContain('Choose values tab');
+            });
+
+            test('names the field, so moving to one that opens the same tab is still a change', () => {
+                render(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" />);
+
+                const field = DEFAULT_PROPS.queryInfo.getColumn('Text');
+                expect(statusText()).toContain(field.caption);
+            });
+
+            test('counts the values the column holds, not the [All] row the list adds', () => {
+                // CHEAP_TEXT_FACET carries two values; the list also renders an [All] control above them
+                render(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" />);
+
+                expect(statusText()).toContain('2 values');
+            });
+
+            test('marks the columns busy while they load', () => {
+                render(<QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading fieldKey="Text" />);
+
+                // The tab decision is outstanding, so the values column reports itself busy rather than announcing
+                expect(document.querySelector('[aria-label="Values"]').getAttribute('aria-busy')).toBe('true');
+            });
+        });
+
+        test('a decided tab survives the facts loading again, so the tabs never unmount under the user', () => {
+            const { rerender } = render(
+                <QueryFilterPanel {...DEFAULT_PROPS} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" />
+            );
+            validate(10, false, true);
+
+            // A later request puts the facts back in flight; the field's tab was already chosen, so it stays
+            rerender(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={{}} columnFactsLoading fieldKey="Text" />);
+
+            validate(10, false, true);
+        });
+
         test('a cold grid the first response reports large opens on Filter, not Choose values', () => {
             const { rerender } = render(
                 <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading fieldKey="Text" />

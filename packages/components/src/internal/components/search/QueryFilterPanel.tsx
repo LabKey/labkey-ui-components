@@ -309,6 +309,16 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
      */
     const effectiveTab = activeField && decidedFor !== tabDecisionKey ? getDefaultActiveTab(activeField) : activeTab;
 
+    // Nothing is fetched until the value list is first shown, but unmounting it again on a tab switch would throw
+    // away the values and the term the user typed, and re-run the query on the way back. Keyed per field, so a new
+    // field starts closed.
+    const [valuesShownFor, setValuesShownFor] = useState<string>(undefined);
+    const valuesShown = valuesShownFor === tabDecisionKey;
+
+    useEffect(() => {
+        if (effectiveTab === FieldFilterTabs.ChooseValues && tabDecisionKey) setValuesShownFor(tabDecisionKey);
+    }, [effectiveTab, tabDecisionKey]);
+
     const currentFieldFilters = useMemo((): EntityFieldFilter[] => {
         if (!filters || !activeField) return null;
 
@@ -410,12 +420,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 <div className="field-modal__col-title">Fields</div>
                 {!queryName && emptyMsg && <div className="field-modal__empty-msg">{emptyMsg}</div>}
                 {queryName && (
-                    <div
-                        aria-busy={!queryFields}
-                        aria-label="Fields"
-                        className="list-group field-modal__col-content filter-modal__fields-col-content"
-                        role="group"
-                    >
+                    <div className="list-group field-modal__col-content filter-modal__fields-col-content">
                         {!queryFields && <LoadingSpinner wrapperClassName="loading-spinner" />}
                         {entityDataType?.supportAllValueInQuery &&
                             altQueryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query && (
@@ -485,12 +490,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 {queryName && !activeField && <div className="field-modal__empty-msg">Select a field.</div>}
                 {queryName && activeField && (
                     <div
-                        aria-busy={awaitingTabDecision}
-                        aria-label="Values"
                         className={classNames('field-modal__col-content field-modal__values', {
                             'field-modal__col-content-disabled': hasNotInQueryFilter,
                         })}
-                        role="group"
                     >
                         {awaitingTabDecision && <LoadingSpinner wrapperClassName="loading-spinner" />}
                         {!awaitingTabDecision && (
@@ -522,7 +524,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         <div className="field-modal__col-sub-title">
                                             Find values for {activeField.caption}
                                         </div>
-                                        {effectiveTab === FieldFilterTabs.ChooseValues && (
+                                        {valuesShown && (
                                             <FilterFacetedSelector
                                                 api={api}
                                                 awaitingFacts={columnFactsLoading}

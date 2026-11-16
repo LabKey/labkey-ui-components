@@ -302,7 +302,11 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const statusMessage = useMemo(() => {
         if (busy) return 'Loading values';
         if (hideOptions) return undefined;
-        const count = filteredFieldDistinctValues?.length ?? 0;
+        // [All] and [blank] are rows the list injects, not values the column holds; the search path already drops
+        // them, so counting them here would make the searched and unsearched messages mean different things
+        const count = (filteredFieldDistinctValues ?? []).filter(
+            value => value !== ALL_VALUE_DISPLAY && value !== EMPTY_VALUE_DISPLAY
+        ).length;
         if (searchStr && count === 0) return `No value matches '${searchStr}'.`;
         return `${count} ${count === 1 ? 'value' : 'values'}`;
     }, [busy, filteredFieldDistinctValues, hideOptions, searchStr]);
@@ -409,6 +413,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 <button
                                                     aria-label={'Remove ' + displayValue}
                                                     className="filter-status__remove"
+                                                    disabled={disabled}
                                                     onClick={() => onChange(value, false)}
                                                     type="button"
                                                 >

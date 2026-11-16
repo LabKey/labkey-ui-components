@@ -20,11 +20,13 @@ import { ColumnFacetsRequest } from './models';
 export type GridFilterScope = 'base' | 'model';
 
 export function getGridShapeRequest(model: QueryModel, scope: GridFilterScope): ColumnFacetsRequest {
-    const filters: Filter.IFilter[] = scope === 'model' ? model.modelFilters : model.baseFilters;
+    const forModel = scope === 'model';
+    const filters: Filter.IFilter[] = forModel ? model.modelFilters : model.baseFilters;
     return {
         columns: model.displayColumns?.map(column => column.fieldKey) ?? [],
-        // Same default as the grid's own rows request
-        containerFilter: model.containerFilter ?? getContainerFilter(model.containerPath),
+        containerFilter: forModel
+            ? model.containerFilter
+            : (model.containerFilter ?? getContainerFilter(model.containerPath)),
         containerPath: model.containerPath,
         filters,
         parameters: model.queryParameters,

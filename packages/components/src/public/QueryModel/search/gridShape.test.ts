@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { renderHook } from '@testing-library/react';
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { QueryInfo } from '../../QueryInfo';
 import { SchemaQuery } from '../../SchemaQuery';
@@ -11,6 +11,13 @@ import { LoadingState } from '../../LoadingState';
 import { DEFAULT_MAX_COUNT, QueryModel } from '../QueryModel';
 
 import { getGridShapeRequest, isLargeGrid, useGridShapeRequest } from './gridShape';
+
+// getContainerFilter answers undefined unless product folders are on, which would make the two scopes
+// indistinguishable here
+jest.mock('../../../internal/query/api', () => ({
+    ...jest.requireActual('../../../internal/query/api'),
+    getContainerFilter: jest.fn(() => Query.ContainerFilter.currentAndSubfoldersPlusShared),
+}));
 
 describe('isLargeGrid', () => {
     const queryInfo = QueryInfo.fromJsonForTests({ name: 'Samples', schemaName: 'samples' });
@@ -78,6 +85,22 @@ describe('getGridShapeRequest', () => {
 
     test("'model' includes the view's filters", () => {
         expect(columnNames('model')).toEqual(['Type', 'Status']);
+    });
+
+    // The model scope stands in for the grid's own selectDistinct, which passes model.containerFilter unchanged,
+    // so substituting a default here would describe folders the grid never shows
+    test("'model' passes the grid's container filter through, defaulting only for 'base'", () => {
+        expect(getGridShapeRequest(model, 'model').containerFilter).toBeUndefined();
+        expect(getGridShapeRequest(model, 'base').containerFilter).toBe(
+            Query.ContainerFilter.currentAndSubfoldersPlusShared
+        );
+    });
+
+    test('an explicit container filter is used by both scopes', () => {
+        const scoped = model.mutate({ containerFilter: Query.ContainerFilter.current });
+
+        expect(getGridShapeRequest(scoped, 'model').containerFilter).toBe(Query.ContainerFilter.current);
+        expect(getGridShapeRequest(scoped, 'base').containerFilter).toBe(Query.ContainerFilter.current);
     });
 });
 

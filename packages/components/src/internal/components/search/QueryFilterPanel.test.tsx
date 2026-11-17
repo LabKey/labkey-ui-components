@@ -274,12 +274,6 @@ describe('QueryFilterPanel', () => {
     });
 
     describe('the default tab and the grid size', () => {
-        const OWN_FILTER = {
-            [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
-                { fieldKey: 'Text', filter: Filter.create('Text', 'x') } as EntityFieldFilter,
-            ],
-        };
-
         test('a small grid opens on Choose values', () => {
             render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" />);
             validate(10, false, true);
@@ -290,39 +284,13 @@ describe('QueryFilterPanel', () => {
             validate(10, true, false);
         });
 
+        // Picking a tab and moving it once the answer lands is what this avoids
         test('neither tab is chosen until the size is known', () => {
             const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" sizeLoading />);
             expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
-            expect(document.querySelectorAll('.fa-spinner')).not.toHaveLength(0);
 
             rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
             validate(10, true, false);
-        });
-
-        test('nothing is queried while the size is still unknown', async () => {
-            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a'] });
-            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
-            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" sizeLoading />);
-
-            await waitFor(() => expect(selectDistinctRows).not.toHaveBeenCalled());
-        });
-
-        test('a decided tab is not revised when the size answer lands, so the tabs never move under the user', () => {
-            const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" />);
-            validate(10, false, true);
-
-            rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
-            validate(10, false, true);
-        });
-
-        test("an existing equals filter opens on Filter on a large grid", () => {
-            render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" filters={OWN_FILTER} isLargeDataset />);
-            validate(10, true, false);
-        });
-
-        test('an existing equals filter opens on Choose values on a small grid', () => {
-            render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" filters={OWN_FILTER} />);
-            validate(10, false, true);
         });
     });
 

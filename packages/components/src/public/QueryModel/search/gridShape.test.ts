@@ -19,7 +19,7 @@ jest.mock('../../../internal/query/api', () => ({
     getContainerFilter: jest.fn(() => Query.ContainerFilter.currentAndSubfoldersPlusShared),
 }));
 
-describe('isLargeGrid', () => {
+describe('isLargeDataset', () => {
     const queryInfo = QueryInfo.fromJsonForTests({ name: 'Samples', schemaName: 'samples' });
 
     const model = (rowCount: number, includeTotalCount = true): QueryModel =>

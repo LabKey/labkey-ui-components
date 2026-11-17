@@ -5,6 +5,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ComponentsAPIWrapper } from '../../../internal/APIWrapper';
+import { DEFAULT_MAX_COUNT, QueryModel } from '../QueryModel';
+
 import { QuerySizeRequest } from './models';
 
 const SIZE_WAIT_MS = 2000;
@@ -65,4 +67,18 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
         if (settled.request !== request) return { loading: !givenUp };
         return { largeTable: settled.largeTable, loading: false };
     }, [givenUp, request, settled]);
+}
+
+/**
+ * Whether listing a column's values on this grid is likely to be expensive, judged by row count alone.
+ *
+ * Either count passing the threshold is enough, because each covers what the other misses. The grid's own count is
+ * known the moment the dialog opens but is narrowed by every filter, so it can't see a large table filtered below
+ * the cap. The server's answer covers the whole table but arrives a round trip later, and is absent entirely
+ * for a query with no table of its own.
+ */
+export function isLargeDataset(model: QueryModel, largeTable?: boolean): boolean {
+    if (largeTable) return true;
+    const cap = model.maxCount > 0 ? model.maxCount : DEFAULT_MAX_COUNT;
+    return model.includeTotalCount && !model.isLoadingTotalCount && model.rowCount >= cap;
 }

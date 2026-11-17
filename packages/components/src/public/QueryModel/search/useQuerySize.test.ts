@@ -7,15 +7,20 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { getTestAPIWrapper } from '../../../internal/APIWrapper';
 import { getQueryTestAPIWrapper } from '../../../internal/query/APIWrapper';
 
-import { GridShapeRequest } from './models';
-import { useQuerySize } from './useQuerySize';
+import { QueryInfo } from '../../QueryInfo';
+import { SchemaQuery } from '../../SchemaQuery';
+import { LoadingState } from '../../LoadingState';
+import { DEFAULT_MAX_COUNT, QueryModel } from '../QueryModel';
+
+import { QuerySizeRequest } from './models';
+import { isLargeDataset, useQuerySize } from './useQuerySize';
 
 describe('useQuerySize', () => {
-    const REQUEST: GridShapeRequest = { columns: ['Name'], queryName: 'Samples', schemaName: 'samples' };
+    const REQUEST: QuerySizeRequest = { queryName: 'Samples', schemaName: 'samples' };
 
-    const renderSize = (getQuerySize: jest.Mock, request: GridShapeRequest) => {
+    const renderSize = (getQuerySize: jest.Mock, request: QuerySizeRequest) => {
         const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { getQuerySize }) });
-        return renderHook((props: GridShapeRequest) => useQuerySize(api, props), { initialProps: request });
+        return renderHook((props: QuerySizeRequest) => useQuerySize(api, props), { initialProps: request });
     };
 
     // Well past the hook's own give-up timer, so a reinstated poll would have fired every request it schedules
@@ -82,5 +87,45 @@ describe('useQuerySize', () => {
         expect(result.current.loading).toBe(false);
         await settle();
         expect(getQuerySize).not.toHaveBeenCalled();
+    });
+});
+
+describe('isLargeDataset', () => {
+    const queryInfo = QueryInfo.fromJsonForTests({ name: 'Samples', schemaName: 'samples' });
+
+    const model = (rowCount: number, includeTotalCount = true): QueryModel =>
+        new QueryModel({ id: 'model', schemaQuery: new SchemaQuery('samples', 'Samples') }).mutate({
+            includeTotalCount,
+            maxCount: DEFAULT_MAX_COUNT,
+            queryInfo,
+            queryInfoLoadingState: LoadingState.LOADED,
+            rowCount,
+            totalCountLoadingState: LoadingState.LOADED,
+        });
+
+    test('neither count is large', () => {
+        expect(isLargeDataset(model(20_000), false)).toBe(false);
+    });
+
+    test("the grid's own count alone is enough", () => {
+        expect(isLargeDataset(model(DEFAULT_MAX_COUNT), false)).toBe(true);
+    });
+
+    test("the server's answer alone is enough, even for a grid filtered under the cap", () => {
+        expect(isLargeDataset(model(50_000), true)).toBe(true);
+    });
+
+    test("the server's answer is absent until the facts arrive", () => {
+        expect(isLargeDataset(model(50_000), undefined)).toBe(false);
+    });
+
+    test('a grid that asks for no total count ignores its own count', () => {
+        expect(isLargeDataset(model(DEFAULT_MAX_COUNT, false), false)).toBe(false);
+        expect(isLargeDataset(model(DEFAULT_MAX_COUNT, false), true)).toBe(true);
+    });
+
+    test('a count still loading is not yet large', () => {
+        const loading = model(DEFAULT_MAX_COUNT).mutate({ totalCountLoadingState: LoadingState.LOADING });
+        expect(isLargeDataset(loading, false)).toBe(false);
     });
 });

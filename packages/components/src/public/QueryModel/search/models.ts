@@ -35,7 +35,6 @@ export type SuggestionSource =
     | 'shape'
     | 'shapeContains';
 
-// The server's SuggestionColumn.Type collapsed to what compose suggestions emit: FLOAT and INT both become 'number', BOOLEAN never composes
 export type SuggestionValueType = 'date' | 'number' | 'string';
 
 // Where the label shows the search term; end is exclusive
@@ -93,9 +92,7 @@ export interface FilterSuggestionsResponse {
     suggestions: FilterSuggestion[];
 }
 
-export type GridShapeRequest = Omit<FilterSuggestionsRequest, 'maxSuggestions' | 'term'>;
-
-/** The estimate covers the whole table, so it is unaffected by the grid's filters, view, columns or container scope. */
+/** The estimate covers the whole table, so it needs no view, columns, filters or container scope. */
 export interface QuerySizeRequest {
     containerPath?: string;
     queryName: string;

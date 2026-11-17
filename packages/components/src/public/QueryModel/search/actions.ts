@@ -6,19 +6,11 @@ import { ActionURL } from '@labkey/api';
 
 import { request } from '../../../internal/request';
 
-import {
-    FilterSuggestionsRequest,
-    FilterSuggestionsResponse,
-    GridShapeRequest,
-    QuerySizeRequest,
-    QuerySizeResponse,
-} from './models';
+import { FilterSuggestionsRequest, FilterSuggestionsResponse, QuerySizeRequest, QuerySizeResponse } from './models';
 
-function toJsonData(options: FilterSuggestionsRequest | GridShapeRequest): Record<string, any> {
-    const { filters, ...rest } = options;
+export async function getFilterSuggestions(options: FilterSuggestionsRequest): Promise<FilterSuggestionsResponse> {
+    const { containerPath, filters, ...rest } = options;
     const jsonData: Record<string, any> = { ...rest };
-    // goes in the URL, not the body
-    delete jsonData.containerPath;
 
     if (filters?.length) {
         jsonData.filters = filters.map(filter => ({
@@ -27,13 +19,6 @@ function toJsonData(options: FilterSuggestionsRequest | GridShapeRequest): Recor
             value: String(filter.getURLParameterValue() ?? ''),
         }));
     }
-
-    return jsonData;
-}
-
-export async function getFilterSuggestions(options: FilterSuggestionsRequest): Promise<FilterSuggestionsResponse> {
-    const { containerPath } = options;
-    const jsonData = toJsonData(options);
 
     const response = await request<Partial<FilterSuggestionsResponse>>({
         url: ActionURL.buildURL('query', 'getFilterSuggestions.api', containerPath),

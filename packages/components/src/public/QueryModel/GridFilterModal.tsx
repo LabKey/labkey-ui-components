@@ -19,8 +19,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWr
 import { QueryModel } from './QueryModel';
 import { filtersEqual } from './utils';
 import { composeFieldToFilter } from './search/utils';
-import { useQuerySize } from './search/useQuerySize';
-import { isLargeDataset } from './search/gridShape';
+import { isLargeDataset, useQuerySize } from './search/useQuerySize';
 
 /** A filter to pre-fill on whichever field is active, until it is applied. Ops are keyed by display fieldKey. */
 export interface FilterDraft {

@@ -6,11 +6,18 @@ import { ActionURL } from '@labkey/api';
 
 import { request } from '../../../internal/request';
 
-import { FilterSuggestionsRequest, FilterSuggestionsResponse } from './models';
+import {
+    ColumnFacetsRequest,
+    ColumnFacetsResponse,
+    FilterSuggestionsRequest,
+    FilterSuggestionsResponse,
+} from './models';
 
-export async function getFilterSuggestions(options: FilterSuggestionsRequest): Promise<FilterSuggestionsResponse> {
-    const { containerPath, filters, ...rest } = options;
+function toJsonData(options: ColumnFacetsRequest | FilterSuggestionsRequest): Record<string, any> {
+    const { filters, ...rest } = options;
     const jsonData: Record<string, any> = { ...rest };
+    // goes in the URL, not the body
+    delete jsonData.containerPath;
 
     if (filters?.length) {
         jsonData.filters = filters.map(filter => ({
@@ -20,6 +27,13 @@ export async function getFilterSuggestions(options: FilterSuggestionsRequest): P
         }));
     }
 
+    return jsonData;
+}
+
+export async function getFilterSuggestions(options: FilterSuggestionsRequest): Promise<FilterSuggestionsResponse> {
+    const { containerPath } = options;
+    const jsonData = toJsonData(options);
+
     const response = await request<Partial<FilterSuggestionsResponse>>({
         url: ActionURL.buildURL('query', 'getFilterSuggestions.api', containerPath),
         method: 'POST',
@@ -28,4 +42,21 @@ export async function getFilterSuggestions(options: FilterSuggestionsRequest): P
     });
 
     return { complete: response.complete ?? true, suggestions: response.suggestions ?? [] };
+}
+
+export async function getColumnFacets(options: ColumnFacetsRequest): Promise<ColumnFacetsResponse> {
+    const { containerPath } = options;
+
+    const response = await request<Partial<ColumnFacetsResponse>>({
+        url: ActionURL.buildURL('query', 'getColumnFacets.api', containerPath),
+        method: 'POST',
+        jsonData: toJsonData(options),
+        errorLogMsg: 'Unable to load column facets',
+    });
+
+    return {
+        columns: response.columns ?? [],
+        complete: response.complete ?? true,
+        largeTable: !!response.largeTable,
+    };
 }

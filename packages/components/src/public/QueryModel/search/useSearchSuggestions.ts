@@ -8,7 +8,7 @@ import { ComponentsAPIWrapper } from '../../../internal/APIWrapper';
 import { QueryModel } from '../QueryModel';
 
 import { FilterSuggestion, FilterSuggestionsRequest } from './models';
-import { getGridShapeRequest, useGridShapeRequest } from './gridShape';
+import { useGridShapeRequest } from './gridShape';
 import { applyColumnCaption, createSearchSuggestion, getColumnCaptions } from './utils';
 
 export const SUGGESTION_DEBOUNCE_MS = 200;
@@ -29,10 +29,6 @@ interface SettledSuggestions {
     polling: boolean;
     request: FilterSuggestionsRequest;
     suggestions: FilterSuggestion[];
-}
-
-export function getFilterSuggestionsRequest(model: QueryModel, term: string): FilterSuggestionsRequest {
-    return { ...getGridShapeRequest(model, 'base'), term };
 }
 
 export function useSearchSuggestions(

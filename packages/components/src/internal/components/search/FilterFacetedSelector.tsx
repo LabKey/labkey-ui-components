@@ -219,7 +219,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
     const checkedValues = useMemo(() => {
         return getCheckedFilterValues(fieldFilters?.[0], allShown ? fieldDistinctValues : undefined, multiChoices);
-    }, [fieldFilters?.[0], fieldKey, fieldDistinctValues, allShown, multiChoices]); // need to add fieldKey
+    }, [fieldFilters, allShown, fieldDistinctValues, multiChoices]);
 
     const taggedValues = useMemo(() => {
         if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) > -1) return [];

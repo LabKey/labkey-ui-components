@@ -35,6 +35,7 @@ export type SuggestionSource =
     | 'shape'
     | 'shapeContains';
 
+// The server's SuggestionColumn.Type collapsed to what compose suggestions emit: FLOAT and INT both become 'number', BOOLEAN never composes
 export type SuggestionValueType = 'date' | 'number' | 'string';
 
 // Where the label shows the search term; end is exclusive

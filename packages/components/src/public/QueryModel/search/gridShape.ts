@@ -45,21 +45,21 @@ export function getGridShapeRequest(model: QueryModel, scope: GridFilterScope): 
  */
 export function useGridShapeRequest(model: QueryModel, scope: GridFilterScope): ColumnFacetsRequest {
     return useMemo(
-        () => (model?.queryInfo ? getGridShapeRequest(model, scope) : undefined),
+        () => (model.queryInfo ? getGridShapeRequest(model, scope) : undefined),
         // eslint-disable-next-line react-hooks/exhaustive-deps -- the grid's shape, not every model update
         [
             scope,
-            model?.schemaName,
-            model?.queryName,
-            model?.viewName,
-            model?.containerPath,
-            model?.containerFilter,
-            model?.baseFilters,
+            model.schemaName,
+            model.queryName,
+            model.viewName,
+            model.containerPath,
+            model.containerFilter,
+            model.baseFilters,
             // keyValue is listed because getModelFilters short-circuits to the key's own filters when it is set
-            model?.keyValue,
-            model?.queryParameters,
-            model?.queryInfo,
-            model?.omittedColumns,
+            model.keyValue,
+            model.queryParameters,
+            model.queryInfo,
+            model.omittedColumns,
         ]
     );
 }
@@ -73,7 +73,7 @@ export function useGridShapeRequest(model: QueryModel, scope: GridFilterScope): 
  * the cap. The server's answer covers the whole table but arrives a round trip later, and is absent entirely
  * for a query with no table of its own.
  */
-export function isLargeGrid(model: QueryModel, largeTable?: boolean): boolean {
+export function isLargeDataset(model: QueryModel, largeTable?: boolean): boolean {
     if (largeTable) return true;
     const cap = model.maxCount > 0 ? model.maxCount : DEFAULT_MAX_COUNT;
     return model.includeTotalCount && !model.isLoadingTotalCount && model.rowCount >= cap;

@@ -10,7 +10,7 @@ import { SchemaQuery } from '../../SchemaQuery';
 import { LoadingState } from '../../LoadingState';
 import { DEFAULT_MAX_COUNT, QueryModel } from '../QueryModel';
 
-import { getGridShapeRequest, isLargeGrid, useGridShapeRequest } from './gridShape';
+import { getGridShapeRequest, isLargeDataset, useGridShapeRequest } from './gridShape';
 
 // getContainerFilter answers undefined unless product folders are on, which would make the two scopes
 // indistinguishable here
@@ -33,29 +33,29 @@ describe('isLargeGrid', () => {
         });
 
     test('neither count is large', () => {
-        expect(isLargeGrid(model(20_000), false)).toBe(false);
+        expect(isLargeDataset(model(20_000), false)).toBe(false);
     });
 
     test("the grid's own count alone is enough", () => {
-        expect(isLargeGrid(model(DEFAULT_MAX_COUNT), false)).toBe(true);
+        expect(isLargeDataset(model(DEFAULT_MAX_COUNT), false)).toBe(true);
     });
 
     test("the server's answer alone is enough, even for a grid filtered under the cap", () => {
-        expect(isLargeGrid(model(50_000), true)).toBe(true);
+        expect(isLargeDataset(model(50_000), true)).toBe(true);
     });
 
     test("the server's answer is absent until the facts arrive", () => {
-        expect(isLargeGrid(model(50_000), undefined)).toBe(false);
+        expect(isLargeDataset(model(50_000), undefined)).toBe(false);
     });
 
     test('a grid that asks for no total count ignores its own count', () => {
-        expect(isLargeGrid(model(DEFAULT_MAX_COUNT, false), false)).toBe(false);
-        expect(isLargeGrid(model(DEFAULT_MAX_COUNT, false), true)).toBe(true);
+        expect(isLargeDataset(model(DEFAULT_MAX_COUNT, false), false)).toBe(false);
+        expect(isLargeDataset(model(DEFAULT_MAX_COUNT, false), true)).toBe(true);
     });
 
     test('a count still loading is not yet large', () => {
         const loading = model(DEFAULT_MAX_COUNT).mutate({ totalCountLoadingState: LoadingState.LOADING });
-        expect(isLargeGrid(loading, false)).toBe(false);
+        expect(isLargeDataset(loading, false)).toBe(false);
     });
 });
 

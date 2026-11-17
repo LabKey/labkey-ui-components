@@ -103,7 +103,7 @@ export interface ColumnFacet {
     hasBlank: boolean;
     // A value was too long to cache, so values is incomplete and callers must query instead
     truncated: boolean;
-    type: 'BOOLEAN' | 'DATE' | 'FLOAT' | 'INT' | 'STRING';
+    type: 'BOOLEAN' | 'DATE' | 'FLOAT' | 'INT' | 'STRING'; // matches server's SuggestionColumn.Type
     values?: string[];
     // values were read from the rows the request selects. When false they are the column's allowed options, or a
     // lookup's values read without this grid's filters, so they don't describe what the grid shows.

@@ -273,279 +273,56 @@ describe('QueryFilterPanel', () => {
         validate(10, true, false);
     });
 
-    describe('cached facts and the default tab', () => {
-        // the hook keys this map lower-cased
-        const CHEAP_TEXT_FACET = {
-            text: {
-                fieldKey: 'Text',
-                gridFieldKey: 'Text',
-                hasBlank: false,
-                truncated: false,
-                valuesFromData: true,
-                type: 'STRING' as const,
-                values: ['a', 'b'],
-            },
-        };
-        const OTHER_FIELD_FILTER = {
+    describe('the default tab and the grid size', () => {
+        const OWN_FILTER = {
             [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
-                { fieldKey: 'Integer', filter: Filter.create('Integer', 1) } as EntityFieldFilter,
+                { fieldKey: 'Text', filter: Filter.create('Text', 'x') } as EntityFieldFilter,
             ],
         };
 
-        test('few cached values open on Choose values, even on a large grid', () => {
-            render(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" isLargeDataset />
-            );
+        test('a small grid opens on Choose values', () => {
+            render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" />);
             validate(10, false, true);
         });
 
-        test("declared values are not the grid's values, so the column is queried like any other", async () => {
-            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a'] });
-            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
-            // A Text Choice column's options arrive as values the server never read from the data
-            const facets = { text: { ...CHEAP_TEXT_FACET.text, valuesFromData: false } };
-            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFacets={facets} fieldKey="Text" />);
-
-            // Not cheap, so a large grid would open on Filter; this one is small, so Choose values opens and queries
-            validate(10, false, true);
-            await act(async () => {
-                await Promise.resolve();
-            });
-            expect(selectDistinctRows).toHaveBeenCalledTimes(1);
-        });
-
-        const facetedValues = (): string[] =>
-            Array.from(document.querySelectorAll('button.filter-faceted__value')).map(button => button.textContent);
-
-        test('cached values are listed instead of being queried for', async () => {
-            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['queried'] });
-            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
-            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" />);
-
-            validate(10, false, true);
-            await act(async () => {
-                await Promise.resolve();
-            });
-
-            expect(selectDistinctRows).not.toHaveBeenCalled();
-            expect(facetedValues()).toEqual(['[All]', 'a', 'b']);
-        });
-
-        test('a cached blank is listed alongside the cached values', async () => {
-            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['queried'] });
-            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
-            const facets = { text: { ...CHEAP_TEXT_FACET.text, hasBlank: true } };
-            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFacets={facets} fieldKey="Text" />);
-
-            await act(async () => {
-                await Promise.resolve();
-            });
-
-            expect(selectDistinctRows).not.toHaveBeenCalled();
-            expect(facetedValues()).toEqual(['[All]', '[blank]', 'a', 'b']);
-        });
-
-        test('a truncated cached list is missing values, so the column is queried', async () => {
-            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['queried'] });
-            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
-            const facets = { text: { ...CHEAP_TEXT_FACET.text, truncated: true } };
-            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFacets={facets} fieldKey="Text" />);
-
-            await act(async () => {
-                await Promise.resolve();
-            });
-
-            expect(selectDistinctRows).toHaveBeenCalledTimes(1);
-        });
-
-        test('declared values do not make a large grid worth opening on Choose values', () => {
-            const facets = { text: { ...CHEAP_TEXT_FACET.text, valuesFromData: false } };
-            render(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={facets} fieldKey="Text" isLargeDataset />);
+        test('a large grid opens on Filter', () => {
+            render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
             validate(10, true, false);
         });
 
-        test('another field filtered puts the cached values out of date, so a large grid opens on Filter', () => {
-            render(
-                <QueryFilterPanel
-                    {...DEFAULT_PROPS}
-                    columnFacets={CHEAP_TEXT_FACET}
-                    fieldKey="Text"
-                    filters={OTHER_FIELD_FILTER}
-                    isLargeDataset
-                />
-            );
-            validate(10, true, false);
-        });
-
-        test('another field filtered on a small grid still opens on Choose values', () => {
-            render(
-                <QueryFilterPanel
-                    {...DEFAULT_PROPS}
-                    columnFacets={CHEAP_TEXT_FACET}
-                    fieldKey="Text"
-                    filters={OTHER_FIELD_FILTER}
-                />
-            );
-            validate(10, false, true);
-        });
-
-        test('an existing equals filter opens on Filter when the list is expensive', () => {
-            const facets = { text: { ...CHEAP_TEXT_FACET.text, distinctCount: 5000, values: undefined } };
-            render(
-                <QueryFilterPanel
-                    {...DEFAULT_PROPS}
-                    columnFacets={facets}
-                    fieldKey="Text"
-                    filters={{
-                        [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
-                            { fieldKey: 'Text', filter: Filter.create('Text', 'x') } as EntityFieldFilter,
-                        ],
-                    }}
-                />
-            );
-            validate(10, true, false);
-        });
-
-        test("a field's own filter is recognised whatever case its key arrived in", () => {
-            // The grid's filters come in under the filter's own column name, which need not match the field's
-            // casing; counting one as another field's filter would throw away this column's cached values
-            render(
-                <QueryFilterPanel
-                    {...DEFAULT_PROPS}
-                    columnFacets={CHEAP_TEXT_FACET}
-                    fieldKey="Text"
-                    filters={{
-                        [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
-                            { fieldKey: 'text', filter: Filter.create('text', 'x') } as EntityFieldFilter,
-                        ],
-                    }}
-                    isLargeDataset
-                />
-            );
-            validate(10, false, true);
-        });
-
-        test('an existing equals filter still opens on Choose values when the list is cheap', () => {
-            render(
-                <QueryFilterPanel
-                    {...DEFAULT_PROPS}
-                    columnFacets={CHEAP_TEXT_FACET}
-                    fieldKey="Text"
-                    filters={{
-                        [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
-                            { fieldKey: 'Text', filter: Filter.create('Text', 'x') } as EntityFieldFilter,
-                        ],
-                    }}
-                    isLargeDataset
-                />
-            );
-            validate(10, false, true);
-        });
-
-        test('an existing equals filter opens on Filter on a large grid with no facts', () => {
-            render(
-                <QueryFilterPanel
-                    {...DEFAULT_PROPS}
-                    fieldKey="Text"
-                    filters={{
-                        [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
-                            { fieldKey: 'Text', filter: Filter.create('Text', 'x') } as EntityFieldFilter,
-                        ],
-                    }}
-                    isLargeDataset
-                />
-            );
-            validate(10, true, false);
-        });
-
-        test('nothing is queried while the first facts response is still outstanding', async () => {
-            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a'] });
-            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
-            const { rerender } = render(
-                <QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFactsLoading fieldKey="Text" />
-            );
-            // No tab, because that answer decides which one opens; flush pending work before concluding nothing ran
+        test('neither tab is chosen until the size is known', () => {
+            const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" sizeLoading />);
             expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
-            await act(async () => {
-                await Promise.resolve();
-            });
-            expect(selectDistinctRows).not.toHaveBeenCalled();
+            expect(document.querySelectorAll('.fa-spinner')).not.toHaveLength(0);
 
-            // The answer carried no values for this column, so the query runs rather than waiting on later polls
-            rerender(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" />);
-            validate(10, false, true);
-            await act(async () => {
-                await Promise.resolve();
-            });
-            expect(selectDistinctRows).toHaveBeenCalledTimes(1);
-        });
-
-        test('a large grid waits for the first facts response, then honours a cached list', () => {
-            const { rerender } = render(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading fieldKey="Text" />
-            );
-            // No tab yet: choosing now would either run the scan or hide a list that is already cached
-            expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
-
-            rerender(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" isLargeDataset />
-            );
-            validate(10, false, true);
-        });
-
-        test('a decided tab survives the facts loading again, so the tabs never unmount under the user', () => {
-            const { rerender } = render(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFacets={CHEAP_TEXT_FACET} fieldKey="Text" />
-            );
-            validate(10, false, true);
-
-            // A later request puts the facts back in flight; the field's tab was already chosen, so it stays
-            rerender(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={{}} columnFactsLoading fieldKey="Text" />);
-
-            validate(10, false, true);
-        });
-
-        test('a cold grid the first response reports large opens on Filter, not Choose values', () => {
-            const { rerender } = render(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading fieldKey="Text" />
-            );
-            // Size unknown until that response: deciding here would read the grid's own count as small
-            expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
-
-            // The response says the table is large and carries no values for the column yet
             rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
             validate(10, true, false);
         });
 
-        test('a large grid with another field filtered opens on Filter and queries nothing there', async () => {
+        test('nothing is queried while the size is still unknown', async () => {
             const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a'] });
             const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
-            // Cheap facts, but another field's filter means they don't describe the rows on screen
-            render(
-                <QueryFilterPanel
-                    {...DEFAULT_PROPS}
-                    api={api}
-                    columnFacets={CHEAP_TEXT_FACET}
-                    fieldKey="Text"
-                    filters={OTHER_FIELD_FILTER}
-                    isLargeDataset
-                />
-            );
-            validate(10, true, false);
+            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" sizeLoading />);
 
-            // Opening the tab is the user's own choice, and costs what it has always cost
-            await act(async () => {
-                await Promise.resolve();
-            });
-            expect(selectDistinctRows).not.toHaveBeenCalled();
+            await waitFor(() => expect(selectDistinctRows).not.toHaveBeenCalled());
         });
 
-        test('more cached values than the list can show opens on Filter', () => {
-            const facets = {
-                text: { ...CHEAP_TEXT_FACET.text, distinctCount: 5000, values: undefined },
-            };
-            render(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={facets} fieldKey="Text" />);
+        test('a decided tab is not revised when the size answer lands, so the tabs never move under the user', () => {
+            const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" />);
+            validate(10, false, true);
+
+            rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
+            validate(10, false, true);
+        });
+
+        test("an existing equals filter opens on Filter on a large grid", () => {
+            render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" filters={OWN_FILTER} isLargeDataset />);
             validate(10, true, false);
+        });
+
+        test('an existing equals filter opens on Choose values on a small grid', () => {
+            render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" filters={OWN_FILTER} />);
+            validate(10, false, true);
         });
     });
 

@@ -71,12 +71,12 @@ import {
 import { executeSql, ExecuteSqlOptions, ExecuteSqlResponse } from './executeSql';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 import { EDIT_METHOD } from '../constants';
-import { getColumnFacets, getFilterSuggestions } from '../../public/QueryModel/search/actions';
+import { getFilterSuggestions, getQuerySize } from '../../public/QueryModel/search/actions';
 import {
-    ColumnFacetsRequest,
-    ColumnFacetsResponse,
     FilterSuggestionsRequest,
     FilterSuggestionsResponse,
+    QuerySizeRequest,
+    QuerySizeResponse,
 } from '../../public/QueryModel/search/models';
 
 export interface QueryAPIWrapper {
@@ -87,7 +87,6 @@ export interface QueryAPIWrapper {
     deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<QueryCommandResponse>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
     executeSql: <T extends ExecuteSqlOptions>(options: T) => Promise<ExecuteSqlResponse<T>>;
-    getColumnFacets: (request: ColumnFacetsRequest) => Promise<ColumnFacetsResponse>;
     getDataTypeFolderDataCount: (
         entityDataType: EntityDataType,
         dataTypeRowId: number,
@@ -119,6 +118,7 @@ export interface QueryAPIWrapper {
         includeHidden?: boolean
     ) => Promise<ViewInfo[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
+    getQuerySize: (request: QuerySizeRequest) => Promise<QuerySizeResponse>;
     getServerDate: () => Promise<Date>;
     getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>; // deprecated
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
@@ -191,7 +191,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     executeSql = executeSql;
     getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptionsWithExclusions;
-    getColumnFacets = getColumnFacets;
+    getQuerySize = getQuerySize;
     getFilterSuggestions = getFilterSuggestions;
     getGridViews = getGridViews;
     getFolderConfigurableEntityTypeOptions = getFolderConfigurableEntityTypeOptions;
@@ -234,7 +234,7 @@ export function getQueryTestAPIWrapper(
         executeSql: mockFn(),
         getDataTypeFolderDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),
-        getColumnFacets: mockFn(),
+        getQuerySize: mockFn(),
         getFilterSuggestions: mockFn(),
         getGridViews: mockFn(),
         getFolderConfigurableEntityTypeOptions: mockFn(),

@@ -93,26 +93,16 @@ export interface FilterSuggestionsResponse {
     suggestions: FilterSuggestion[];
 }
 
-export type ColumnFacetsRequest = Omit<FilterSuggestionsRequest, 'maxSuggestions' | 'term'>;
+export type GridShapeRequest = Omit<FilterSuggestionsRequest, 'maxSuggestions' | 'term'>;
 
-export interface ColumnFacet {
-    distinctCount?: number;
-    fieldKey: string;
-    // The grid column as the request named it, which differs from fieldKey for a lookup filtered on its display column
-    gridFieldKey: string;
-    hasBlank: boolean;
-    // A value was too long to cache, so values is incomplete and callers must query instead
-    truncated: boolean;
-    type: 'BOOLEAN' | 'DATE' | 'FLOAT' | 'INT' | 'STRING'; // matches server's SuggestionColumn.Type
-    values?: string[];
-    // values were read from the rows the request selects. When false they are the column's allowed options, or a
-    // lookup's values read without this grid's filters, so they don't describe what the grid shows.
-    valuesFromData: boolean;
+/** The estimate covers the whole table, so it is unaffected by the grid's filters, view, columns or container scope. */
+export interface QuerySizeRequest {
+    containerPath?: string;
+    queryName: string;
+    schemaName: string;
 }
 
-export interface ColumnFacetsResponse {
-    columns: ColumnFacet[];
-    complete: boolean;
-    // The table behind the query is too big for any grid to list values from speculatively
+export interface QuerySizeResponse {
+    // The table behind the query is too big for any grid to list a column's values from speculatively
     largeTable?: boolean;
 }

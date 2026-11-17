@@ -23,16 +23,12 @@ import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
 
 import { Tab, Tabs } from '../../Tabs';
 
-import { FilterFacetedSelector, MAX_DISTINCT_FILTER_OPTIONS } from './FilterFacetedSelector';
-import { ColumnFacets } from '../../../public/QueryModel/search/useColumnFacets';
-import { ColumnFacet } from '../../../public/QueryModel/search/models';
+import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { EntityFieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
 import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from './constants';
 import { stringToHtmlId } from '../../util/utils';
-
-type FacetingCost = 'cheap' | 'expensive' | 'unknown';
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -49,10 +45,6 @@ interface Props {
     altQueryName?: string;
     api?: ComponentsAPIWrapper;
     asRow?: boolean;
-    // What the server already knows about each column, so an expensive value list can be skipped or served from cache
-    columnFacets?: ColumnFacets;
-    // No facts response has arrived yet, so neither the grid's size nor any column's values are known
-    columnFactsLoading?: boolean;
     emptyMsg?: string;
     // used for Sample Finder use case
     entityDataType?: EntityDataType;
@@ -77,6 +69,8 @@ interface Props {
     preferFilterTabFieldKey?: string;
     queryInfo: QueryInfo;
     selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
+    // No answer about the grid's size has arrived yet, so the opening tab stays undecided
+    sizeLoading?: boolean;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
@@ -85,14 +79,6 @@ interface Props {
 // Undefined where valuesWorthOpening is: the tab stays unchosen rather than being chosen twice
 const chooseValuesIf = (worthOpening: boolean): FieldFilterTabs =>
     worthOpening === undefined ? undefined : worthOpening ? FieldFilterTabs.ChooseValues : FieldFilterTabs.Filter;
-
-/**
- * The cached values that can stand in for the query, or undefined when they can't. A truncated list is missing
- * values; a list the server didn't read from the grid's own rows — a column's declared options, a multi-valued
- * lookup's values — holds values no row on screen has, which the grid's filters never narrowed.
- */
-const usableFacetValues = (facet: ColumnFacet): string[] | undefined =>
-    facet?.values && !facet.truncated && facet.valuesFromData ? facet.values : undefined;
 
 const isFilterOnField = (fieldFilter: EntityFieldFilter, field: QueryColumn): boolean => {
     const key = fieldFilter?.fieldKey?.toLowerCase();
@@ -108,8 +94,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         hasAllValuesInQuery,
         asRow,
         api = getDefaultAPIWrapper(),
-        columnFacets,
-        columnFactsLoading,
         queryInfo,
         emptyMsg,
         skipDefaultViewCheck,
@@ -129,6 +113,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         fields,
         isAncestor,
         isLargeDataset,
+        sizeLoading,
         onActiveFieldChange,
         onChooseValues,
         preferFilterTabFieldKey,
@@ -175,13 +160,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         [filterStatus, filterQueryKey]
     );
 
-    const getFacet = useCallback(
-        (field: QueryColumn) =>
-            columnFacets?.[field?.getDisplayFieldKey()?.toLowerCase()] ??
-            columnFacets?.[field?.fieldKey?.toLowerCase()],
-        [columnFacets]
-    );
-
     // Faceting was asked for on this column, so its cost doesn't decide the tab
     const isFacetingForced = useCallback(
         (field: QueryColumn) => field.isMultiChoice || field.facetingBehaviorType === 'ALWAYS_ON',
@@ -189,45 +167,16 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     );
 
     /**
-     * Cached facts are read over the grid's own filters, so another field's filter leaves them describing rows the
-     * user is no longer looking at. The values then can't be served from cache and the real query runs instead.
-     */
-    const hasOtherFieldFilters = useCallback(
-        (field: QueryColumn) => !!filters?.[filterQueryKey]?.some(fieldFilter => !isFilterOnField(fieldFilter, field)),
-        [filters, filterQueryKey]
-    );
-
-    /**
-     * What the server's facts say listing this column's values would cost. 'cheap' means the values are in hand;
-     * 'expensive' means more were counted than the list can show; 'unknown' means the facts can't answer.
-     */
-    const getFacetingCost = useCallback(
-        (field: QueryColumn): FacetingCost => {
-            const facet = getFacet(field);
-            if (usableFacetValues(facet)) return 'cheap';
-            if (facet?.distinctCount > MAX_DISTINCT_FILTER_OPTIONS) return 'expensive';
-            return 'unknown';
-        },
-        [getFacet]
-    );
-
-    /**
-     * Whether opening this column's value list is worth what it costs, which doesn't depend on its own filters.
-     * Undefined while the answer can still change: the first facts response reports the table's size, so deciding
-     * before it lands would read a large grid as small and move the tab under the user a moment later.
+     * Whether opening this column's value list is worth what it costs. Undefined while the grid's size is still
+     * unknown: deciding first would read a large grid as small and move the tab under the user a moment later.
      */
     const valuesWorthOpening = useCallback(
         (field: QueryColumn): boolean => {
             if (isFacetingForced(field)) return true;
-            const cost = getFacetingCost(field);
-            // Cheap only counts while the cached list can actually be used; otherwise the real query runs
-            if (cost === 'cheap' && !hasOtherFieldFilters(field)) return true;
-            if (cost === 'unknown' && columnFactsLoading) return undefined;
-            if (isLargeDataset) return false;
-            // Not large, so nothing says the list is expensive yet; open the tab and let the selector wait
-            return cost !== 'expensive';
+            if (sizeLoading) return undefined;
+            return !isLargeDataset;
         },
-        [isFacetingForced, getFacetingCost, hasOtherFieldFilters, columnFactsLoading, isLargeDataset]
+        [isFacetingForced, isLargeDataset, sizeLoading]
     );
 
     const getDefaultActiveTab = useCallback(
@@ -399,20 +348,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         [onFilterUpdate, activeField]
     );
 
-    // Cached facts are scoped to the grid's base filters, so they can't answer for a grid filtered on another field
-    const factsApply = !hasOtherFieldFilters(activeField);
-
-    const activeFacet = useMemo(
-        () => (factsApply ? getFacet(activeField) : undefined),
-        [activeField, factsApply, getFacet]
-    );
-    const rawFacetValues = usableFacetValues(activeFacet);
-    // Cached lists never carry blanks, so the facts say whether to offer one. A copy: the array is the cache's own.
-    const facetValues = useMemo(
-        () => (rawFacetValues && activeFacet.hasBlank ? [...rawFacetValues, null] : rawFacetValues),
-        [activeFacet, rawFacetValues]
-    );
-
     const facetSelectDistinctOptions = useMemo(() => {
         return {
             ...selectDistinctOptions,
@@ -542,10 +477,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         {valuesShown && (
                                             <FilterFacetedSelector
                                                 api={api}
-                                                awaitingFacts={columnFactsLoading}
                                                 canBeBlank={!activeField?.required && !activeField.nameExpression}
                                                 disabled={hasNotInQueryFilter}
-                                                facetValues={facetValues}
                                                 field={activeField}
                                                 fieldFilters={fieldFilters}
                                                 fieldKey={activeFieldKey}

@@ -34,12 +34,8 @@ export const MAX_DISTINCT_FILTER_OPTIONS = 250;
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    // The server's facts for this column are still loading, and may yet supply the values or rule them out
-    awaitingFacts?: boolean;
     canBeBlank: boolean;
     disabled?: boolean;
-    // Cached distinct values for this column, valid only when no other field is filtered
-    facetValues?: string[];
     field?: QueryColumn;
     fieldFilters: Filter.IFilter[];
     fieldKey: string;
@@ -56,10 +52,8 @@ const rendererFolderValue = (value: any): ReactNode => {
 export const FilterFacetedSelector: FC<Props> = memo(props => {
     const {
         api = getDefaultAPIWrapper(),
-        awaitingFacts,
         canBeBlank,
         disabled,
-        facetValues,
         selectDistinctOptions,
         fieldKey,
         fieldFilters,
@@ -78,22 +72,11 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const timer = useTimeout();
     const { requestHandler, resetRequestHandler } = useRequestHandler(true);
 
+    // A multi-choice field declares its allowed choices, so no selectDistinct is needed
     const multiChoices = field?.isMultiChoice ? field.validValues : null;
 
-    // Values already in hand, cached or declared, so no selectDistinct is needed. A multi-choice field's declared
-    // list wins: it is the set of allowed choices, where the cached facts hold only the values some row has.
-    const knownValues = useMemo(
-        () => multiChoices ?? (facetValues?.length ? facetValues : undefined),
-        [facetValues, multiChoices]
-    );
-
     useEffect(() => {
-        if (awaitingFacts && !knownValues) {
-            // Hold the spinner rather than query: the facts may arrive with the values, or say not to ask for them
-            setLoading(true);
-        } else {
-            setDistinctValues(true);
-        }
+        setDistinctValues(true);
         const fieldKeyLc = fieldKey.toLowerCase();
         if (
             fieldKeyLc === 'folder' ||
@@ -104,10 +87,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             setIsFolderField(true);
         }
 
-        // knownValues and awaitingFacts are deps because the facts land after mount and decide between the
-        // cached list and the query
         // eslint-disable-next-line react-hooks/exhaustive-deps -- setDistinctValues must not re-run this on every change
-    }, [fieldKey, knownValues, awaitingFacts]);
+    }, [fieldKey]);
 
     const filterOptions = useMemo(() => {
         return field?.isMultiChoice ? getFilterOptionsForType(field, false) : null;
@@ -122,7 +103,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 timer.clear();
 
                 let allValues: any[] = [];
-                if (!knownValues) {
+                if (!multiChoices) {
                     const filterArray = [...(selectDistinctOptions?.filterArray ?? [])];
                     if (searchStr) filterArray.push(Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS));
 
@@ -136,9 +117,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     resetRequestHandler();
                     allValues = result.values;
                 } else {
-                    allValues = knownValues;
+                    allValues = multiChoices;
                     if (searchStr) {
-                        // filter knownValues based on search string
+                        // filter multiChoices based on search string
                         allValues = allValues.filter(val => {
                             if (val === null || val === undefined) {
                                 return EMPTY_VALUE_DISPLAY.includes(searchStr);
@@ -204,7 +185,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             resetRequestHandler,
             selectDistinctOptions,
             timer,
-            knownValues,
+            multiChoices,
         ]
     );
 

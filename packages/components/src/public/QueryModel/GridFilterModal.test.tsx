@@ -41,8 +41,8 @@ describe('GridFilterModal', () => {
         expect(document.querySelectorAll('button')[1].hasAttribute('disabled')).toBe(false); // apply
     });
 
-    describe('isLargeDataset', () => {
-        // Only reachable through the default tab: with no cached facts for the column, a large grid opens on Filter
+    describe('the grid size and the default tab', () => {
+        // Only reachable through the default tab: a large grid opens on Filter
         const FACETED_FIELD = new QueryColumn({
             caption: 'Tube Color',
             facetingBehaviorType: 'AUTOMATIC',
@@ -66,15 +66,15 @@ describe('GridFilterModal', () => {
             });
 
         // Resolved by the caller, so a test can observe the dialog before the server's answer lands
-        let releaseFacets: () => void;
+        let releaseSize: () => void;
 
         const renderModal = async (model: QueryModel, serverSaysLarge = false): Promise<void> => {
-            const facets = new Promise(resolve => {
-                releaseFacets = () => resolve({ columns: [], complete: true, largeTable: serverSaysLarge });
+            const size = new Promise(resolve => {
+                releaseSize = () => resolve({ largeTable: serverSaysLarge });
             });
             const api = getTestAPIWrapper(jest.fn, {
                 query: getQueryTestAPIWrapper(jest.fn, {
-                    getColumnFacets: jest.fn().mockReturnValue(facets),
+                    getQuerySize: jest.fn().mockReturnValue(size),
                     selectDistinctRows: jest.fn().mockResolvedValue({ values: [] }),
                 }),
             });
@@ -86,15 +86,20 @@ describe('GridFilterModal', () => {
             );
         };
 
-        // Which tab to open hinges on the size the first answer reports, so until it lands no tab is chosen at
-        // all; picking one and moving it a moment later is what this avoids.
+        // Which tab to open hinges on the size, so until it is known no tab is chosen at all; picking one and
+        // moving it a moment later is what this avoids.
         const settle = async (): Promise<void> => {
-            releaseFacets();
+            releaseSize();
             await waitFor(() => expect(activeTab()).toBeDefined());
         };
 
-        test('a grid already known to be large waits for the answer before choosing a tab', async () => {
-            await renderModal(countedModel(DEFAULT_MAX_COUNT), true);
+        test("a grid its own row count already shows as large opens on Filter without waiting", async () => {
+            await renderModal(countedModel(DEFAULT_MAX_COUNT), false);
+            await waitFor(() => expect(activeTab()).toBe('Filter'));
+        });
+
+        test('a grid only the server knows is large waits, then opens on Filter', async () => {
+            await renderModal(countedModel(20_000), true);
             expect(activeTab()).toBeUndefined();
             await settle();
             await waitFor(() => expect(activeTab()).toBe('Filter'));

@@ -7,13 +7,14 @@ import { ActionURL } from '@labkey/api';
 import { request } from '../../../internal/request';
 
 import {
-    ColumnFacetsRequest,
-    ColumnFacetsResponse,
     FilterSuggestionsRequest,
     FilterSuggestionsResponse,
+    GridShapeRequest,
+    QuerySizeRequest,
+    QuerySizeResponse,
 } from './models';
 
-function toJsonData(options: ColumnFacetsRequest | FilterSuggestionsRequest): Record<string, any> {
+function toJsonData(options: FilterSuggestionsRequest | GridShapeRequest): Record<string, any> {
     const { filters, ...rest } = options;
     const jsonData: Record<string, any> = { ...rest };
     // goes in the URL, not the body
@@ -44,19 +45,15 @@ export async function getFilterSuggestions(options: FilterSuggestionsRequest): P
     return { complete: response.complete ?? true, suggestions: response.suggestions ?? [] };
 }
 
-export async function getColumnFacets(options: ColumnFacetsRequest): Promise<ColumnFacetsResponse> {
-    const { containerPath } = options;
+export async function getQuerySize(options: QuerySizeRequest): Promise<QuerySizeResponse> {
+    const { containerPath, queryName, schemaName } = options;
 
-    const response = await request<Partial<ColumnFacetsResponse>>({
-        url: ActionURL.buildURL('query', 'getColumnFacets.api', containerPath),
+    const response = await request<Partial<QuerySizeResponse>>({
+        url: ActionURL.buildURL('query', 'getQuerySize.api', containerPath),
         method: 'POST',
-        jsonData: toJsonData(options),
-        errorLogMsg: 'Unable to load column facets',
+        jsonData: { queryName, schemaName },
+        errorLogMsg: 'Unable to load the query size',
     });
 
-    return {
-        columns: response.columns ?? [],
-        complete: response.complete ?? true,
-        largeTable: !!response.largeTable,
-    };
+    return { largeTable: !!response.largeTable };
 }

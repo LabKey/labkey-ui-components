@@ -115,7 +115,7 @@ describe('useGridShapeRequest', () => {
     const render = (initial: QueryModel) =>
         renderHook(({ m }: { m: QueryModel }) => useGridShapeRequest(m, 'model'), { initialProps: { m: initial } });
 
-    // useColumnFacets keys its effect on this object's identity, so a request rebuilt per render loops it forever
+    // useQuerySize keys its effect on this object's identity, so a request rebuilt per render loops it forever
     test('keeps its identity across a model update that leaves the grid shape alone', () => {
         const { result, rerender } = render(model);
         const first = result.current;

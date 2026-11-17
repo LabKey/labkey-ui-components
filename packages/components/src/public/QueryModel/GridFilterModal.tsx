@@ -19,8 +19,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWr
 import { QueryModel } from './QueryModel';
 import { filtersEqual } from './utils';
 import { composeFieldToFilter } from './search/utils';
-import { useColumnFacets } from './search/useColumnFacets';
-import { isLargeDataset, useGridShapeRequest } from './search/gridShape';
+import { useQuerySize } from './search/useQuerySize';
+import { isLargeDataset } from './search/gridShape';
 
 /** A filter to pre-fill on whichever field is active, until it is applied. Ops are keyed by display fieldKey. */
 export interface FilterDraft {
@@ -112,9 +112,15 @@ export const GridFilterModal: FC<Props> = memo(props => {
         skipDefaultViewCheck,
     } = props;
     const { queryInfo } = model;
-    const facetsRequest = useGridShapeRequest(model, 'model');
-    const { facets, largeTable, loading: factsLoading } = useColumnFacets(api, facetsRequest);
-    const isLargeDataset_ = isLargeDataset(model, largeTable);
+    const sizeRequest = useMemo(
+        () => ({ containerPath: model.containerPath, queryName: model.queryName, schemaName: model.schemaName }),
+        [model.containerPath, model.queryName, model.schemaName]
+    );
+    const { largeTable, loading: sizeLoading } = useQuerySize(api, sizeRequest);
+    const largeDataset = isLargeDataset(model, largeTable);
+    // The grid's own row count can answer before the server does; otherwise stay undecided rather than read a
+    // large grid as small
+    const sizeUnknown = sizeLoading && !largeDataset;
     const [filterError, setFilterError] = useState<string>(undefined);
     const [initialState] = useState(() => {
         const initial = initFilters.map<EntityFieldFilter>(filter => ({ fieldKey: filter.getColumnName(), filter }));
@@ -229,19 +235,18 @@ export const GridFilterModal: FC<Props> = memo(props => {
             <QueryFilterPanel
                 api={api}
                 asRow
-                columnFacets={facets}
-                columnFactsLoading={factsLoading}
                 fieldKey={fieldKey}
                 fields={fields}
                 filters={{ [queryInfo.name.toLowerCase()]: filters }}
                 fullWidth
-                isLargeDataset={isLargeDataset_}
+                isLargeDataset={largeDataset}
                 onActiveFieldChange={onActiveFieldChange}
                 onChooseValues={onChooseValues}
                 onFilterUpdate={onFilterUpdate}
                 preferFilterTabFieldKey={draftFieldKey}
                 queryInfo={queryInfo}
                 selectDistinctOptions={selectDistinctOptions}
+                sizeLoading={sizeUnknown}
                 skipDefaultViewCheck={skipDefaultViewCheck}
                 validFilterField={isValidFilterField}
                 viewName={model.viewName}

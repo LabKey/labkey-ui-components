@@ -6,7 +6,7 @@ import { Filter, Query } from '@labkey/api';
 
 import { request } from '../../../internal/request';
 
-import { getFilterSuggestions } from './actions';
+import { getFilterSuggestions, getQuerySize } from './actions';
 import { FilterSuggestionsRequest, FilterSuggestionsResponse } from './models';
 
 jest.mock('../../../internal/request', () => ({
@@ -92,6 +92,30 @@ describe('getFilterSuggestions', () => {
         await expect(getFilterSuggestions(REQUEST)).rejects.toMatchObject({
             exception: 'Query not found',
             status: 404,
+        });
+    });
+});
+
+describe('getQuerySize', () => {
+    beforeEach(() => jest.clearAllMocks());
+
+    // An absent estimate reads as "not large" on purpose; see isLargeDataset for why that case is accepted
+    test('an absent estimate reports the table as not large', async () => {
+        (request as jest.Mock).mockResolvedValue({});
+
+        expect(await getQuerySize({ queryName: 'Plasma', schemaName: 'samples' })).toEqual({ largeTable: false });
+
+        (request as jest.Mock).mockResolvedValue({ largeTable: true });
+        expect(await getQuerySize({ queryName: 'Plasma', schemaName: 'samples' })).toEqual({ largeTable: true });
+    });
+
+    test('sends only what the estimate needs, and the container in the URL', async () => {
+        (request as jest.Mock).mockResolvedValue({ largeTable: false });
+        await getQuerySize({ containerPath: '/Plasma', queryName: 'Plasma', schemaName: 'samples' });
+
+        expect((request as jest.Mock).mock.calls[0][0].jsonData).toEqual({
+            queryName: 'Plasma',
+            schemaName: 'samples',
         });
     });
 });

@@ -24,8 +24,9 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
         request: undefined,
     });
     const requestId = useRef(0);
-    // The answer took too long to wait on; the grid's own row count has to stand in for it
-    const [givenUp, setGivenUp] = useState(false);
+    // The request whose answer took too long to wait on, so the grid's own row count has to stand in for it. The
+    // request itself, not a flag: a flag set for one request is still set on the first render of the next one.
+    const [givenUpFor, setGivenUpFor] = useState<QuerySizeRequest>(undefined);
 
     useEffect(() => {
         if (!request?.queryName) return undefined;
@@ -33,9 +34,8 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
         const id = ++requestId.current;
         let cancelled = false;
 
-        setGivenUp(false);
         const waited = setTimeout(() => {
-            if (!cancelled) setGivenUp(true);
+            if (!cancelled) setGivenUpFor(request);
         }, SIZE_WAIT_MS);
 
         const load = async (): Promise<void> => {
@@ -47,6 +47,8 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
                 // rather than being stamped with this one. It is not retried.
                 largeTable = undefined;
             }
+            // An answer ends the wait, so the timer must not outlive it and give up on whatever comes next
+            clearTimeout(waited);
             if (cancelled || id !== requestId.current) return;
 
             setSettled({ largeTable, loading: false, request });
@@ -64,9 +66,9 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
         // Nothing to ask about, so nothing to wait for
         if (!request?.queryName) return { loading: false };
         // An answer about a different grid shape says nothing about this one
-        if (settled.request !== request) return { loading: !givenUp };
+        if (settled.request !== request) return { loading: givenUpFor !== request };
         return { largeTable: settled.largeTable, loading: false };
-    }, [givenUp, request, settled]);
+    }, [givenUpFor, request, settled]);
 }
 
 /**
@@ -74,8 +76,13 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
  *
  * Either count passing the threshold is enough, because each covers what the other misses. The grid's own count is
  * known the moment the dialog opens but is narrowed by every filter, so it can't see a large table filtered below
- * the cap. The server's answer covers the whole table but arrives a round trip later, and is absent entirely
- * for a query with no table of its own.
+ * the cap. The server's answer covers the whole table but arrives a round trip later.
+ *
+ * Deliberate: when the server has no estimate — a query with no provisioned table such as an assay run, an
+ * unanalyzed table, a database it can't estimate, or a wait that was abandoned — this falls back to the grid's own
+ * count alone and so reads as "not large". Those grids open on the value list and pay for the distinct query. That
+ * is an accepted edge case, not an oversight: biasing the unknown case to "large" would push every column on a
+ * whole class of grids onto the Filter tab to save a query that is usually cheap anyway.
  */
 export function isLargeDataset(model: QueryModel, largeTable?: boolean): boolean {
     if (largeTable) return true;

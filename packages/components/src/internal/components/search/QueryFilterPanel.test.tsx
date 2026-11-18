@@ -284,6 +284,14 @@ describe('QueryFilterPanel', () => {
             validate(10, true, false);
         });
 
+        test('a decided tab survives the size going unknown again, so the tabs never unmount', () => {
+            const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" />);
+            validate(10, false, true);
+
+            rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" sizeLoading />);
+            validate(10, false, true);
+        });
+
         // Picking a tab and moving it once the answer lands is what this avoids
         test('neither tab is chosen until the size is known', () => {
             const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" sizeLoading />);

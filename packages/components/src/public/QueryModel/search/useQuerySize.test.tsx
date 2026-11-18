@@ -2,9 +2,10 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { act, renderHook, waitFor } from '@testing-library/react';
+import React, { FC, useEffect, useMemo } from 'react';
+import { act, render, renderHook, waitFor } from '@testing-library/react';
 
-import { getTestAPIWrapper } from '../../../internal/APIWrapper';
+import { ComponentsAPIWrapper, getTestAPIWrapper } from '../../../internal/APIWrapper';
 import { getQueryTestAPIWrapper } from '../../../internal/query/APIWrapper';
 
 import { QueryInfo } from '../../QueryInfo';
@@ -80,6 +81,46 @@ describe('useQuerySize', () => {
         expect(result.current.largeTable).toBeUndefined();
     });
 
+    // A consumer reads the hook during render, so the only way to catch a wrong value that a later effect
+    // corrects is to record what a child saw in each committed pass. renderHook can't: act() flushes the fix.
+    const recordPasses = (getQuerySize: jest.Mock) => {
+        const seen: { loading: boolean; queryName: string }[] = [];
+
+        const Child: FC<{ loading: boolean; queryName: string }> = ({ loading, queryName }) => {
+            useEffect(() => {
+                seen.push({ loading, queryName });
+            }, [loading, queryName]);
+            return null;
+        };
+
+        const Parent: FC<{ api: ComponentsAPIWrapper; queryName: string }> = ({ api, queryName }) => {
+            const request = useMemo(() => ({ queryName, schemaName: 'samples' }), [queryName]);
+            const { loading } = useQuerySize(api, request);
+            return <Child loading={loading} queryName={queryName} />;
+        };
+
+        const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { getQuerySize }) });
+        const { rerender } = render(<Parent api={api} queryName="Samples" />);
+        return {
+            seen,
+            settledFor: (queryName: string) => seen.filter(pass => pass.queryName === queryName && !pass.loading),
+            switchTo: (queryName: string) => rerender(<Parent api={api} queryName={queryName} />),
+        };
+    };
+
+    // The give-up state is the request it applies to, not a flag: a flag set for one request is still set on the
+    // first render of the next, which told the panel a brand new query was already settled.
+    test('a request that really did time out does not make its replacement look settled', async () => {
+        // Never resolves, so this request is legitimately given up on
+        const { settledFor, switchTo } = recordPasses(jest.fn().mockReturnValue(new Promise(() => undefined)));
+        await settle();
+        expect(settledFor('Samples')).not.toEqual([]);
+
+        switchTo('Other');
+
+        expect(settledFor('Other')).toEqual([]);
+    });
+
     test('asks nothing without a query', async () => {
         const getQuerySize = jest.fn();
         const { result } = renderSize(getQuerySize, undefined);
@@ -111,6 +152,14 @@ describe('isLargeDataset', () => {
     test("the grid's own count alone is enough", () => {
         expect(isLargeDataset(model(DEFAULT_MAX_COUNT), false)).toBe(true);
         expect(isLargeDataset(model(20_000), false)).toBe(false);
+    });
+
+    // Accepted behaviour, documented on isLargeDataset: with no server estimate the grid's own count decides
+    // alone, so a grid that cannot report one reads as "not large" and pays for the distinct query.
+    test('an unknown estimate leaves the decision to the grid, which reads as not large without a count', () => {
+        expect(isLargeDataset(model(20_000, false), undefined)).toBe(false);
+        expect(isLargeDataset(model(20_000), undefined)).toBe(false);
+        expect(isLargeDataset(model(DEFAULT_MAX_COUNT), undefined)).toBe(true);
     });
 
     test('a count that is absent or still loading cannot make the grid large', () => {

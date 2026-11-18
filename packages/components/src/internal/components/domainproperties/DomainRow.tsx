@@ -63,7 +63,7 @@ import { Collapsible } from './Collapsible';
 
 export interface DomainRowProps {
     allowMultiChoiceField: boolean;
-    allowTextChoiceValueRenames?: boolean;
+    allowTextChoiceValueRenames: boolean;
     allowUniqueConstraintProperties: boolean;
     appPropertiesOnly?: boolean;
     availableTypes: PropDescType[];

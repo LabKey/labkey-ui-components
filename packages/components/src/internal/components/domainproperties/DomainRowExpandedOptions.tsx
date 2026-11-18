@@ -26,7 +26,7 @@ import { FieldFilterCriteria } from './FieldFilterCriteria';
 
 interface Props {
     allowMultiChoiceField: boolean;
-    allowTextChoiceValueRenames?: boolean;
+    allowTextChoiceValueRenames: boolean;
     appPropertiesOnly?: boolean;
     domainContainerPath?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;

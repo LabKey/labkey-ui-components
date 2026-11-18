@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 
 import { TextChoiceOptionsImpl } from './TextChoiceOptions';
 import { DomainField } from './models';
@@ -236,6 +237,50 @@ describe('TextChoiceOptions', () => {
             validate(false, 2, 1, true);
         });
         expect(screen.getByPlaceholderText('Enter a text choice value')).toBeDisabled();
+    });
+
+    test('locked values show read-only tip', async () => {
+        render(
+            <TextChoiceOptionsImpl
+                {...DEFAULT_PROPS}
+                fieldValues={{ b: { locked: true, count: 1 } }}
+                validValues={['a', 'b']}
+            />
+        );
+
+        await userEvent.hover(document.querySelector('.choices-list__locked'));
+        expect(screen.getByText(/one or more usages are for read-only items/)).toBeInTheDocument();
+        expect(screen.queryByText(/Renaming in-use values is not supported/)).not.toBeInTheDocument();
+    });
+
+    test('in-use values locked when renames not allowed', async () => {
+        render(
+            <TextChoiceOptionsImpl
+                {...DEFAULT_PROPS}
+                allowValueRenames={false}
+                fieldValues={{ b: { locked: false, count: 1 } }}
+                validValues={['a', 'b']}
+            />
+        );
+        validate(false, 2, 1);
+
+        await userEvent.hover(document.querySelector('.choices-list__locked'));
+        expect(screen.getByText(/Renaming in-use values is not supported/)).toBeInTheDocument();
+        expect(screen.queryByText(/one or more usages are for read-only items/)).not.toBeInTheDocument();
+
+        // value not in use is still editable
+        fireEvent.click(screen.getByRole('button', { name: 'a' }));
+        expect(screen.getByPlaceholderText('Enter a text choice value')).toBeEnabled();
+        expect(screen.getByRole('button', { name: /Delete/ })).toBeEnabled();
+
+        // value in use can't be edited or deleted
+        const bButton = screen.getAllByRole('button').find(b => b.textContent?.includes('b'));
+        fireEvent.click(bButton);
+        await waitFor(() => {
+            validate(false, 2, 1, true);
+        });
+        expect(screen.getByPlaceholderText('Enter a text choice value')).toBeDisabled();
+        expect(screen.getByRole('button', { name: /Delete/ })).toBeDisabled();
     });
 
     test('value update error checks', async () => {

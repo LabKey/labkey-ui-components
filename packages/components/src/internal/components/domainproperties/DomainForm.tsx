@@ -1251,6 +1251,7 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                                         return (
                                             <DomainRow
                                                 allowMultiChoiceField={domain.allowMultiChoiceProperties}
+                                                allowTextChoiceValueRenames={domain.allowTextChoiceValueRenames}
                                                 allowUniqueConstraintProperties={domain.allowUniqueConstraintProperties}
                                                 appPropertiesOnly={appPropertiesOnly}
                                                 availableTypes={availableTypes}

@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { act, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { Filter } from '@labkey/api';
 

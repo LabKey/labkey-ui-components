@@ -72,17 +72,8 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
 }
 
 /**
- * Whether listing a column's values on this grid is likely to be expensive, judged by row count alone.
- *
- * Either count passing the threshold is enough, because each covers what the other misses. The grid's own count is
- * known the moment the dialog opens but is narrowed by every filter, so it can't see a large table filtered below
- * the cap. The server's answer covers the whole table but arrives a round trip later.
- *
- * Deliberate: when the server has no estimate — a query with no provisioned table such as an assay run, an
- * unanalyzed table, a database it can't estimate, or a wait that was abandoned — this falls back to the grid's own
- * count alone and so reads as "not large". Those grids open on the value list and pay for the distinct query. That
- * is an accepted edge case, not an oversight: biasing the unknown case to "large" would push every column on a
- * whole class of grids onto the Filter tab to save a query that is usually cheap anyway.
+ * Deliberate: no estimate reads as "not large", so those grids pay for the distinct query rather than hiding the
+ * value list from every grid whose size can't be estimated.
  */
 export function isLargeDataset(model: QueryModel, largeTable?: boolean): boolean {
     if (largeTable) return true;

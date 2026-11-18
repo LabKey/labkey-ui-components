@@ -109,7 +109,7 @@ describe('getQuerySize', () => {
         expect(await getQuerySize({ queryName: 'Plasma', schemaName: 'samples' })).toEqual({ largeTable: true });
     });
 
-    test('sends only what the estimate needs, and the container in the URL', async () => {
+    test('sends only what the estimate needs', async () => {
         (request as jest.Mock).mockResolvedValue({ largeTable: false });
         await getQuerySize({ containerPath: '/Plasma', queryName: 'Plasma', schemaName: 'samples' });
 

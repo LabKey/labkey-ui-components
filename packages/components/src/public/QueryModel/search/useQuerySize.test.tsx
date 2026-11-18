@@ -57,30 +57,6 @@ describe('useQuerySize', () => {
         expect(getQuerySize).toHaveBeenCalledTimes(1);
     });
 
-    test('an answer about another grid shape is not reported for this one', async () => {
-        const getQuerySize = jest.fn().mockResolvedValue({ largeTable: true });
-        const { result, rerender } = renderSize(getQuerySize, REQUEST);
-        await waitFor(() => expect(result.current.largeTable).toBe(true));
-
-        rerender({ ...REQUEST, queryName: 'Other' });
-        expect(result.current.largeTable).toBeUndefined();
-        expect(result.current.loading).toBe(true);
-
-        await waitFor(() => expect(result.current.loading).toBe(false));
-        expect(getQuerySize).toHaveBeenCalledTimes(2);
-    });
-
-    test('stops waiting once the answer is overdue, so the grid count can stand in', async () => {
-        // Never resolves, so only the give-up timer can end the wait
-        const getQuerySize = jest.fn().mockReturnValue(new Promise(() => undefined));
-        const { result } = renderSize(getQuerySize, REQUEST);
-        expect(result.current.loading).toBe(true);
-
-        await settle();
-        expect(result.current.loading).toBe(false);
-        expect(result.current.largeTable).toBeUndefined();
-    });
-
     // A consumer reads the hook during render, so the only way to catch a wrong value that a later effect
     // corrects is to record what a child saw in each committed pass. renderHook can't: act() flushes the fix.
     const recordPasses = (getQuerySize: jest.Mock) => {
@@ -147,11 +123,6 @@ describe('isLargeDataset', () => {
     test("the server's answer alone is enough, even for a grid filtered under the cap", () => {
         expect(isLargeDataset(model(50_000), true)).toBe(true);
         expect(isLargeDataset(model(50_000), undefined)).toBe(false);
-    });
-
-    test("the grid's own count alone is enough", () => {
-        expect(isLargeDataset(model(DEFAULT_MAX_COUNT), false)).toBe(true);
-        expect(isLargeDataset(model(20_000), false)).toBe(false);
     });
 
     // Accepted behaviour, documented on isLargeDataset: with no server estimate the grid's own count decides

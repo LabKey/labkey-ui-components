@@ -26,7 +26,7 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
     const requestId = useRef(0);
     // The request whose answer took too long to wait on, so the grid's own row count has to stand in for it. The
     // request itself, not a flag: a flag set for one request is still set on the first render of the next one.
-    const [givenUpFor, setGivenUpFor] = useState<QuerySizeRequest>(undefined);
+    const [abandonedRequest, setAbandonedRequest] = useState<QuerySizeRequest>(undefined);
 
     useEffect(() => {
         if (!request?.queryName) return undefined;
@@ -35,7 +35,7 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
         let cancelled = false;
 
         const waited = setTimeout(() => {
-            if (!cancelled) setGivenUpFor(request);
+            if (!cancelled) setAbandonedRequest(request);
         }, SIZE_WAIT_MS);
 
         const load = async (): Promise<void> => {
@@ -66,9 +66,9 @@ export function useQuerySize(api: ComponentsAPIWrapper, request: QuerySizeReques
         // Nothing to ask about, so nothing to wait for
         if (!request?.queryName) return { loading: false };
         // An answer about a different grid shape says nothing about this one
-        if (settled.request !== request) return { loading: givenUpFor !== request };
+        if (settled.request !== request) return { loading: abandonedRequest !== request };
         return { largeTable: settled.largeTable, loading: false };
-    }, [givenUpFor, request, settled]);
+    }, [abandonedRequest, request, settled]);
 }
 
 /**

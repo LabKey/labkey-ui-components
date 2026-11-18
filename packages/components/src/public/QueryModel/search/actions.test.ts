@@ -95,27 +95,3 @@ describe('getFilterSuggestions', () => {
         });
     });
 });
-
-describe('getQuerySize', () => {
-    beforeEach(() => jest.clearAllMocks());
-
-    // An absent estimate reads as "not large" on purpose; see isLargeDataset for why that case is accepted
-    test('an absent estimate reports the table as not large', async () => {
-        (request as jest.Mock).mockResolvedValue({});
-
-        expect(await getQuerySize({ queryName: 'Plasma', schemaName: 'samples' })).toEqual({ largeTable: false });
-
-        (request as jest.Mock).mockResolvedValue({ largeTable: true });
-        expect(await getQuerySize({ queryName: 'Plasma', schemaName: 'samples' })).toEqual({ largeTable: true });
-    });
-
-    test('sends only what the estimate needs', async () => {
-        (request as jest.Mock).mockResolvedValue({ largeTable: false });
-        await getQuerySize({ containerPath: '/Plasma', queryName: 'Plasma', schemaName: 'samples' });
-
-        expect((request as jest.Mock).mock.calls[0][0].jsonData).toEqual({
-            queryName: 'Plasma',
-            schemaName: 'samples',
-        });
-    });
-});

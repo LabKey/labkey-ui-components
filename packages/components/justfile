@@ -36,8 +36,8 @@ puppeteer := lims / 'puppeteer'
 # Note: these are not all of the locations that we use @labkey/components, however they are the most common places that
 # we want to keep up to date.
 platformModules := core + ' ' + experiment + ' ' + assay + ' ' + pipeline
-appModules := premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement + ' ' + labbook
-modulesToBump := appModules + ' ' + puppeteer + ' ' + platformModules
+appModules := premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement + ' ' + labbook + ' ' + puppeteer
+modulesToBump := appModules + ' ' + platformModules
 
 # Note: this is just a common subset of locations where we would want to copy a locally built package, in order to test
 # before we publish a version. You may want to add more locations (e.g. core, assay)

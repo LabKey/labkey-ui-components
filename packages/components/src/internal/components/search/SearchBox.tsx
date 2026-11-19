@@ -5,20 +5,20 @@
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
 
 import { FindAndSearchDropdown } from './FindAndSearchDropdown';
+import classNames from 'classnames';
 
 interface Props {
+    findNounPlural?: string;
+    onFindByIds?: (sessionKey: string) => void;
     onSearch: (value: string) => void;
     placeholder?: string;
-    onFindByIds?: (sessionKey: string) => void;
-    findNounPlural?: string;
 }
 
 export const SearchBox: FC<Props> = memo(props => {
     const { onSearch, placeholder, onFindByIds, findNounPlural } = props;
-
     const [searchValue, setSearchValue] = useState('');
-
     const showFindByIds = !!onFindByIds;
+    const inputClassName = classNames('navbar__input-group', { 'input-group': showFindByIds });
 
     const onChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -39,26 +39,25 @@ export const SearchBox: FC<Props> = memo(props => {
     );
 
     return (
-        <form className="navbar__search-form" onSubmit={onSubmit}>
-            <div className="form-group">
-                <i className="fa fa-search navbar__search-icon" />
-                <span className={'navbar__input-group ' + (showFindByIds ? 'input-group' : '')}>
-                    <input
-                        aria-label="Search in application"
-                        className="form-control navbar__search-input"
-                        onChange={onChange}
-                        placeholder={placeholder ?? 'Enter Search Terms'}
-                        size={34}
-                        type="text"
-                        value={searchValue}
-                    />
-                    {showFindByIds && (
-                        <span className="input-group-btn">
-                            <FindAndSearchDropdown title="" onFindByIds={onFindByIds} findNounPlural={findNounPlural} />
-                        </span>
-                    )}
-                </span>
-            </div>
+        <form className="navbar__search-form hidden-md hidden-sm hidden-xs" onSubmit={onSubmit}>
+            <span className="fa fa-search navbar__search-icon" />
+            <span className={inputClassName}>
+                <input
+                    aria-label="Search in application"
+                    className="form-control navbar__search-input"
+                    onChange={onChange}
+                    placeholder={placeholder ?? 'Enter Search Terms'}
+                    size={34}
+                    type="text"
+                    value={searchValue}
+                />
+                {showFindByIds && (
+                    <span className="input-group-btn">
+                        <FindAndSearchDropdown findNounPlural={findNounPlural} onFindByIds={onFindByIds} title="" />
+                    </span>
+                )}
+            </span>
         </form>
     );
 });
+SearchBox.displayName = 'SearchBox';

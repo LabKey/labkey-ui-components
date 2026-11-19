@@ -61,10 +61,10 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
     } else {
         body = (
             <ServerActivityList
-                serverActivity={serverActivity}
+                onRead={onRead_}
                 onViewAll={toggleMenu}
                 onViewClick={toggleMenu}
-                onRead={onRead_}
+                serverActivity={serverActivity}
             />
         );
     }
@@ -73,11 +73,11 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
         'fa-bell': !hasAnyInProgress,
     });
     return (
-        <div className="navbar-item pull-right server-notifications navbar-menu">
+        <div className="navbar-dropdown server-notifications">
             <button
-                aria-haspopup="true"
                 aria-expanded={show}
-                className="navbar-menu-button"
+                aria-haspopup="true"
+                className="navbar-menu-button navbar-menu"
                 onClick={toggleMenu}
                 ref={toggleRef}
                 role="button"
@@ -90,7 +90,7 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
             {show && (
                 <div className="navbar-menu__content" ref={menuRef}>
                     <h3 className="navbar-menu-header">
-                        <div className={'navbar-icon-connector' + (unreadCount > 0 ? ' has-unread' : '')} />
+                        <div className="navbar-menu-connector navbar-menu-connector--gray" />
                         Notifications
                         {unreadCount > 0 && (
                             <div className="pull-right clickable-text" onClick={markAllRead}>

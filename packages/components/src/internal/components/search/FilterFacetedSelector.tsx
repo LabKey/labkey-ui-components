@@ -70,7 +70,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const [loading, setLoading] = useState<boolean>(true);
     const [isFolderField, setIsFolderField] = useState<boolean>(false);
     const timer = useTimeout();
-    const { requestHandler, resetRequestHandler } = useRequestHandler();
+    const { requestHandler, resetRequestHandler } = useRequestHandler(true);
 
     useEffect(() => {
         setDistinctValues(true);

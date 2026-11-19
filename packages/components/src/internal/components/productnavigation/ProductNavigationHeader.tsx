@@ -8,27 +8,27 @@ import classNames from 'classnames';
 import { LKS_PRODUCT_ID } from '../../app/products';
 
 interface ProductNavigationHeaderProps {
-    title: string;
-    productId: string;
     onClick: () => void;
+    productId: string;
+    title: string;
 }
 
 export const ProductNavigationHeader: FC<ProductNavigationHeaderProps> = memo(props => {
-    const { productId, title } = props;
+    const { onClick, productId, title } = props;
     const contentCls = classNames('header-title', { clickable: !!productId });
-    const onClick = useCallback(
+    const onClick_ = useCallback(
         event => {
             // stopImmediatePropagation in order to prevent the document click handler from closing the menu
             event.nativeEvent.stopImmediatePropagation();
-            props.onClick();
+            onClick();
         },
-        [props.onClick]
+        [onClick]
     );
 
     return (
         <h3 className="product-navigation-header navbar-menu-header">
-            <div className="navbar-icon-connector" />
-            <span className={contentCls} onClick={productId ? onClick : undefined}>
+            <div className="navbar-menu-connector navbar-menu-connector--gray" />
+            <span className={contentCls} onClick={productId ? onClick_ : undefined}>
                 {productId && <i className="back-icon fa fa-chevron-left" />}
                 {title ? title : productId === LKS_PRODUCT_ID ? 'LabKey Server' : 'Applications'}
             </span>

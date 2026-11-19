@@ -6,7 +6,7 @@ import { ActionURL } from '@labkey/api';
 
 import { request } from '../../../internal/request';
 
-import { FilterSuggestionsRequest, FilterSuggestionsResponse } from './models';
+import { FilterSuggestionsRequest, FilterSuggestionsResponse, QuerySizeRequest, QuerySizeResponse } from './models';
 
 export async function getFilterSuggestions(options: FilterSuggestionsRequest): Promise<FilterSuggestionsResponse> {
     const { containerPath, filters, ...rest } = options;
@@ -28,4 +28,17 @@ export async function getFilterSuggestions(options: FilterSuggestionsRequest): P
     });
 
     return { complete: response.complete ?? true, suggestions: response.suggestions ?? [] };
+}
+
+export async function getQuerySize(options: QuerySizeRequest): Promise<QuerySizeResponse> {
+    const { containerPath, queryName, schemaName } = options;
+
+    const response = await request<Partial<QuerySizeResponse>>({
+        url: ActionURL.buildURL('query', 'getQuerySize.api', containerPath),
+        method: 'POST',
+        jsonData: { queryName, schemaName },
+        errorLogMsg: 'Unable to load the query size',
+    });
+
+    return { largeTable: !!response.largeTable };
 }

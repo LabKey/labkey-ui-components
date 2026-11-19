@@ -2,7 +2,7 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -12,7 +12,7 @@ import { SchemaQuery } from '../SchemaQuery';
 import { selectRows } from '../../internal/query/selectRows';
 
 import { QueryModelLoader, RowsResponse } from './QueryModelLoader';
-import { InjectedQueryModels, RequestManager, withQueryModels } from './withQueryModels';
+import { ChangeType, InjectedQueryModels, RequestManager, withQueryModels } from './withQueryModels';
 
 jest.mock('../../internal/query/selectRows', () => ({
     selectRows: jest.fn(),
@@ -419,5 +419,65 @@ describe('withQueryModels capped total count', () => {
         expect(textOf('.row-count')).toBe('151');
         expect(textOf('.offset')).toBe('0');
         expect(jest.mocked(selectRows).mock.calls[1][0]).toEqual(expect.objectContaining({ maxCount: 0 }));
+    });
+});
+
+describe('withQueryModels onModelChange', () => {
+    const SCHEMA_QUERY = new SchemaQuery('schema', 'query');
+    const MODEL_ID = 'model';
+
+    it('never renders the stale rows after an update', async () => {
+        const loader: QueryModelLoader = {
+            clearSelections: jest.fn().mockResolvedValue({ count: 0 }),
+            loadCharts: jest.fn().mockResolvedValue([]),
+            loadQueryInfo: jest.fn().mockResolvedValue(new QueryInfo({ schemaQuery: SCHEMA_QUERY })),
+            loadRows: jest.fn().mockResolvedValue({ messages: [], orderedRows: [], rowCount: 0, rows: {} }),
+            loadSelections: jest.fn().mockResolvedValue(new Set<string>()),
+            replaceSelections: jest.fn().mockResolvedValue({ count: 0 }),
+            selectAllRows: jest.fn().mockResolvedValue(new Set<string>()),
+            setSelections: jest.fn().mockResolvedValue({ count: 0 }),
+        };
+        const statesAfterSave: LoadingState[] = [];
+
+        const EditablePage: FC<InjectedQueryModels> = ({ actions, queryModels }) => {
+            const model = queryModels[MODEL_ID];
+            const [editing, setEditing] = useState(true);
+            const onSave = useCallback(() => {
+                setEditing(false);
+                actions.onModelChange(MODEL_ID, { changeType: ChangeType.update });
+            }, [actions]);
+
+            if (!editing) statesAfterSave.push(model.rowsLoadingState);
+
+            return (
+                <div>
+                    <div className="rows-state">{model.rowsLoadingState}</div>
+                    <button className="save" onClick={onSave} type="button" />
+                </div>
+            );
+        };
+        const EditablePageWithQueryModels = withQueryModels(EditablePage);
+
+        render(
+            <EditablePageWithQueryModels
+                autoLoad
+                modelLoader={loader}
+                queryConfigs={{ [MODEL_ID]: { id: MODEL_ID, schemaQuery: SCHEMA_QUERY } }}
+            />
+        );
+        await waitFor(() => {
+            expect(document.querySelector('.rows-state').textContent).toBe(LoadingState.LOADED);
+        });
+
+        await userEvent.click(document.querySelector('.save'));
+        await waitFor(() => {
+            expect(loader.loadRows).toHaveBeenCalledTimes(2);
+        });
+        await waitFor(() => {
+            expect(document.querySelector('.rows-state').textContent).toBe(LoadingState.LOADED);
+        });
+
+        // The first render without the edit form must already show the reload
+        expect(statesAfterSave[0]).toBe(LoadingState.LOADING);
     });
 });

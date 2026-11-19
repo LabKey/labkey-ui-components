@@ -62,8 +62,21 @@ const VALUE_LOCKED = (
     />
 );
 
+const RENAME_LOCKED_TIP =
+    'This text choice value cannot be deleted or edited because it is in use. Renaming in-use values is not supported for this type of data.';
+const VALUE_RENAME_LOCKED = (
+    <LockIcon
+        body={RENAME_LOCKED_TIP}
+        className="pull-right"
+        iconCls="choices-list__locked"
+        id="text-choice-value-lock-icon"
+        title={LOCKED_TITLE}
+    />
+);
+
 interface Props extends ITypeDependentProps {
     allowMultiChoice: boolean;
+    allowValueRenames?: boolean;
     field: DomainField;
     handleDataTypeChange: (targetId: string, value: any) => void;
     lockedForDomain?: boolean;
@@ -99,7 +112,11 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         handleDataTypeChange,
         hasMultiValueInUse,
         allowMultiChoice,
+        allowValueRenames = true,
     } = props;
+    const isLockedForDomain = lockedForDomain || !allowValueRenames;
+    const lockedTip = allowValueRenames ? LOCKED_TIP : RENAME_LOCKED_TIP;
+    const valueLockedIcon = allowValueRenames ? VALUE_LOCKED : VALUE_RENAME_LOCKED;
     const [selectedIndex, setSelectedIndex] = useState<number>();
     const [currentValue, setCurrentValue] = useState<string>();
     const [currentError, setCurrentError] = useState<string>();
@@ -123,7 +140,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     const selectedValue = useMemo(() => validValues[selectedIndex], [validValues, selectedIndex]);
     const currentInUse = fieldValueUpdates.hasOwnProperty(selectedValue);
     const currentLocked =
-        currentInUse && (lockedForDomain || (fieldValues[fieldValueUpdates[selectedValue]]?.locked ?? false));
+        currentInUse && (isLockedForDomain || (fieldValues[fieldValueUpdates[selectedValue]]?.locked ?? false));
 
     const isValueDuplicate = useCallback(
         (val: string): boolean => {
@@ -266,12 +283,12 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                 const inUse = fieldValueUpdates.hasOwnProperty(value);
                                 const locked =
                                     inUse &&
-                                    (lockedForDomain || (fieldValues[fieldValueUpdates[value]]?.locked ?? false));
+                                    (isLockedForDomain || (fieldValues[fieldValueUpdates[value]]?.locked ?? false));
 
                                 return (
                                     <ChoicesListItem
                                         active={ind === selectedIndex}
-                                        componentRight={locked ? VALUE_LOCKED : inUse ? VALUE_IN_USE : null}
+                                        componentRight={locked ? valueLockedIcon : inUse ? VALUE_IN_USE : null}
                                         index={ind}
                                         key={ind}
                                         label={value}
@@ -330,7 +347,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <DisableableInput
                                         aria-labelledby={'text-choice-value-label-' + selectedIndex}
                                         className="form-control full-width"
-                                        disabledMsg={currentLocked ? LOCKED_TIP : undefined}
+                                        disabledMsg={currentLocked ? lockedTip : undefined}
                                         name="value"
                                         onChange={onValueChange}
                                         placeholder="Enter a text choice value"
@@ -340,7 +357,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                 </div>
                                 <div className="domain-field-padding-bottom">
                                     <DisableableButton
-                                        disabledMsg={currentLocked ? LOCKED_TIP : currentInUse ? IN_USE_TIP : undefined}
+                                        disabledMsg={currentLocked ? lockedTip : currentInUse ? IN_USE_TIP : undefined}
                                         onClick={onDelete}
                                         title={currentLocked ? LOCKED_TITLE : IN_USE_TITLE}
                                     >

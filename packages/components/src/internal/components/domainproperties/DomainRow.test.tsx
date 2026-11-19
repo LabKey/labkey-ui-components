@@ -72,6 +72,7 @@ const DEFAULT_OPTIONS = [DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, D
 describe('DomainRow', () => {
     function getDefaultProps(): DomainRowProps {
         return {
+            allowTextChoiceValueRenames: true,
             allowUniqueConstraintProperties: false,
             availableTypes: PROP_DESC_TYPES,
             defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,

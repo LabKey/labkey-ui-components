@@ -26,6 +26,7 @@ import { FieldFilterCriteria } from './FieldFilterCriteria';
 
 interface Props {
     allowMultiChoiceField: boolean;
+    allowTextChoiceValueRenames: boolean;
     appPropertiesOnly?: boolean;
     domainContainerPath?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
@@ -57,6 +58,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             queryName,
             handleDataTypeChange,
             allowMultiChoiceField,
+            allowTextChoiceValueRenames,
         } = this.props;
 
         // In most cases we will use the selected data type to determine which field options to show,
@@ -161,6 +163,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                 return (
                     <TextChoiceOptions
                         allowMultiChoice={allowMultiChoiceField}
+                        allowValueRenames={allowTextChoiceValueRenames}
                         domainIndex={domainIndex}
                         field={field}
                         handleDataTypeChange={handleDataTypeChange}

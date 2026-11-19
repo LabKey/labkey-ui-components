@@ -63,6 +63,7 @@ import { Collapsible } from './Collapsible';
 
 export interface DomainRowProps {
     allowMultiChoiceField: boolean;
+    allowTextChoiceValueRenames: boolean;
     allowUniqueConstraintProperties: boolean;
     appPropertiesOnly?: boolean;
     availableTypes: PropDescType[];
@@ -368,6 +369,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             appPropertiesOnly,
             domainFormDisplayOptions,
             allowMultiChoiceField,
+            allowTextChoiceValueRenames,
             getDomainFields,
             domainContainerPath,
             schemaName,
@@ -555,6 +557,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                             <div>
                                 <DomainRowExpandedOptions
                                     allowMultiChoiceField={allowMultiChoiceField}
+                                    allowTextChoiceValueRenames={allowTextChoiceValueRenames}
                                     appPropertiesOnly={appPropertiesOnly}
                                     domainContainerPath={domainContainerPath}
                                     domainFormDisplayOptions={domainFormDisplayOptions}

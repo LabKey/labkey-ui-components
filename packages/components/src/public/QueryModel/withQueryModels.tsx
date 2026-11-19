@@ -1454,6 +1454,11 @@ export function withQueryModels<Props>(
                             resetModelState(model);
                         }
                     }
+
+                    // The reload starts after this update commits, so without this the stale rows render once more.
+                    if (model.rowsLoadingState === LoadingState.LOADED && model.isQueryInfoLoaded) {
+                        model.rowsLoadingState = LoadingState.LOADING;
+                    }
                 }),
                 () => {
                     // Loading & replacing selections are mutually exclusive, if we aren't replacing anything then load

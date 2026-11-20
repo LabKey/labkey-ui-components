@@ -86,26 +86,13 @@ export function toggleParameter(parameterName: string, value: any): void {
     setParameter(parameterName, hasParameter(parameterName) ? undefined : value);
 }
 
-// GitHub Issue #1023: Navigate the browser to the given URL, guarding against open-redirect vulnerabilities.
-//  - AppURL: always constructed by us to point at one of our apps, so it is inherently local and we navigate directly.
-//  - A string that resolves to the current origin (relative URLs, buildURL() results, same-host absolute URLs):
-//    inherently local, so we navigate directly.
-//  - Any other string (a different origin, or an unparseable/opaque value such as a javascript: URL): treated as a
-//    potential open-redirect target and routed through core/safeRedirect for authoritative server-side validation
-//    (URLHelper.isAllowableHost, which also honors the admin external-redirect allowlist and the home-page fallback).
-// Note: For those rare cases where we do need to go to a trusted external URL, set window.location.href directly instead of using redirect().
+// GitHub Issue #1023: Navigates to the URL, routing off-origin strings through core/safeRedirect to block open redirects.
+// Note: In rare cases where visiting a trusted external URL is required, set window.location.href directly instead of using redirect().
 export function redirect(url: AppURL | string): void {
     window.location.href = getRedirectUrl(url);
 }
 
+// AppURLs are always local; strings defer to ActionURL.getRedirectUrl in @labkey/api.
 export function getRedirectUrl(url: AppURL | string): string {
-    if (url instanceof AppURL) {
-        return url.toHref();
-    }
-
-    if (ActionURL.isSameOrigin(url)) {
-        return url;
-    }
-
-    return ActionURL.buildURL('core', 'safeRedirect', undefined, { returnUrl: url });
+    return url instanceof AppURL ? url.toHref() : ActionURL.getRedirectUrl(url);
 }

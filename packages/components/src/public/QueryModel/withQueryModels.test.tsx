@@ -21,7 +21,14 @@ import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 
 import { QueryModel } from './QueryModel';
 import { QueryModelLoader, RowsResponse } from './QueryModelLoader';
-import { Actions, InjectedQueryModels, QueryModelMap, RequestManager, withQueryModels } from './withQueryModels';
+import {
+    Actions,
+    ChangeType,
+    InjectedQueryModels,
+    QueryModelMap,
+    RequestManager,
+    withQueryModels,
+} from './withQueryModels';
 
 // require() returns the same __mocks__/react-router.ts instance withQueryModels uses; jest.requireMock does not
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -193,6 +200,19 @@ describe('withQueryModels request failures', () => {
     const ModelState: FC<InjectedQueryModels> = ({ actions, queryModels }) => {
         const model = queryModels[MODEL_ID];
         const onReloadRows = useCallback(() => actions.loadRows(MODEL_ID), [actions]);
+        const onSort = useCallback(
+            () => actions.setSorts(MODEL_ID, [new QuerySort({ fieldKey: 'Name', dir: SORT_DESC })]),
+            [actions]
+        );
+        const onSetPageSize = useCallback(() => actions.setMaxRows(MODEL_ID, 50), [actions]);
+        const onDeleteRows = useCallback(
+            () =>
+                actions.onModelChange(MODEL_ID, {
+                    changeType: ChangeType.delete,
+                    options: { selectionsForReplace: ['1'] },
+                }),
+            [actions]
+        );
 
         return (
             <div>
@@ -203,6 +223,9 @@ describe('withQueryModels request failures', () => {
                 <div className="total-count-state">{model.totalCountLoadingState}</div>
                 <div className="total-count-error">{model.totalCountError}</div>
                 <button className="reload-rows" onClick={onReloadRows} type="button" />
+                <button className="sort-rows" onClick={onSort} type="button" />
+                <button className="set-page-size" onClick={onSetPageSize} type="button" />
+                <button className="delete-rows" onClick={onDeleteRows} type="button" />
             </div>
         );
     };
@@ -275,6 +298,113 @@ describe('withQueryModels request failures', () => {
         // The request that replaced it already settled the state, so the cancellation must not report an error
         expect(textOf('.rows-error')).toBe('');
         expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+    });
+
+    it.each([
+        ['a sort', '.sort-rows'],
+        ['a page size change', '.set-page-size'],
+    ])('loads selections when %s cancels the initial rows load', async (_, trigger) => {
+        let rejectFirstLoad: (reason: unknown) => void;
+        const loadRows = jest
+            .fn()
+            .mockImplementationOnce(
+                (model, requestHandler) =>
+                    new Promise((resolve, reject) => {
+                        rejectFirstLoad = reject;
+                        requestHandler?.(mockXHR());
+                    })
+            )
+            .mockImplementation((model, requestHandler) => {
+                requestHandler?.(mockXHR());
+                return Promise.resolve(ROWS_RESPONSE);
+            });
+        const loadSelections = jest.fn().mockResolvedValue(new Set<string>());
+        renderModel(testLoader({ loadRows, loadSelections }));
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADING);
+        });
+
+        // Reloading while the slow initial load is in flight cancels it; the canceled request then rejects with status 0
+        await userEvent.click(document.querySelector(trigger));
+        rejectFirstLoad({ status: 0 });
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+        });
+        // The selections the initial load would have fetched must still be loaded, or the grid shows
+        // "Loading selections..." with its selection controls disabled indefinitely
+        await waitFor(() => {
+            expect(loadSelections).toHaveBeenCalled();
+        });
+        expect(textOf('.selections-state')).toBe(LoadingState.LOADED);
+    });
+
+    it('loads selections when a URL change cancels the initial rows load', async () => {
+        let rejectFirstLoad: (reason: unknown) => void;
+        const loadRows = jest
+            .fn()
+            .mockImplementationOnce(
+                (model, requestHandler) =>
+                    new Promise((resolve, reject) => {
+                        rejectFirstLoad = reject;
+                        requestHandler?.(mockXHR());
+                    })
+            )
+            .mockImplementation((model, requestHandler) => {
+                requestHandler?.(mockXHR());
+                return Promise.resolve(ROWS_RESPONSE);
+            });
+        const loadSelections = jest.fn().mockResolvedValue(new Set<string>());
+        const modelLoader = testLoader({ loadRows, loadSelections });
+        const queryConfigs = { [MODEL_ID]: { id: MODEL_ID, bindURL: true, schemaQuery: SCHEMA_QUERY } };
+        // A fresh element each time, since rerendering an identical element is a no-op
+        const component = (): ReactNode => (
+            <ModelStateWithQueryModels autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />
+        );
+        rrd.__setSearchParams(new URLSearchParams());
+        rrd.__setSetSearchParams(jest.fn());
+        const { rerender } = render(component());
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADING);
+        });
+
+        // e.g. browser back/forward while the slow initial load is in flight
+        rrd.__setSearchParams(new URLSearchParams({ 'query.sort': 'Name' }));
+        rerender(component());
+        rejectFirstLoad({ status: 0 });
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+        });
+        await waitFor(() => {
+            expect(loadSelections).toHaveBeenCalled();
+        });
+        expect(textOf('.selections-state')).toBe(LoadingState.LOADED);
+    });
+
+    it('replaces selections after a delete while the initial rows load is still in flight', async () => {
+        const loadRows = jest
+            .fn()
+            .mockImplementationOnce((model, requestHandler) => {
+                requestHandler?.(mockXHR());
+                return new Promise(jest.fn());
+            })
+            .mockResolvedValue(ROWS_RESPONSE);
+        const replaceSelections = jest.fn().mockResolvedValue({ count: 1 });
+        renderModel(testLoader({ loadRows, replaceSelections }));
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADING);
+        });
+
+        // The delete's reload is untracked, so it neither cancels the initial load nor inherits its selection load
+        await userEvent.click(document.querySelector('.delete-rows'));
+
+        await waitFor(() => {
+            expect(replaceSelections).toHaveBeenCalledWith(expect.anything(), ['1']);
+        });
     });
 
     it('surfaces a selections failure that was not a cancellation', async () => {

@@ -12,8 +12,8 @@
   "author": "LabKey",
   "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
-    "@rspack/cli": "~2.3.2",
-    "@rspack/core": "~2.3.2",
+    "@rspack/cli": "~2.3.3",
+    "@rspack/core": "~2.3.3",
     "@rspack/dev-server": "~2.2.2",
     "@rspack/plugin-react-refresh": "~2.0.3",
     "bootstrap-sass": "~3.4.3",
@@ -25,12 +25,12 @@
     "rimraf": "~6.1.4",
     "rspack-merge": "~1.0.1",
     "sass": "~1.108.2",
-    "sass-loader": "~17.1.0",
+    "sass-loader": "~17.1.1",
     "source-map-loader": "~5.0.0",
     "style-loader": "~4.0.0",
     "ts-checker-rspack-plugin": "~1.8.0",
     "typescript": "~6.0.3",
-    "webpack-bundle-analyzer": "~5.4.2"
+    "webpack-bundle-analyzer": "~5.4.3"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,

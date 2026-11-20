@@ -423,6 +423,8 @@ export function withQueryModels<Props>(
         static defaultProps;
 
         private requestManager = new RequestManager();
+        // GitHub Issue 1938: model ids whose selection load rides on a tracked rows load that may yet be canceled and replaced
+        private pendingSelectionLoads = new Set<string>();
 
         constructor(props: WrappedProps) {
             super(props);
@@ -856,6 +858,7 @@ export function withQueryModels<Props>(
 
             // If we have selectionsForReplace, then skip request cancellation optimization
             const request = selectionsForReplace ? undefined : this.requestManager.trackRequest(id, 'loadRows');
+            if (request && loadSelections) this.pendingSelectionLoads.add(id);
 
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
@@ -880,12 +883,16 @@ export function withQueryModels<Props>(
                         model.rowsError = undefined;
                         model.selectionPivot = undefined;
                     }),
-                    () => this.maybeLoad(id, false, false, loadSelections, false, selectionsForReplace)
+                    () => {
+                        const shouldLoadSelections = request ? this.pendingSelectionLoads.delete(id) : loadSelections;
+                        this.maybeLoad(id, false, false, shouldLoadSelections, false, selectionsForReplace);
+                    }
                 );
             } catch (error) {
                 // GitHub Issue 1364: only ignore the failure if we canceled the request ourselves, otherwise the
                 // model is left loading rows forever.
                 if (error?.status === 0 && request?.wasCancelled()) return;
+                if (request) this.pendingSelectionLoads.delete(id);
                 let viewDoesNotExist = false;
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {

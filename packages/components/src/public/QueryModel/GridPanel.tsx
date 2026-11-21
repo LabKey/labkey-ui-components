@@ -4,6 +4,7 @@
  */
 import React, {
     ChangeEvent,
+    ChangeEventHandler,
     ComponentType,
     createContext,
     FC,
@@ -422,6 +423,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         </h2>
     );
 });
+GridTitle.displayName = 'GridTitle';
 
 interface ComposeFilterState {
     draft: FilterDraft;
@@ -457,8 +459,8 @@ interface RowSelectCheckboxProps {
 
 const RowSelectCheckbox: FC<RowSelectCheckboxProps> = memo(({ onSelect, row, selected }) => {
     const disabled = useContext(RowSelectionDisabledContext);
-    const onChange = useCallback(
-        (event: ChangeEvent<HTMLInputElement>): void => onSelect(row, event),
+    const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+        (event): void => onSelect(row, event),
         [onSelect, row]
     );
 
@@ -1269,7 +1271,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } = model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
         const hasError = hasGridError || selectionsError !== undefined || errorMsg;
-        let loadingMessage;
+        let loadingMessage: ReactNode;
         const gridIsLoading = !hasGridError && isLoading;
         const selectionsAreLoading = !hasError && allowSelections && isLoadingSelections;
 
@@ -1359,9 +1361,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                         highlightRowIndexes={this.getHighlightRowIndexes()}
                                         messages={fromJS(messages)}
                                         onColumnDrop={
-                                            allowViewCustomization && !disableColumnDrag
-                                                ? this.onColumnDrop
-                                                : undefined
+                                            allowViewCustomization && !disableColumnDrag ? this.onColumnDrop : undefined
                                         }
                                         showHeader={showHeader}
                                     />
@@ -1418,10 +1418,11 @@ interface GridPaneWithModelBodyProps<T = {}> extends GridPanelProps<T> {
 }
 
 const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryModels> = memo(
-    ({ actions, id, queryModels, ...props }) => {
-        return <GridPanel actions={actions} model={queryModels[id]} {...props} />;
-    }
+    ({ actions, id, queryModels, ...props }) => (
+        <GridPanel actions={actions} model={queryModels[id]} {...props} />
+    )
 );
+GridPanelWithModelBodyImpl.displayName = 'GridPanelWithModelBodyImpl';
 
 const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps>(GridPanelWithModelBodyImpl);
 
@@ -1437,3 +1438,4 @@ export const GridPanelWithModel: FC<GridPanelWithModelProps> = memo(({ queryConf
     const queryConfigs = useMemo(() => ({ [id]: { ...queryConfig } }), [id, queryConfig]);
     return <GridPanelWithModelBody {...props} id={id} key={id} queryConfigs={queryConfigs} />;
 });
+GridPanelWithModel.displayName = 'GridPanelWithModel';

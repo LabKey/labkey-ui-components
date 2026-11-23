@@ -3,6 +3,8 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 
+import { ActionURL } from '@labkey/api';
+
 import { getRedirectUrl } from './ActionURL';
 import { AppURL } from './AppURL';
 
@@ -28,7 +30,9 @@ describe('getRedirectUrl', () => {
         });
 
         test('off-origin string routes through safeRedirect', () => {
-            expect(getRedirectUrl('https://evil.example.com/phish')).toContain('core-safeRedirect.view');
+            const url = 'https://evil.example.com/phish';
+            expect(getRedirectUrl(url)).toEqual(ActionURL.getRedirectUrl(url));
+            expect(getRedirectUrl(url)).toContain('core-safeRedirect.view');
         });
     });
 });

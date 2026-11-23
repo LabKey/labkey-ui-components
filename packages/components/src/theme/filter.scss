@@ -199,6 +199,13 @@
         max-width: 100%;
         vertical-align: top;
 
+        .filter-status__remove {
+            background: none;
+            border: 0;
+            padding: 0;
+            line-height: inherit;
+        }
+
         i.symbol {
             cursor: pointer;
             color: $grid-action-item-color;
@@ -236,6 +243,9 @@
     padding-right: 5px;
     word-break: break-all;
     color: $text-color;
+    background: none;
+    border: 0;
+    text-align: left;
 
     &:hover {
         cursor: pointer;

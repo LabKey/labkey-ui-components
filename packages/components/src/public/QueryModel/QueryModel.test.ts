@@ -545,6 +545,18 @@ describe('urlQueryParams', () => {
         });
     });
 
+    test('pageSize is bound relative to the configured page size', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, maxRows: 40, urlPrefix: 'test' });
+        expect(model.urlQueryParams).toEqual({});
+        expect(model.mutate({ maxRows: DEFAULT_MAX_ROWS }).urlQueryParams).toEqual({
+            'test.pageSize': DEFAULT_MAX_ROWS.toString(),
+        });
+
+        const defaultModel = new QueryModel({ schemaQuery: SCHEMA_QUERY, urlPrefix: 'test' });
+        expect(defaultModel.urlQueryParams).toEqual({});
+        expect(defaultModel.mutate({ maxRows: 40 }).urlQueryParams).toEqual({ 'test.pageSize': '40' });
+    });
+
     test('config query parameters are not bound', () => {
         const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, queryParameters: { Foo: 1 }, urlPrefix: 'test' });
         expect(model.bindURLQueryParameters).toBe(false);
@@ -556,7 +568,7 @@ describe('attributesForURLQueryParams', () => {
     test('without useExistingValues', () => {
         const defaultExpected = {
             filterArray: [],
-            maxRows: DEFAULT_MAX_ROWS,
+            maxRows: 10,
             offset: DEFAULT_OFFSET,
             schemaQuery: SCHEMA_QUERY,
             selectedReportIds: [],
@@ -569,7 +581,7 @@ describe('attributesForURLQueryParams', () => {
         });
         let searchParams = new URLSearchParams({});
 
-        // Empty search params should result in all default values
+        // Empty search params should result in all default values, with the model's configured page size
         let values = model.attributesForURLQueryParams(searchParams);
         expect(values).toEqual(defaultExpected);
 
@@ -580,7 +592,7 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams);
         expect(values).toEqual({
             ...defaultExpected,
-            offset: 2 * DEFAULT_MAX_ROWS,
+            offset: 20,
         });
 
         // Issue 52143: Grid paging parameter in URL is not always respected
@@ -700,20 +712,20 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             ...defaultExpected,
-            offset: 2 * DEFAULT_MAX_ROWS,
+            offset: 20,
         });
 
         // Issue 52143: Grid paging parameter in URL is not always respected
         // Setting page and pageSize should set offset correctly
         searchParams = new URLSearchParams({
             'query.p': '3',
-            'query.pageSize': '40',
+            'query.pageSize': '100',
         });
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             ...defaultExpected,
-            maxRows: 40,
-            offset: 80,
+            maxRows: 100,
+            offset: 200,
         });
 
         // reportId should be honored
@@ -775,7 +787,7 @@ describe('attributesForURLQueryParams', () => {
             'query.testCol~eq=': '1',
             'query.otherCol~neq=': '1',
             'query.p': '3',
-            'query.pageSize': '40',
+            'query.pageSize': '100',
             'query.selectedReportIds': 'db:99',
             'query.sort': '-testCol,otherCol',
             'query.view': 'custom view',
@@ -783,8 +795,8 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             filterArray: expectedFilters,
-            maxRows: 40,
-            offset: 80,
+            maxRows: 100,
+            offset: 200,
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
             selectedReportIds: ['db:99'],
             sorts: expectedSorts,

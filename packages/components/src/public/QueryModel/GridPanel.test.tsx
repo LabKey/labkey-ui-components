@@ -183,6 +183,44 @@ describe('GridPanel', () => {
         return calls.at(-1)[1].map(sort => sort.toRequestString());
     };
 
+    test('aria-busy and data-load-count track loads', () => {
+        const { rows, orderedRows, rowCount } = DATA;
+        const body = (): HTMLElement => document.querySelector('.grid-panel__body');
+        const loaded = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({
+            selections: new Set(),
+            selectionsLoadingState: LoadingState.LOADED,
+        });
+
+        const { rerender } = renderWithAppContext(
+            <GridPanel actions={actions} model={makeTestQueryModel(SCHEMA_QUERY)} />
+        );
+        expect(body()).toHaveAttribute('aria-busy', 'true');
+        expect(body().dataset.loadCount).toBe('0');
+
+        rerender(<GridPanel actions={actions} model={loaded} />);
+        expect(body()).toHaveAttribute('aria-busy', 'false');
+        expect(body().dataset.loadCount).toBe('1');
+
+        // Paging: rows reload while the previous rows stay on screen
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ rowsLoadingState: LoadingState.LOADING })} />);
+        expect(body()).toHaveAttribute('aria-busy', 'true');
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ offset: 20 })} />);
+        expect(body().dataset.loadCount).toBe('2');
+
+        // A selection change counts as a load too
+        rerender(
+            <GridPanel actions={actions} model={loaded.mutate({ selectionsLoadingState: LoadingState.LOADING })} />
+        );
+        expect(body()).toHaveAttribute('aria-busy', 'true');
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ selections: new Set(['1']) })} />);
+        expect(body()).toHaveAttribute('aria-busy', 'false');
+        expect(body().dataset.loadCount).toBe('3');
+
+        // An update that loads nothing leaves the count alone
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ offset: 40 })} />);
+        expect(body().dataset.loadCount).toBe('3');
+    });
+
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 

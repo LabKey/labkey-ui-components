@@ -7,6 +7,7 @@ import React, {
     ChangeEventHandler,
     ComponentType,
     createContext,
+    createRef,
     FC,
     memo,
     PureComponent,
@@ -495,6 +496,9 @@ interface GridColumnsCache {
 /**
  * Render a QueryModel as an interactive grid. For in-depth documentation and examples see components/docs/QueryModel.md.
  */
+const isGridBusy = (model: QueryModel, allowSelections: boolean): boolean =>
+    model.isLoading || (allowSelections && model.isLoadingSelections);
+
 export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     static defaultProps = {
         allowSelections: true,
@@ -545,6 +549,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     componentDidMount(): void {
         const { model, actions, allowSelections, loadOnMount } = this.props;
+        this.setLoadCount(0);
         if (loadOnMount) {
             actions.loadModel(model.id, allowSelections);
         }
@@ -554,7 +559,22 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
             this.populateGridActions();
         }
+
+        const { allowSelections, model } = this.props;
+        if (isGridBusy(prevProps.model, prevProps.allowSelections) && !isGridBusy(model, allowSelections)) {
+            this.setLoadCount(this.loadCount + 1);
+        }
     }
+
+    private readonly bodyRef = createRef<HTMLDivElement>();
+    private loadCount = 0;
+
+    // data-load-count lets tests wait for a load to finish, which a fast load's spinner can't reliably signal.
+    // Set directly rather than rendered so counting loads costs no extra render.
+    private setLoadCount = (count: number): void => {
+        this.loadCount = count;
+        if (this.bodyRef.current) this.bodyRef.current.dataset.loadCount = count.toString();
+    };
 
     gridActions: {
         filter: FilterAction;
@@ -1301,7 +1321,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     />
 
                     <div
+                        aria-busy={isGridBusy(model, allowSelections)}
                         className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-padding': !hasHeader })}
+                        ref={this.bodyRef}
                     >
                         {!gridIsLoading && <ChartList actions={actions} model={model} />}
 

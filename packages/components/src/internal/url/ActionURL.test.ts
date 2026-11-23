@@ -21,4 +21,14 @@ describe('getRedirectUrl', () => {
             expect(getRedirectUrl(url)).not.toContain('safeRedirect');
         });
     });
+
+    describe('string', () => {
+        test('same-origin string is returned unchanged', () => {
+            expect(getRedirectUrl('/labkey/home/project-begin.view')).toEqual('/labkey/home/project-begin.view');
+        });
+
+        test('off-origin string routes through safeRedirect', () => {
+            expect(getRedirectUrl('https://evil.example.com/phish')).toContain('core-safeRedirect.view');
+        });
+    });
 });

@@ -92,7 +92,7 @@ export function redirect(url: AppURL | string): void {
     window.location.href = getRedirectUrl(url);
 }
 
-// AppURLs are always local; strings defer to ActionURL.getRedirectUrl in @labkey/api.
+// AppURLs are always local, so they skip the safeRedirect check.
 export function getRedirectUrl(url: AppURL | string): string {
     return url instanceof AppURL ? url.toHref() : ActionURL.getRedirectUrl(url);
 }

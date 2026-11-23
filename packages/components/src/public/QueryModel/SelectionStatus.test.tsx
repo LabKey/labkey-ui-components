@@ -39,6 +39,18 @@ describe('SelectionStatus', () => {
         expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(0);
     });
 
+    test('loading the next page keeps the status', () => {
+        const model = MODEL_LOADED.mutate({ rowsLoadingState: LoadingState.LOADING });
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />);
+        expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 1 selected');
+    });
+
+    test('rows reset', () => {
+        const model = MODEL_LOADED.mutate({ rows: undefined, rowsLoadingState: LoadingState.LOADING });
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />);
+        expect(document.querySelectorAll('.selection-status')).toHaveLength(0);
+    });
+
     test('no selections, rowCount less than maxRows', () => {
         const model = MODEL_LOADED.mutate({ selections: new Set() });
         renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />);

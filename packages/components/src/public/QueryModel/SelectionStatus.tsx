@@ -9,7 +9,7 @@ import { RequiresModelAndActions } from './withQueryModels';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
-    const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, rowCountCapped, selections } = model;
+    const { hasData, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, rowCountCapped, selections } = model;
     const selectionSize = selections?.size;
     const { moduleContext } = useServerContext();
     const maxSelectionSize = moduleContext?.query?.maxQuerySelection;
@@ -34,7 +34,8 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         return text;
     }, [selectionSize]);
 
-    if (isLoading || isLoadingSelections || !selections) {
+    // Paging keeps the previous rows while loading, so the status stays put instead of flashing
+    if (!hasData || isLoadingSelections || !selections) {
         return null;
     }
 

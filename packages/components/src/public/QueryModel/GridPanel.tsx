@@ -485,6 +485,8 @@ interface GridDataCache {
     value: Record<string, any>[];
 }
 
+type HeaderCellRenderer = (column: GridColumn, index: number, columnCount?: number) => ReactNode;
+
 interface GridColumnsCache {
     allowSelections: boolean;
     omittedColumns: string[];
@@ -1206,7 +1208,18 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
     };
 
-    headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
+    private headerCellCache: { props: Readonly<Props<T>>; value: HeaderCellRenderer };
+
+    // GridHeader is pure, so its renderer takes a new identity whenever the props headerCell reads change
+    getHeaderCell = (): HeaderCellRenderer => {
+        if (this.headerCellCache?.props !== this.props) {
+            this.headerCellCache = { props: this.props, value: (...args) => this.headerCell(...args) };
+        }
+
+        return this.headerCellCache.value;
+    };
+
+    headerCell: HeaderCellRenderer = (column, index, columnCount) => {
         const { allowSelections, allowSorting, allowFiltering, allowViewCustomization, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
         const nonSelectableColumnCount = allowSelections ? columnCount - 1 : columnCount;
@@ -1379,7 +1392,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                         emptyText={gridEmptyText}
                                         fixedHeight
                                         gridId={id}
-                                        headerCell={this.headerCell}
+                                        headerCell={this.getHeaderCell()}
                                         highlightRowIndexes={this.getHighlightRowIndexes()}
                                         messages={fromJS(messages)}
                                         onColumnDrop={

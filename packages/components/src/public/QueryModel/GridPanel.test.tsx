@@ -221,6 +221,29 @@ describe('GridPanel', () => {
         expect(body().dataset.loadCount).toBe('3');
     });
 
+    test('header select checkbox follows loading state', () => {
+        const { rows, orderedRows, rowCount } = DATA;
+        const pageCheckbox = (): HTMLElement => document.querySelector('.grid-panel__page-checkbox');
+        const loaded = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({
+            selections: new Set(),
+            selectionsLoadingState: LoadingState.LOADED,
+        });
+
+        const { rerender } = renderWithAppContext(<GridPanel actions={actions} model={loaded} />);
+        expect(pageCheckbox()).toBeEnabled();
+
+        rerender(
+            <GridPanel actions={actions} model={loaded.mutate({ selectionsLoadingState: LoadingState.LOADING })} />
+        );
+        expect(pageCheckbox()).toBeDisabled();
+
+        rerender(<GridPanel actions={actions} model={loaded} />);
+        expect(pageCheckbox()).toBeEnabled();
+
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ rowsLoadingState: LoadingState.LOADING })} />);
+        expect(pageCheckbox()).toBeDisabled();
+    });
+
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 

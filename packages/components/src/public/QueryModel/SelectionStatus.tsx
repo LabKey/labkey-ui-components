@@ -34,8 +34,8 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         return text;
     }, [selectionSize]);
 
-    // Paging keeps the previous rows while loading, so the status stays put instead of flashing
-    if (!hasData || isLoadingSelections || !selections) {
+    // Kept on screen while paging or a selection change loads, so the grid info row doesn't jump
+    if (!hasData || !selections) {
         return null;
     }
 
@@ -61,7 +61,12 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
 
         clearAllButton = (
             <span className="selection-status__clear-all">
-                <button className="btn btn-default btn-xs" onClick={clearSelections} type="button">
+                <button
+                    className="btn btn-default btn-xs"
+                    disabled={isLoadingSelections}
+                    onClick={clearSelections}
+                    type="button"
+                >
                     {clearText}
                 </button>
             </span>
@@ -77,7 +82,12 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
     ) {
         selectAllButton = (
             <span className="selection-status__select-all">
-                <button className="btn btn-default btn-xs" onClick={selectAll} type="button">
+                <button
+                    className="btn btn-default btn-xs"
+                    disabled={isLoadingSelections}
+                    onClick={selectAll}
+                    type="button"
+                >
                     {tooManyRows && <>Select first {maxSelectionSize.toLocaleString()}</>}
                     {!tooManyRows && <>Select all {rowCount.toLocaleString()}</>}
                 </button>

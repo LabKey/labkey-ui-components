@@ -1322,11 +1322,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
                         {(loadingMessage || allowSelections || actionValues?.length > 0) && (
                             <div className="grid-panel__info">
-                                {loadingMessage && (
-                                    <div className="grid-panel__loading">
-                                        <LoadingSpinner msg={loadingMessage} />
-                                    </div>
-                                )}
                                 {allowSelections && <SelectionStatus actions={actions} model={model} />}
                                 {showFilterStatus && (
                                     <FilterStatus
@@ -1336,6 +1331,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                         onRemoveAll={this.removeAllFilters}
                                         onSearchClick={this.onSearchPillClick}
                                     />
+                                )}
+                                {loadingMessage && (
+                                    <div className="grid-panel__loading">
+                                        <LoadingSpinner msg={loadingMessage} />
+                                    </div>
                                 )}
                             </div>
                         )}

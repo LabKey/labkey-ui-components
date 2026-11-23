@@ -45,6 +45,21 @@ describe('SelectionStatus', () => {
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 1 selected');
     });
 
+    test('selections loading keeps the status with its buttons disabled', () => {
+        const model = MODEL_LOADED.mutate({ rowCount: 21, selectionsLoadingState: LoadingState.LOADING });
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
+        expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 21 selected');
+        expect(document.querySelector('.selection-status__clear-all button')).toBeDisabled();
+        expect(document.querySelector('.selection-status__select-all button')).toBeDisabled();
+    });
+
+    test('selections loaded enables the buttons', () => {
+        const model = MODEL_LOADED.mutate({ rowCount: 21 });
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
+        expect(document.querySelector('.selection-status__clear-all button')).toBeEnabled();
+        expect(document.querySelector('.selection-status__select-all button')).toBeEnabled();
+    });
+
     test('rows reset', () => {
         const model = MODEL_LOADED.mutate({ rows: undefined, rowsLoadingState: LoadingState.LOADING });
         renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />);

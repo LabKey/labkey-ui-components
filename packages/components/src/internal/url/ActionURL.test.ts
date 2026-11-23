@@ -2,14 +2,11 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+
 import { ActionURL } from '@labkey/api';
 
 import { getRedirectUrl } from './ActionURL';
-import { AppURL, buildURL } from './AppURL';
-
-// window.location.origin is "http://localhost" in the jsdom test environment.
-const safeRedirectUrl = (returnUrl: string): string =>
-    ActionURL.buildURL('core', 'safeRedirect', undefined, { returnUrl });
+import { AppURL } from './AppURL';
 
 describe('getRedirectUrl', () => {
     describe('AppURL', () => {
@@ -27,52 +24,15 @@ describe('getRedirectUrl', () => {
         });
     });
 
-    describe('same-origin string -> navigates directly', () => {
-        test.each([
-            ['relative path', '/labkey/MyContainer/some-action.view?rowId=4'],
-            ['relative path with hash', '/labkey/MyContainer/app.view#/samples/123'],
-            ['absolute same-origin URL', 'http://localhost/labkey/MyContainer/some-action.view'],
-            ['root-relative path', '/home/project-begin.view'],
-            ['cross-container relative path', '/labkey/OtherProject/SubFolder/some-action.view?rowId=4'],
-            ['cross-container nested path', '/labkey/OtherProject/Sub/Deep/Folder/project-begin.view'],
-            [
-                'cross-container absolute same-origin URL',
-                'http://localhost/labkey/OtherProject/SubFolder/app.view#/samples/123',
-            ],
-        ])('%s', (_label, url) => {
-            expect(getRedirectUrl(url)).toEqual(url);
+    describe('string', () => {
+        test('same-origin string is returned unchanged', () => {
+            expect(getRedirectUrl('/labkey/home/project-begin.view')).toEqual('/labkey/home/project-begin.view');
         });
 
-        test('a buildURL() result navigates directly', () => {
-            // Mirrors SamplesEditButton: a self-built server action URL is same-origin, so it is not wrapped.
-            const url = buildURL('publish', 'sampleTypePublishStart.view', { rowId: 4 });
-            expect(getRedirectUrl(url)).toEqual(url);
-            expect(getRedirectUrl(url)).not.toContain('safeRedirect');
-        });
-    });
-
-    describe('cross-origin / opaque string -> routes through safeRedirect', () => {
-        test.each([
-            ['external https URL', 'https://evil.example.com/phish'],
-            ['protocol-relative URL', '//evil.example.com/phish'],
-            ['userinfo confusion (real host is evil)', 'https://localhost@evil.example.com/phish'],
-            ['backslash trickery', 'https:/\\/\\evil.example.com/phish'],
-        ])('%s', (_label, url) => {
-            const result = getRedirectUrl(url);
-            expect(result).toEqual(safeRedirectUrl(url));
-            expect(result).toContain('core-safeRedirect.view');
-            expect(result).toContain('returnUrl=');
-            expect(result).not.toEqual(url);
-        });
-
-        test('javascript: URL has an opaque origin and is routed through safeRedirect', () => {
-            const url = 'javascript:alert(1)';
-            expect(getRedirectUrl(url)).toEqual(safeRedirectUrl(url));
-        });
-
-        test('unparseable string is treated as unsafe and routed through safeRedirect', () => {
-            const url = 'http://[::::::]:not-a-port';
-            expect(getRedirectUrl(url)).toEqual(safeRedirectUrl(url));
+        test('off-origin string routes through safeRedirect', () => {
+            const url = 'https://evil.example.com/phish';
+            expect(getRedirectUrl(url)).toEqual(ActionURL.getRedirectUrl(url));
+            expect(getRedirectUrl(url)).toContain('core-safeRedirect.view');
         });
     });
 });

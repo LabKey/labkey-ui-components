@@ -49,6 +49,10 @@
     margin-right: 8px;
     white-space: nowrap;
 }
+.grid-panel__row-checkbox[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
 
 .grid-panel__col-header-icon {
     color: $brand-secondary;

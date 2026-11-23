@@ -3,6 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useMemo } from 'react';
+import classNames from 'classnames';
 
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 import { RequiresModelAndActions } from './withQueryModels';
@@ -15,12 +16,15 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
     const maxSelectionSize = moduleContext?.query?.maxQuerySelection;
 
     const clearSelections = useCallback((): void => {
-        actions.clearSelections(model.id);
-    }, [actions, model.id]);
+        if (!isLoadingSelections) actions.clearSelections(model.id);
+    }, [actions, isLoadingSelections, model.id]);
 
     const selectAll = useCallback((): void => {
-        actions.selectAllRows(model.id);
-    }, [actions, model.id]);
+        if (!isLoadingSelections) actions.selectAllRows(model.id);
+    }, [actions, isLoadingSelections, model.id]);
+
+    // aria-disabled, unlike disabled, keeps focus on the button while the selection change it started saves
+    const buttonClassName = classNames('btn btn-default btn-xs', { disabled: isLoadingSelections });
 
     const clearText = useMemo((): string => {
         let text = 'Clear';
@@ -62,8 +66,8 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         clearAllButton = (
             <span className="selection-status__clear-all">
                 <button
-                    className="btn btn-default btn-xs"
-                    disabled={isLoadingSelections}
+                    aria-disabled={isLoadingSelections}
+                    className={buttonClassName}
                     onClick={clearSelections}
                     type="button"
                 >
@@ -83,8 +87,8 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         selectAllButton = (
             <span className="selection-status__select-all">
                 <button
-                    className="btn btn-default btn-xs"
-                    disabled={isLoadingSelections}
+                    aria-disabled={isLoadingSelections}
+                    className={buttonClassName}
                     onClick={selectAll}
                     type="button"
                 >

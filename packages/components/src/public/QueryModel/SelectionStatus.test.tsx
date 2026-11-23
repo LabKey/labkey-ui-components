@@ -3,6 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
+import userEvent from '@testing-library/user-event';
 
 import { SchemaQuery } from '../SchemaQuery';
 
@@ -45,19 +46,36 @@ describe('SelectionStatus', () => {
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 1 selected');
     });
 
-    test('selections loading keeps the status with its buttons disabled', () => {
+    test('selections loading keeps the status with its buttons focusable but inert', async () => {
+        const actions = makeTestActions(jest.fn);
         const model = MODEL_LOADED.mutate({ rowCount: 21, selectionsLoadingState: LoadingState.LOADING });
-        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
+        renderWithAppContext(<SelectionStatus actions={actions} model={model} />, APP_CONTEXT);
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 21 selected');
-        expect(document.querySelector('.selection-status__clear-all button')).toBeDisabled();
-        expect(document.querySelector('.selection-status__select-all button')).toBeDisabled();
+
+        const clearButton = document.querySelector('.selection-status__clear-all button');
+        const selectAllButton = document.querySelector('.selection-status__select-all button');
+        expect(clearButton).toHaveAttribute('aria-disabled', 'true');
+        expect(selectAllButton).toHaveAttribute('aria-disabled', 'true');
+        await userEvent.click(clearButton);
+        await userEvent.click(selectAllButton);
+        expect(actions.clearSelections).not.toHaveBeenCalled();
+        expect(actions.selectAllRows).not.toHaveBeenCalled();
+        expect(selectAllButton).toHaveFocus();
     });
 
-    test('selections loaded enables the buttons', () => {
+    test('selections loaded enables the buttons', async () => {
+        const actions = makeTestActions(jest.fn);
         const model = MODEL_LOADED.mutate({ rowCount: 21 });
-        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
-        expect(document.querySelector('.selection-status__clear-all button')).toBeEnabled();
-        expect(document.querySelector('.selection-status__select-all button')).toBeEnabled();
+        renderWithAppContext(<SelectionStatus actions={actions} model={model} />, APP_CONTEXT);
+
+        const clearButton = document.querySelector('.selection-status__clear-all button');
+        const selectAllButton = document.querySelector('.selection-status__select-all button');
+        expect(clearButton).toHaveAttribute('aria-disabled', 'false');
+        expect(selectAllButton).toHaveAttribute('aria-disabled', 'false');
+        await userEvent.click(clearButton);
+        await userEvent.click(selectAllButton);
+        expect(actions.clearSelections).toHaveBeenCalledTimes(1);
+        expect(actions.selectAllRows).toHaveBeenCalledTimes(1);
     });
 
     test('rows reset', () => {

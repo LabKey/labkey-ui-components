@@ -461,16 +461,19 @@ interface RowSelectCheckboxProps {
 const RowSelectCheckbox: FC<RowSelectCheckboxProps> = memo(({ onSelect, row, selected }) => {
     const disabled = useContext(RowSelectionDisabledContext);
     const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-        (event): void => onSelect(row, event),
-        [onSelect, row]
+        (event): void => {
+            if (!disabled) onSelect(row, event);
+        },
+        [disabled, onSelect, row]
     );
 
+    // aria-disabled, unlike disabled, keeps focus on the checkbox while the selection it started saves
     return (
         <input
+            aria-disabled={disabled}
             aria-label="Select a row"
             checked={selected}
             className="grid-panel__row-checkbox"
-            disabled={disabled}
             onChange={onChange}
             type="checkbox"
         />
@@ -1334,7 +1337,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     />
 
                     <div
-                        aria-busy={isGridBusy(model, allowSelections)}
                         className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-padding': !hasHeader })}
                         ref={this.bodyRef}
                     >
@@ -1375,7 +1377,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             </div>
                         )}
 
+                        {/* Always mounted, since screen readers only announce changes to an existing live region */}
+                        <span className="sr-only" role="status">
+                            {gridIsLoading && loadingMessage}
+                        </span>
+
                         <div
+                            aria-busy={gridIsLoading}
                             className={classNames('grid-panel__grid ', 'grid-panel__lock-left', {
                                 'grid-panel__lock-left-with-checkboxes': allowSelections,
                             })}

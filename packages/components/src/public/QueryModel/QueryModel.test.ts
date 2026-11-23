@@ -580,7 +580,7 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams);
         expect(values).toEqual({
             ...defaultExpected,
-            offset: 40,
+            offset: 2 * DEFAULT_MAX_ROWS,
         });
 
         // Issue 52143: Grid paging parameter in URL is not always respected
@@ -700,20 +700,20 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             ...defaultExpected,
-            offset: 40,
+            offset: 2 * DEFAULT_MAX_ROWS,
         });
 
         // Issue 52143: Grid paging parameter in URL is not always respected
         // Setting page and pageSize should set offset correctly
         searchParams = new URLSearchParams({
             'query.p': '3',
-            'query.pageSize': '100',
+            'query.pageSize': '40',
         });
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             ...defaultExpected,
-            maxRows: 100,
-            offset: 200,
+            maxRows: 40,
+            offset: 80,
         });
 
         // reportId should be honored
@@ -775,7 +775,7 @@ describe('attributesForURLQueryParams', () => {
             'query.testCol~eq=': '1',
             'query.otherCol~neq=': '1',
             'query.p': '3',
-            'query.pageSize': '100',
+            'query.pageSize': '40',
             'query.selectedReportIds': 'db:99',
             'query.sort': '-testCol,otherCol',
             'query.view': 'custom view',
@@ -783,8 +783,8 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             filterArray: expectedFilters,
-            maxRows: 100,
-            offset: 200,
+            maxRows: 40,
+            offset: 80,
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
             selectedReportIds: ['db:99'],
             sorts: expectedSorts,

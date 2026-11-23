@@ -218,7 +218,7 @@ describe('GridPanel', () => {
 
         // Chart menu should be disabled if no charts are present
         expectChartMenuVisible(false);
-        expect(document.querySelector(PAGINATION_INFO_SELECTOR)).toHaveTextContent('1 - 20 of 661');
+        expect(document.querySelector(PAGINATION_INFO_SELECTOR)).toHaveTextContent('1 - 100 of 661');
         expect(document.querySelector(PAGINATION_SELECTOR)).toBeInTheDocument();
         expect(document.querySelector(EXPORT_MENU_SELECTOR)).toBeInTheDocument();
         expect(document.querySelector(FILTER_STATUS_SELECTOR)).toBeInTheDocument();

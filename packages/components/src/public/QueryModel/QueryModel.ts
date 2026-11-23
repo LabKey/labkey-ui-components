@@ -261,7 +261,7 @@ export interface QueryConfig {
 }
 
 export const DEFAULT_OFFSET = 0;
-export const DEFAULT_MAX_ROWS = 20;
+export const DEFAULT_MAX_ROWS = 100;
 // Cap the pagination count so a large grid's COUNT(*) is fixed-cost; above this the grid shows "100,000+". 0 counts exactly.
 export const DEFAULT_MAX_COUNT = 100000;
 

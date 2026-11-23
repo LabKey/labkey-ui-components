@@ -24,6 +24,7 @@ describe('SelectionStatus', () => {
         selectionsLoadingState: LoadingState.LOADED,
         rowsLoadingState: LoadingState.LOADED,
         totalCountLoadingState: LoadingState.LOADED,
+        maxRows: 20,
         selections: new Set(['1']),
         rowCount: 1,
     });

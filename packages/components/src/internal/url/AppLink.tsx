@@ -85,7 +85,10 @@ export const AppLink: FC<Props> = memo(props => {
     const { children, onClick, rel: relProp, target: targetProp, targetBlank, to, ...anchorProps } = props;
     const rel = relProp ?? (targetBlank ? URL_REL : undefined);
     const target = targetProp ?? (targetBlank ? TARGET_BLANK : undefined);
-    // Unlike <Link>, which subscribes to the location and re-renders on every navigation, the data router is stable
+    // Unlike <Link>, which subscribes to the location and re-renders on every navigation, the data router is stable.
+    // Grids render one AppLink per row and paging rewrites the URL, so <Link> re-rendered every link on every page.
+    // No public react-router hook returns the router without subscribing to the location, hence the UNSAFE_ context.
+    // Its value only stays stable while <RouterProvider> is given no onError, or a stable one.
     const dataRouter = useContext(UNSAFE_DataRouterContext);
     const router = dataRouter?.router;
 
@@ -107,10 +110,13 @@ export const AppLink: FC<Props> = memo(props => {
 
     const onAppPathClick = useCallback(
         (event: MouseEvent<HTMLAnchorElement>): void => {
+            // The caller's handler runs first and can cancel the navigation by calling preventDefault()
             onClick?.(event);
             if (event.defaultPrevented || !shouldNavigateInApp(event, target)) return;
 
+            // Left to the browser, the hash change becomes a POP navigation, which skips route-leave blockers
             event.preventDefault();
+            // As <Link> does, revisiting the current location replaces its history entry instead of duplicating it
             const replace = createPath(router.state.location) === createPath(parsePath(appPath));
             router.navigate(appPath, { replace });
         },

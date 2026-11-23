@@ -2,11 +2,20 @@
  * Copyright (c) 2025-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import React, { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { createHashRouter, createMemoryRouter, RouterProvider } from 'react-router';
 import { __setAction, __setContainerPath, __setController } from '@labkey/api';
 
 import { AppLink, parseAppPath } from './AppLink';
+
+jest.unmock('react-router');
+
+// In the test environment AppLink skips the in-app anchor these tests cover
+jest.mock('../util/utils', () => ({
+    ...jest.requireActual('../util/utils'),
+    isTestEnv: () => false,
+}));
 
 const TEST_PROJECT = '/My Project';
 const TEST_CHILD = '/My Child';
@@ -205,5 +214,101 @@ describe('AppLink', () => {
         const link = screen.getByRole('link', { name: LINK_TEXT });
         expect(link).not.toHaveAttribute('target');
         expect(link).not.toHaveAttribute('rel');
+    });
+});
+
+describe('AppLink in a data router', () => {
+    const APP_PATH = '/rd/run/533';
+    const OTHER_PATH = '/samples';
+
+    const renderInRouter = (link: ReactNode, initialPath = OTHER_PATH) => {
+        const router = createMemoryRouter(
+            [
+                { element: link, path: OTHER_PATH },
+                { element: link, path: APP_PATH },
+            ],
+            { initialEntries: [initialPath] }
+        );
+        // jsdom lacks the Request a real navigation builds, so only the call is checked
+        const navigate = jest.spyOn(router, 'navigate').mockResolvedValue(undefined);
+        render(<RouterProvider router={router} />);
+        return navigate;
+    };
+
+    // Returns whether the click was left to the browser, then cancels it since jsdom cannot navigate
+    const clickLink = (init?: MouseEventInit): boolean => {
+        let leftToBrowser: boolean;
+        const onWindowClick = (event: MouseEvent): void => {
+            leftToBrowser = !event.defaultPrevented;
+            event.preventDefault();
+        };
+        window.addEventListener('click', onWindowClick);
+        fireEvent.click(screen.getByRole('link', { name: LINK_TEXT }), init);
+        window.removeEventListener('click', onWindowClick);
+        return leftToBrowser;
+    };
+
+    test('href comes from the router history', () => {
+        const router = createHashRouter([{ element: <AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>, path: '*' }]);
+        render(<RouterProvider router={router} />);
+        expect(screen.getByRole('link', { name: LINK_TEXT })).toHaveAttribute('href', `#${APP_PATH}`);
+        router.dispose();
+    });
+
+    test('click navigates through the router', () => {
+        const onClick = jest.fn();
+        const navigate = renderInRouter(
+            <AppLink onClick={onClick} to={`#${APP_PATH}`}>
+                {LINK_TEXT}
+            </AppLink>
+        );
+
+        expect(clickLink()).toBe(false);
+        expect(onClick).toHaveBeenCalledTimes(1);
+        expect(navigate).toHaveBeenCalledWith(APP_PATH, { replace: false });
+    });
+
+    test('click on the current location replaces its history entry', () => {
+        const navigate = renderInRouter(<AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>, APP_PATH);
+
+        expect(clickLink()).toBe(false);
+        expect(navigate).toHaveBeenCalledWith(APP_PATH, { replace: true });
+    });
+
+    test.each<[string, MouseEventInit]>([
+        ['meta', { metaKey: true }],
+        ['ctrl', { ctrlKey: true }],
+        ['shift', { shiftKey: true }],
+        ['alt', { altKey: true }],
+        ['middle button', { button: 1 }],
+    ])('%s click is left to the browser', (_, init) => {
+        const navigate = renderInRouter(<AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>);
+
+        expect(clickLink(init)).toBe(true);
+        expect(navigate).not.toHaveBeenCalled();
+    });
+
+    test('click on a link with a new target is left to the browser', () => {
+        const navigate = renderInRouter(
+            <AppLink targetBlank to={`#${APP_PATH}`}>
+                {LINK_TEXT}
+            </AppLink>
+        );
+
+        expect(clickLink()).toBe(true);
+        expect(navigate).not.toHaveBeenCalled();
+    });
+
+    test('caller can cancel the navigation', () => {
+        const onClick = jest.fn((event: ReactMouseEvent) => event.preventDefault());
+        const navigate = renderInRouter(
+            <AppLink onClick={onClick} to={`#${APP_PATH}`}>
+                {LINK_TEXT}
+            </AppLink>
+        );
+
+        clickLink();
+        expect(onClick).toHaveBeenCalledTimes(1);
+        expect(navigate).not.toHaveBeenCalled();
     });
 });

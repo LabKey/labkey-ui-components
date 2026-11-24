@@ -812,4 +812,23 @@ describe('attributesForURLQueryParams', () => {
         values = paramModel.attributesForURLQueryParams(new URLSearchParams(), true);
         expect(values.queryParameters).toEqual({ Foo: 1, Bar: 2 });
     });
+
+    test('pageSize missing from the URL after the page size changed', () => {
+        // Configured with 10 rows, then the user picked 250
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, maxRows: 10 }).mutate({ maxRows: 250 });
+        const page3 = new URLSearchParams({ 'query.p': '3' });
+
+        // Without useExistingValues the URL is the whole state, so the configured page size applies
+        expect(model.attributesForURLQueryParams(new URLSearchParams())).toMatchObject({ maxRows: 10 });
+        expect(model.attributesForURLQueryParams(page3)).toMatchObject({ maxRows: 10, offset: 20 });
+
+        // With useExistingValues the current page size is kept
+        expect(model.attributesForURLQueryParams(new URLSearchParams(), true)).toMatchObject({ maxRows: 250 });
+        expect(model.attributesForURLQueryParams(page3, true)).toMatchObject({ maxRows: 250, offset: 500 });
+
+        // A URL pageSize wins either way
+        const pageSize = new URLSearchParams({ 'query.p': '3', 'query.pageSize': '40' });
+        expect(model.attributesForURLQueryParams(pageSize)).toMatchObject({ maxRows: 40, offset: 80 });
+        expect(model.attributesForURLQueryParams(pageSize, true)).toMatchObject({ maxRows: 40, offset: 80 });
+    });
 });

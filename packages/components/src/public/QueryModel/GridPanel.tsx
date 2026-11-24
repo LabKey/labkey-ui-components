@@ -498,12 +498,12 @@ interface GridColumnsCache {
     viewName: string;
 }
 
-/**
- * Render a QueryModel as an interactive grid. For in-depth documentation and examples see components/docs/QueryModel.md.
- */
 const isGridBusy = (model: QueryModel, allowSelections: boolean): boolean =>
     model.isLoading || (allowSelections && model.isLoadingSelections);
 
+/**
+ * Render a QueryModel as an interactive grid. For in-depth documentation and examples see components/docs/QueryModel.md.
+ */
 export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     static defaultProps = {
         allowSelections: true,

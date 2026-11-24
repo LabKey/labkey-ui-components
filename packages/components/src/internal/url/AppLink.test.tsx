@@ -3,8 +3,9 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { createHashRouter, createMemoryRouter, RouterProvider } from 'react-router';
+// @ts-expect-error These helpers exist only in the Jest mock, not the package's types
 import { __setAction, __setContainerPath, __setController } from '@labkey/api';
 
 import { AppLink, parseAppPath } from './AppLink';
@@ -221,13 +222,28 @@ describe('AppLink in a data router', () => {
     const APP_PATH = '/rd/run/533';
     const OTHER_PATH = '/samples';
 
+    let routers: ReturnType<typeof createMemoryRouter>[] = [];
+    const trackRouter = <R extends ReturnType<typeof createMemoryRouter>>(router: R): R => {
+        routers.push(router);
+        return router;
+    };
+
+    afterEach(() => {
+        // Unmount before disposing, so no RouterProvider is left subscribed to a disposed router
+        cleanup();
+        routers.forEach(router => router.dispose());
+        routers = [];
+    });
+
     const renderInRouter = (link: ReactNode, initialPath = OTHER_PATH) => {
-        const router = createMemoryRouter(
-            [
-                { element: link, path: OTHER_PATH },
-                { element: link, path: APP_PATH },
-            ],
-            { initialEntries: [initialPath] }
+        const router = trackRouter(
+            createMemoryRouter(
+                [
+                    { element: link, path: OTHER_PATH },
+                    { element: link, path: APP_PATH },
+                ],
+                { initialEntries: [initialPath] }
+            )
         );
         // jsdom lacks the Request a real navigation builds, so only the call is checked
         const navigate = jest.spyOn(router, 'navigate').mockResolvedValue(undefined);
@@ -243,16 +259,37 @@ describe('AppLink in a data router', () => {
             event.preventDefault();
         };
         window.addEventListener('click', onWindowClick);
-        fireEvent.click(screen.getByRole('link', { name: LINK_TEXT }), init);
-        window.removeEventListener('click', onWindowClick);
+        try {
+            fireEvent.click(screen.getByRole('link', { name: LINK_TEXT }), init);
+        } finally {
+            window.removeEventListener('click', onWindowClick);
+        }
         return leftToBrowser;
     };
 
     test('href comes from the router history', () => {
-        const router = createHashRouter([{ element: <AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>, path: '*' }]);
+        const router = trackRouter(
+            createHashRouter([{ element: <AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>, path: '*' }])
+        );
         render(<RouterProvider router={router} />);
         expect(screen.getByRole('link', { name: LINK_TEXT })).toHaveAttribute('href', `#${APP_PATH}`);
-        router.dispose();
+    });
+
+    test('relative path resolves against the current route', () => {
+        renderInRouter(<AppLink to="#run/533">{LINK_TEXT}</AppLink>);
+        expect(screen.getByRole('link', { name: LINK_TEXT })).toHaveAttribute('href', `${OTHER_PATH}/run/533`);
+    });
+
+    test('href includes the router basename', () => {
+        const link = <AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>;
+        const router = trackRouter(
+            createMemoryRouter([{ element: link, path: OTHER_PATH }], {
+                basename: '/app',
+                initialEntries: [`/app${OTHER_PATH}`],
+            })
+        );
+        render(<RouterProvider router={router} />);
+        expect(screen.getByRole('link', { name: LINK_TEXT })).toHaveAttribute('href', `/app${APP_PATH}`);
     });
 
     test('click navigates through the router', () => {
@@ -307,7 +344,7 @@ describe('AppLink in a data router', () => {
             </AppLink>
         );
 
-        clickLink();
+        expect(clickLink()).toBe(false);
         expect(onClick).toHaveBeenCalledTimes(1);
         expect(navigate).not.toHaveBeenCalled();
     });

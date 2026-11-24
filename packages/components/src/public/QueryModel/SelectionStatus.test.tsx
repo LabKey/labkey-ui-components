@@ -63,21 +63,6 @@ describe('SelectionStatus', () => {
         expect(selectAllButton).toHaveFocus();
     });
 
-    test('selections loaded enables the buttons', async () => {
-        const actions = makeTestActions(jest.fn);
-        const model = MODEL_LOADED.mutate({ rowCount: 21 });
-        renderWithAppContext(<SelectionStatus actions={actions} model={model} />, APP_CONTEXT);
-
-        const clearButton = document.querySelector('.selection-status__clear-all button');
-        const selectAllButton = document.querySelector('.selection-status__select-all button');
-        expect(clearButton).toHaveAttribute('aria-disabled', 'false');
-        expect(selectAllButton).toHaveAttribute('aria-disabled', 'false');
-        await userEvent.click(clearButton);
-        await userEvent.click(selectAllButton);
-        expect(actions.clearSelections).toHaveBeenCalledTimes(1);
-        expect(actions.selectAllRows).toHaveBeenCalledTimes(1);
-    });
-
     test('rows reset', () => {
         const model = MODEL_LOADED.mutate({ rows: undefined, rowsLoadingState: LoadingState.LOADING });
         renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />);
@@ -129,12 +114,10 @@ describe('SelectionStatus', () => {
         expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(0);
     });
 
-    test('has selections, rowCount greater than maxRows', () => {
+    test('has selections, rowCount greater than maxRows', async () => {
+        const actions = makeTestActions(jest.fn);
         const model = MODEL_LOADED.mutate({ rowCount: 21 });
-        renderWithAppContext(
-            <SelectionStatus actions={ACTIONS} model={model} />,
-            APP_CONTEXT
-        );
+        renderWithAppContext(<SelectionStatus actions={actions} model={model} />, APP_CONTEXT);
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(1);
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 21 selected');
@@ -142,6 +125,15 @@ describe('SelectionStatus', () => {
         expect(document.querySelector('.selection-status__clear-all')).toHaveTextContent('Clear');
         expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(1);
         expect(document.querySelector('.selection-status__select-all')).toHaveTextContent('Select all 21');
+
+        const clearButton = document.querySelector('.selection-status__clear-all button');
+        const selectAllButton = document.querySelector('.selection-status__select-all button');
+        expect(clearButton).toHaveAttribute('aria-disabled', 'false');
+        expect(selectAllButton).toHaveAttribute('aria-disabled', 'false');
+        await userEvent.click(clearButton);
+        await userEvent.click(selectAllButton);
+        expect(actions.clearSelections).toHaveBeenCalledTimes(1);
+        expect(actions.selectAllRows).toHaveBeenCalledTimes(1);
     });
 
     test('has selections, rowCount greater than large maxRows', () => {

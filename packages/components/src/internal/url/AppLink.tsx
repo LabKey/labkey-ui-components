@@ -102,10 +102,12 @@ export const AppLink: FC<Props> = memo(props => {
         return undefined;
     }, [to]);
 
+    // The hand-built href resolves neither relative paths nor a basename, so <Link> handles those
+    const isPlainAppPath = !!router && !!appPath?.startsWith('/') && (router.basename ?? '/') === '/';
+
     const appHref = useMemo<string | undefined>(
-        () =>
-            appPath && dataRouter ? getHrefPrefix(dataRouter.navigator) + createPath(parsePath(appPath)) : undefined,
-        [appPath, dataRouter]
+        () => (isPlainAppPath ? getHrefPrefix(dataRouter.navigator) + createPath(parsePath(appPath)) : undefined),
+        [appPath, dataRouter, isPlainAppPath]
     );
 
     const onAppPathClick = useCallback(
@@ -126,7 +128,7 @@ export const AppLink: FC<Props> = memo(props => {
     // React Router <Link> components render as empty strings in the test environment, so we force them to render as
     // anchor tags in our tests.
     if (appPath && !isTestEnv()) {
-        if (router) {
+        if (isPlainAppPath) {
             return (
                 <a {...anchorProps} href={appHref} onClick={onAppPathClick} rel={rel} target={target}>
                     {children}

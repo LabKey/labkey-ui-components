@@ -50,9 +50,9 @@ describe('PageMenu', () => {
         expect(screen.getByText(pageCount)).toBeInTheDocument();
 
         for (const pageSize of props.pageSizes) {
-            expect(screen.getByText(pageSize.toLocaleString())).toBeInTheDocument();
-
-            if (props.pageSize === pageSize) expect(screen.getByText(pageSize).parentElement).toHaveClass('active');
+            const item = screen.getByText(pageSize.toLocaleString()).parentElement;
+            if (props.pageSize === pageSize) expect(item).toHaveClass('active');
+            else expect(item).not.toHaveClass('active');
         }
     };
 
@@ -68,6 +68,10 @@ describe('PageMenu', () => {
 
         rerender(<PageMenu {...props} currentPage={34} isLastPage />);
         expectPageMenuItems(false, false, true, '34', '34 Total Pages');
+
+        props = { ...props, pageSize: 1000 };
+        rerender(<PageMenu {...props} />);
+        expectPageMenuItems(false, false, false, '2', '34 Total Pages');
     });
 
     test('capped rowCount keeps "Last Page" enabled and drops the total-pages footer', () => {

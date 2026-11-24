@@ -60,20 +60,20 @@ DisabledSelectionMenuItem.displayName = 'DisabledSelectionMenuItem';
 export const SelectionMenuItem: FC<Props> = props => {
     const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, popoverPlacement, queryModel, text } = props;
     const selectionSize = queryModel?.selections?.size;
-    const { tooFewSelected, tooManySelected } = useMemo(
-        () => ({
-            tooFewSelected: selectionSize !== undefined && selectionSize === 0,
-            tooManySelected: selectionSize !== undefined && selectionSize > maxSelection,
-        }),
-        [maxSelection, selectionSize]
-    );
-    const disabled = tooFewSelected || tooManySelected;
+    let disabledMessage: string;
 
-    if (disabled) {
-        const message = tooFewSelected
-            ? `Select one or more ${nounPlural}.`
-            : maxSelectionDisabledMsg || `At most ${maxSelection?.toLocaleString()} ${nounPlural} can be selected.`;
-        return <DisabledSelectionMenuItem message={message} popoverPlacement={popoverPlacement} text={text} />;
+    // Until selections load, the action has nothing to act on
+    if (selectionSize === undefined && queryModel?.isLoadingSelections) {
+        disabledMessage = 'Loading selections...';
+    } else if (!selectionSize) {
+        disabledMessage = `Select one or more ${nounPlural}.`;
+    } else if (selectionSize > maxSelection) {
+        disabledMessage =
+            maxSelectionDisabledMsg || `At most ${maxSelection?.toLocaleString()} ${nounPlural} can be selected.`;
+    }
+
+    if (disabledMessage) {
+        return <DisabledSelectionMenuItem message={disabledMessage} popoverPlacement={popoverPlacement} text={text} />;
     }
 
     return (

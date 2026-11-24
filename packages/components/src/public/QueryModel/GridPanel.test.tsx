@@ -250,26 +250,35 @@ describe('GridPanel', () => {
         expect(rowCheckbox()).toHaveFocus();
     });
 
-    test('header select checkbox follows loading state', () => {
+    test('header select checkbox stays focusable but ignores input while loading', async () => {
         const { rows, orderedRows, rowCount } = DATA;
-        const pageCheckbox = (): HTMLElement => document.querySelector('.grid-panel__page-checkbox');
+        const pageCheckbox = (): HTMLInputElement => document.querySelector('.grid-panel__page-checkbox');
         const loaded = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({
             selections: new Set(),
             selectionsLoadingState: LoadingState.LOADED,
         });
+        const testActions = makeTestActions(jest.fn);
 
-        const { rerender } = renderWithAppContext(<GridPanel actions={actions} model={loaded} />);
-        expect(pageCheckbox()).toBeEnabled();
+        const { rerender } = renderWithAppContext(<GridPanel actions={testActions} model={loaded} />);
+        expect(pageCheckbox()).not.toHaveAttribute('aria-disabled');
+        await userEvent.click(pageCheckbox());
+        expect(testActions.selectPage).toHaveBeenCalledTimes(1);
 
         rerender(
-            <GridPanel actions={actions} model={loaded.mutate({ selectionsLoadingState: LoadingState.LOADING })} />
+            <GridPanel actions={testActions} model={loaded.mutate({ selectionsLoadingState: LoadingState.LOADING })} />
         );
-        expect(pageCheckbox()).toBeDisabled();
+        expect(pageCheckbox()).toHaveAttribute('aria-disabled', 'true');
+        expect(pageCheckbox()).toBeEnabled();
+        await userEvent.click(pageCheckbox());
+        expect(testActions.selectPage).toHaveBeenCalledTimes(1);
+        expect(pageCheckbox()).toHaveFocus();
 
-        rerender(<GridPanel actions={actions} model={loaded} />);
+        rerender(<GridPanel actions={testActions} model={loaded.mutate({ rowsLoadingState: LoadingState.LOADING })} />);
+        expect(pageCheckbox()).toHaveAttribute('aria-disabled', 'true');
         expect(pageCheckbox()).toBeEnabled();
 
-        rerender(<GridPanel actions={actions} model={loaded.mutate({ rowsLoadingState: LoadingState.LOADING })} />);
+        // Nothing to select, so the checkbox is natively disabled
+        rerender(<GridPanel actions={testActions} model={loaded.mutate({ rowCount: 0 })} />);
         expect(pageCheckbox()).toBeDisabled();
     });
 

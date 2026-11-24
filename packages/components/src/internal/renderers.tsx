@@ -5,6 +5,7 @@
 import classNames from 'classnames';
 import React, {
     ChangeEvent,
+    ChangeEventHandler,
     CSSProperties,
     Dispatch,
     FC,
@@ -484,14 +485,16 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 HeaderCellDropdown.displayName = 'HeaderCellDropdown';
 
 interface HeaderSelectionCellProps {
+    // Ignores input but, unlike disabled, keeps focus on the checkbox while the change it started is saved
+    busy?: boolean;
     className?: string;
     disabled: boolean;
-    handleSelection: React.ChangeEventHandler<HTMLInputElement>;
+    handleSelection: ChangeEventHandler<HTMLInputElement>;
     selectedState: GRID_CHECKBOX_OPTIONS;
 }
 
 export const HeaderSelectionCell: FC<HeaderSelectionCellProps> = memo(props => {
-    const { className, disabled, handleSelection, selectedState } = props;
+    const { busy, className, disabled, handleSelection, selectedState } = props;
     const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
     const checkboxRef = useRef<HTMLInputElement>(undefined);
 
@@ -501,13 +504,21 @@ export const HeaderSelectionCell: FC<HeaderSelectionCellProps> = memo(props => {
         }
     }, [isIndeterminate]);
 
+    const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+        event => {
+            if (!busy) handleSelection(event);
+        },
+        [busy, handleSelection]
+    );
+
     return (
         <input
+            aria-disabled={busy || undefined}
             aria-label="Select all rows on page"
             checked={selectedState === GRID_CHECKBOX_OPTIONS.ALL}
             className={className}
             disabled={disabled}
-            onChange={handleSelection}
+            onChange={onChange}
             ref={checkboxRef}
             type="checkbox"
         />

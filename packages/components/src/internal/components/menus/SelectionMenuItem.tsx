@@ -6,6 +6,7 @@ import React, { FC, useMemo } from 'react';
 
 import { createPortal } from 'react-dom';
 
+import { LoadingState } from '../../../public/LoadingState';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { MenuItem } from '../../dropdowns';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
@@ -48,8 +49,17 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({
         ),
         [message, popoverPlacement, targetRef]
     );
+    // Keyboard and screen reader users get the reason via focus and aria-description, not just hover
     return (
-        <MenuItem disabled onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={targetRef}>
+        <MenuItem
+            aria-description={message}
+            disabled
+            onBlur={onMouseLeave}
+            onFocus={onMouseEnter}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            ref={targetRef}
+        >
             {text}
             {show && createPortal(overlay, portalEl)}
         </MenuItem>
@@ -62,10 +72,14 @@ export const SelectionMenuItem: FC<Props> = props => {
     const selectionSize = queryModel?.selections?.size;
     let disabledMessage: string;
 
-    // Until selections load, the action has nothing to act on
-    if (selectionSize === undefined && queryModel?.isLoadingSelections) {
-        disabledMessage = 'Loading selections...';
-    } else if (!selectionSize) {
+    // Selections that were never requested leave the item enabled, since not every caller loads them
+    if (selectionSize === undefined) {
+        if (queryModel?.selectionsLoadingState === LoadingState.LOADING) {
+            disabledMessage = 'Loading selections...';
+        } else if (queryModel?.selectionsError) {
+            disabledMessage = `Select one or more ${nounPlural}.`;
+        }
+    } else if (selectionSize === 0) {
         disabledMessage = `Select one or more ${nounPlural}.`;
     } else if (selectionSize > maxSelection) {
         disabledMessage =

@@ -23,7 +23,6 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         if (!isLoadingSelections) actions.selectAllRows(model.id);
     }, [actions, isLoadingSelections, model.id]);
 
-    // aria-disabled, unlike disabled, keeps focus on the button while the selection change it started saves
     const buttonClassName = classNames('btn btn-default btn-xs', { disabled: isLoadingSelections });
 
     const clearText = useMemo((): string => {
@@ -66,6 +65,7 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         clearAllButton = (
             <span className="selection-status__clear-all">
                 <button
+                    // aria-disabled, unlike disabled, keeps focus on the button while the selection change it started saves
                     aria-disabled={isLoadingSelections}
                     className={buttonClassName}
                     onClick={clearSelections}

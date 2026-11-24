@@ -1127,7 +1127,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { orderedRows, rows, selections } = model;
         const cache = this.gridDataCache;
 
-        if (cache?.orderedRows !== orderedRows || cache.rows !== rows || cache.selections !== selections) {
+        if (!cache || cache.orderedRows !== orderedRows || cache.rows !== rows || cache.selections !== selections) {
             this.gridDataCache = { orderedRows, rows, selections, value: model.gridData };
         }
 
@@ -1140,7 +1140,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const cache = this.gridColumnsCache;
 
         if (
-            cache?.allowSelections !== allowSelections ||
+            !cache ||
+            cache.allowSelections !== allowSelections ||
             cache.omittedColumns !== omittedColumns ||
             cache.queryInfo !== queryInfo ||
             cache.viewName !== viewName
@@ -1230,8 +1231,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (column.index === GRID_SELECTION_INDEX) {
             return (
                 <HeaderSelectionCell
+                    busy={isLoadingSelections || isLoading}
                     className="grid-panel__page-checkbox"
-                    disabled={isLoadingSelections || isLoading || (hasRows && rowCount === 0)}
+                    disabled={hasRows && rowCount === 0}
                     handleSelection={this.selectPage}
                     selectedState={model.selectedState}
                 />

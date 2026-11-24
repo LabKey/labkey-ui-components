@@ -11,6 +11,13 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { SelectionMenuItem } from './SelectionMenuItem';
 
+const getDisabledMessage = (): string => {
+    const menuItem = screen.getByRole('presentation');
+    expect(menuItem).toHaveClass('disabled');
+    fireEvent.mouseEnter(menuItem);
+    return document.querySelector('.popover-content').textContent;
+};
+
 describe('SelectionMenuItem', () => {
     test('without selections', () => {
         const text = 'Menu Item Text';
@@ -21,25 +28,53 @@ describe('SelectionMenuItem', () => {
 
         render(<SelectionMenuItem nounPlural="items" onClick={jest.fn()} queryModel={model} text={text} />);
 
-        const menuItem = screen.getByRole('presentation');
-        expect(menuItem).toHaveTextContent(text);
-        expect(menuItem).toHaveClass('disabled');
+        expect(screen.getByRole('presentation')).toHaveTextContent(text);
+        expect(getDisabledMessage()).toBe('Select one or more items.');
     });
 
     test('while selections load', () => {
-        const onClick = jest.fn();
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             rowCount: 3,
             selections: undefined,
             selectionsLoadingState: LoadingState.LOADING,
         });
 
+        render(<SelectionMenuItem nounPlural="items" onClick={jest.fn()} queryModel={model} text="Menu Item Text" />);
+
+        expect(getDisabledMessage()).toBe('Loading selections...');
+    });
+
+    test('disabled reason reaches keyboard and screen reader users', () => {
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
+            rowCount: 3,
+            selections: new Set(),
+        });
+
+        render(<SelectionMenuItem nounPlural="items" onClick={jest.fn()} queryModel={model} text="Menu Item Text" />);
+
+        const menuItem = screen.getByRole('menuitem');
+        expect(menuItem).toHaveAccessibleDescription('Select one or more items.');
+
+        fireEvent.focus(menuItem);
+        expect(document.querySelector('.popover-content')).toHaveTextContent('Select one or more items.');
+
+        fireEvent.blur(menuItem);
+        expect(document.querySelector('.popover-content')).toBeNull();
+    });
+
+    test('when selections were never requested', () => {
+        const onClick = jest.fn();
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
+            rowCount: 3,
+            selections: undefined,
+            selectionsLoadingState: LoadingState.INITIALIZED,
+        });
+
         render(<SelectionMenuItem nounPlural="items" onClick={onClick} queryModel={model} text="Menu Item Text" />);
 
-        const menuItem = screen.getByRole('presentation');
-        expect(menuItem).toHaveClass('disabled');
-        fireEvent.click(menuItem.querySelector('a'));
-        expect(onClick).not.toHaveBeenCalled();
+        expect(screen.getByRole('presentation')).not.toHaveClass('disabled');
+        fireEvent.click(screen.getByRole('menuitem'));
+        expect(onClick).toHaveBeenCalledTimes(1);
     });
 
     test('when selections failed to load', () => {
@@ -52,7 +87,7 @@ describe('SelectionMenuItem', () => {
 
         render(<SelectionMenuItem nounPlural="items" onClick={jest.fn()} queryModel={model} text="Menu Item Text" />);
 
-        expect(screen.getByRole('presentation')).toHaveClass('disabled');
+        expect(getDisabledMessage()).toBe('Select one or more items.');
     });
 
     test('with selections', () => {
@@ -96,9 +131,8 @@ describe('SelectionMenuItem', () => {
             <SelectionMenuItem maxSelection={2} nounPlural="items" onClick={jest.fn()} queryModel={model} text={text} />
         );
 
-        const menuItem = screen.getByRole('presentation');
-        expect(menuItem).toHaveTextContent(text);
-        expect(menuItem).toHaveClass('disabled');
+        expect(screen.getByRole('presentation')).toHaveTextContent(text);
+        expect(getDisabledMessage()).toBe('At most 2 items can be selected.');
     });
 
     test('with href', () => {

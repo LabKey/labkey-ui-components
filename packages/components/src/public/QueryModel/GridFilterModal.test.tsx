@@ -4,7 +4,7 @@
  */
 import React, { ComponentProps } from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { Filter } from '@labkey/api';
 
@@ -12,8 +12,11 @@ import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { QueryColumn } from '../QueryColumn';
 import { getTestAPIWrapper } from '../../internal/APIWrapper';
+import { getQueryTestAPIWrapper } from '../../internal/query/APIWrapper';
+import { LoadingState } from '../LoadingState';
 
 import { makeTestQueryModel } from './testUtils';
+import { DEFAULT_MAX_COUNT, QueryModel } from './QueryModel';
 import { GridFilterModal } from './GridFilterModal';
 
 describe('GridFilterModal', () => {
@@ -36,6 +39,78 @@ describe('GridFilterModal', () => {
         expect(document.querySelectorAll('button')).toHaveLength(3); // 2 in footer + close icon
         expect(document.querySelectorAll('button')[1].hasAttribute('disabled')).toBe(false); // cancel
         expect(document.querySelectorAll('button')[1].hasAttribute('disabled')).toBe(false); // apply
+    });
+
+    describe('the grid size and the default tab', () => {
+        // Only reachable through the default tab: a large grid opens on Filter
+        const FACETED_FIELD = new QueryColumn({
+            caption: 'Tube Color',
+            facetingBehaviorType: 'AUTOMATIC',
+            fieldKey: 'TubeColor',
+            fieldKeyPath: 'TubeColor',
+            jsonType: 'string',
+            name: 'TubeColor',
+        });
+
+        const activeTab = (): string =>
+            Array.from(document.querySelectorAll<HTMLElement>('li[role="presentation"]')).find(
+                item => item.className === 'active'
+            )?.textContent;
+
+        const countedModel = (rowCount: number, includeTotalCount = true): QueryModel =>
+            DEFAULT_PROPS.model.mutate({
+                includeTotalCount,
+                maxCount: DEFAULT_MAX_COUNT,
+                rowCount,
+                totalCountLoadingState: LoadingState.LOADED,
+            });
+
+        // Resolved by the caller, so a test can observe the dialog before the server's answer lands
+        let releaseSize: () => void;
+
+        const renderModal = async (model: QueryModel, serverSaysLarge = false): Promise<void> => {
+            const size = new Promise(resolve => {
+                releaseSize = () => resolve({ largeTable: serverSaysLarge });
+            });
+            const api = getTestAPIWrapper(jest.fn, {
+                query: getQueryTestAPIWrapper(jest.fn, {
+                    getQuerySize: jest.fn().mockReturnValue(size),
+                    selectDistinctRows: jest.fn().mockResolvedValue({ values: [] }),
+                }),
+            });
+            render(<GridFilterModal {...DEFAULT_PROPS} api={api} fields={[FACETED_FIELD]} model={model} />);
+            await userEvent.click(
+                Array.from(document.querySelectorAll<HTMLElement>('button.list-group-item')).find(
+                    button => button.textContent === 'Tube Color'
+                )
+            );
+        };
+
+        // Which tab to open hinges on the size, so until it is known no tab is chosen at all; picking one and
+        // moving it a moment later is what this avoids.
+        const settle = async (): Promise<void> => {
+            releaseSize();
+            await waitFor(() => expect(activeTab()).toBeDefined());
+        };
+
+        test("a grid its own row count already shows as large opens on Filter without waiting", async () => {
+            await renderModal(countedModel(DEFAULT_MAX_COUNT), false);
+            await waitFor(() => expect(activeTab()).toBe('Filter'));
+        });
+
+        test('a grid only the server knows is large waits, then opens on Filter', async () => {
+            await renderModal(countedModel(20_000), true);
+            expect(activeTab()).toBeUndefined();
+            await settle();
+            await waitFor(() => expect(activeTab()).toBe('Filter'));
+        });
+
+        test('a grid the answer reports small opens on the values tab', async () => {
+            await renderModal(countedModel(20_000), false);
+            expect(activeTab()).toBeUndefined();
+            await settle();
+            await waitFor(() => expect(activeTab()).toBe('Choose values'));
+        });
     });
 
     describe('initialDraft', () => {

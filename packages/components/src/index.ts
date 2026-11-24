@@ -1996,6 +1996,9 @@ export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetai
 export type { Action, ActionValue } from './public/QueryModel/grid/actions/Action';
 export type { QueryConfig, QueryParameters } from './public/QueryModel/QueryModel';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
+export type { QuerySizeRequest } from './public/QueryModel/search/models';
+export { useQuerySize } from './public/QueryModel/search/useQuerySize';
+export type { UseQuerySize } from './public/QueryModel/search/useQuerySize';
 
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

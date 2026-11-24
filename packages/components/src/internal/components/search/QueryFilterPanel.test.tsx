@@ -13,6 +13,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import sampleSetAllFieldTypesQueryInfo from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
+import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 
 import { AssayResultDataType, SamplePropertyDataType } from '../entities/constants';
 
@@ -270,6 +271,85 @@ describe('QueryFilterPanel', () => {
     test('preferFilterTabFieldKey opens the Filter tab for a facetable field', () => {
         render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" preferFilterTabFieldKey="Text" />);
         validate(10, true, false);
+    });
+
+    describe('the default tab and the grid size', () => {
+        test('a small grid opens on Choose values', () => {
+            render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" />);
+            validate(10, false, true);
+        });
+
+        test('a large grid opens on Filter', () => {
+            render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
+            validate(10, true, false);
+        });
+
+        test('a decided tab survives the size going unknown again, so the tabs never unmount', () => {
+            const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" />);
+            validate(10, false, true);
+
+            rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" sizeLoading />);
+            validate(10, false, true);
+        });
+
+        // Picking a tab and moving it once the answer lands is what this avoids
+        test('neither tab is chosen until the size is known', () => {
+            const { rerender } = render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" sizeLoading />);
+            expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
+
+            rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
+            validate(10, true, false);
+        });
+    });
+
+    test('does not query distinct values until the Choose values tab is active', async () => {
+        const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a', 'b'] });
+        const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+
+        // preferFilterTabFieldKey opens a facetable field on the Filter tab, so both tabs exist but Choose values is inactive
+        render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" preferFilterTabFieldKey="Text" />);
+        validate(10, true, false);
+        expect(selectDistinctRows).not.toHaveBeenCalled();
+
+        await userEvent.click(document.querySelectorAll('a[role="tab"]')[1]);
+        await waitFor(() => expect(selectDistinctRows).toHaveBeenCalledTimes(1));
+    });
+
+    test('keeps the values mounted across a tab switch, so going back does not query again', async () => {
+        const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a', 'b'] });
+        const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+
+        render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" preferFilterTabFieldKey="Text" />);
+        const tab = (index: number): Element => document.querySelectorAll('a[role="tab"]')[index];
+
+        await userEvent.click(tab(1));
+        await waitFor(() => expect(selectDistinctRows).toHaveBeenCalledTimes(1));
+
+        // The values and the typed term survive the round trip only if the selector was never unmounted
+        await userEvent.click(tab(0));
+        await userEvent.click(tab(1));
+
+        expect(selectDistinctRows).toHaveBeenCalledTimes(1);
+    });
+
+    test('forgets a field once it is left, so returning does not query behind a hidden tab', async () => {
+        const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a', 'b'] });
+        const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+        const field = (caption: string): HTMLElement =>
+            Array.from(document.querySelectorAll<HTMLElement>('button.list-group-item')).find(
+                button => button.textContent === caption
+            );
+
+        render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" preferFilterTabFieldKey="Text" />);
+
+        await userEvent.click(document.querySelectorAll('a[role="tab"]')[1]);
+        await waitFor(() => expect(selectDistinctRows).toHaveBeenCalledTimes(1));
+
+        // Text reopens on Filter, so its value list must stay unmounted rather than query from the hidden pane
+        await userEvent.click(field('Integer'));
+        await userEvent.click(field('Text'));
+
+        expect(selectDistinctRows).toHaveBeenCalledTimes(1);
     });
 
     test('clicking a field reports it via onActiveFieldChange', async () => {

@@ -71,8 +71,13 @@ import {
 import { executeSql, ExecuteSqlOptions, ExecuteSqlResponse } from './executeSql';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 import { EDIT_METHOD } from '../constants';
-import { getFilterSuggestions } from '../../public/QueryModel/search/actions';
-import { FilterSuggestionsRequest, FilterSuggestionsResponse } from '../../public/QueryModel/search/models';
+import { getFilterSuggestions, getQuerySize } from '../../public/QueryModel/search/actions';
+import {
+    FilterSuggestionsRequest,
+    FilterSuggestionsResponse,
+    QuerySizeRequest,
+    QuerySizeResponse,
+} from '../../public/QueryModel/search/models';
 
 export interface QueryAPIWrapper {
     clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
@@ -113,6 +118,7 @@ export interface QueryAPIWrapper {
         includeHidden?: boolean
     ) => Promise<ViewInfo[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
+    getQuerySize: (request: QuerySizeRequest) => Promise<QuerySizeResponse>;
     getServerDate: () => Promise<Date>;
     getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>; // deprecated
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
@@ -185,6 +191,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     executeSql = executeSql;
     getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptionsWithExclusions;
+    getQuerySize = getQuerySize;
     getFilterSuggestions = getFilterSuggestions;
     getGridViews = getGridViews;
     getFolderConfigurableEntityTypeOptions = getFolderConfigurableEntityTypeOptions;
@@ -227,6 +234,7 @@ export function getQueryTestAPIWrapper(
         executeSql: mockFn(),
         getDataTypeFolderDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),
+        getQuerySize: mockFn(),
         getFilterSuggestions: mockFn(),
         getGridViews: mockFn(),
         getFolderConfigurableEntityTypeOptions: mockFn(),

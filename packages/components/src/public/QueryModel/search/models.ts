@@ -91,3 +91,15 @@ export interface FilterSuggestionsResponse {
     complete: boolean;
     suggestions: FilterSuggestion[];
 }
+
+/** The estimate covers the whole table, so it needs no view, columns, filters or container scope. */
+export interface QuerySizeRequest {
+    containerPath?: string;
+    queryName: string;
+    schemaName: string;
+}
+
+export interface QuerySizeResponse {
+    // The table behind the query is too big for any grid to list a column's values from speculatively
+    largeTable?: boolean;
+}

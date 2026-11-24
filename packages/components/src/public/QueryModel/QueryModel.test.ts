@@ -557,6 +557,14 @@ describe('urlQueryParams', () => {
         expect(defaultModel.mutate({ maxRows: 40 }).urlQueryParams).toEqual({ 'test.pageSize': '40' });
     });
 
+    test('a model spread into a config keeps its page size on the URL', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, urlPrefix: 'test' }).mutate({ maxRows: 40 });
+        // withQueryModels builds each model this way, e.g. when a nested grid registers its caller's model
+        const copy = new QueryModel({ id: 'copy', ...model });
+        expect(copy.defaultMaxRows).toEqual(DEFAULT_MAX_ROWS);
+        expect(copy.urlQueryParams).toEqual(model.urlQueryParams);
+    });
+
     test('config query parameters are not bound', () => {
         const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, queryParameters: { Foo: 1 }, urlPrefix: 'test' });
         expect(model.bindURLQueryParameters).toBe(false);

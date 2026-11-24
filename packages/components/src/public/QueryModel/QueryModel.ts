@@ -160,6 +160,11 @@ export interface QueryConfig {
      */
     containerPath?: string;
     /**
+     * The page size a bound URL omits (defaults to maxRows). A model spread into a config carries its own, so the copy
+     * doesn't drop the original model's page size from the URL.
+     */
+    defaultMaxRows?: number;
+    /**
      * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
      * they keyValue filter, and view filters when applicable.
@@ -547,7 +552,7 @@ export class QueryModel {
         this.keyValue = queryConfig.keyValue;
         this.maxCount = queryConfig.maxCount ?? DEFAULT_MAX_COUNT;
         this.maxRows = queryConfig.maxRows ?? DEFAULT_MAX_ROWS;
-        this.defaultMaxRows = this.maxRows;
+        this.defaultMaxRows = queryConfig.defaultMaxRows ?? this.maxRows;
         this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
         this.omittedColumns = queryConfig.omittedColumns ?? [];
         this.queryParameters = queryConfig.queryParameters;

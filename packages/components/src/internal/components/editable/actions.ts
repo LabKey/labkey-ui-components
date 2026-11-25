@@ -22,6 +22,7 @@ import {
     parseScientificInt,
     quoteValueWithDelimiters,
     splitMultiValueForImport,
+    splitTsvKeepingCellQuotes,
 } from '../../util/utils';
 
 import { getContainerFilterForLookups } from '../../query/api';
@@ -1453,36 +1454,24 @@ function parsePaste(value: string): ParsePastePayload {
     }
 
     // remove trailing newline from pasted data to avoid creating an empty row of cells
-    if (value.endsWith('\n')) value = value.substring(0, value.length - 1);
+    value = value.replace(/\r?\n$/, '');
 
-    if (value.indexOf('"') === -1 || isSimpleQuotedMultiLine(value)) {
-        // Use PapaParse for TSV parsing when the value contains no quotes (safe — no quoting ambiguity)
-        // or is a simple quoted multi-line value (e.g., a single multi-line cell copied from the grid).
-        // Otherwise, fall back to manual line/tab splitting to preserve quote characters for
-        // per-cell multi-value parsing (MVFK/MVTC columns).
-        const rows = Papa.parse(value, { delimiter: '\t' }).data;
-        if (!rows || rows.length === 0) {
-            return { data, numCols, numRows: 0 };
+    // Use PapaParse for TSV parsing when the value contains no quotes (safe — no quoting ambiguity)
+    // or is a simple quoted multi-line value (e.g., a single multi-line cell copied from the grid).
+    // Otherwise keep each cell's quotes: PapaParse would strip them, making it impossible to distinguish
+    // a comma in a value from a multi-value (MVFK/MVTC) delimiter.
+    const rows: string[][] =
+        value.indexOf('"') === -1 || isSimpleQuotedMultiLine(value)
+            ? Papa.parse(value, { delimiter: '\t' }).data ?? []
+            : splitTsvKeepingCellQuotes(value);
+
+    rows.forEach(row => {
+        const columns = List<string>(row);
+        if (numCols < columns.size) {
+            numCols = columns.size;
         }
-
-        rows.forEach(row => {
-            const columns: List<string> = List(row);
-            if (numCols < columns.size) {
-                numCols = columns.size;
-            }
-            data = data.push(columns);
-        });
-    } else {
-        // fall back to line by line processing without parsing, to preserve quotes for each cell, so multi-value fields (MVFK, MVTC) can be parsed correctly.
-        // Otherwise, PapaParse will strip quotes, making it impossible to distinguish between a comma that is part of the value vs a comma that is a delimiter for multi-value fields.
-        value.split('\n').forEach(rv => {
-            const columns = List(rv.split('\t'));
-            if (numCols < columns.size) {
-                numCols = columns.size;
-            }
-            data = data.push(columns);
-        });
-    }
+        data = data.push(columns);
+    });
 
     // Normalize the number columns in each row in case a user pasted rows with different numbers of columns in them
     data = data
@@ -1629,8 +1618,7 @@ async function insertPastedData(
                     let valToValidate = val;
                     if (Utils.isString(val)) {
                         const isMultiLinePasting = NEWLINE_CHARS.find(char => valToValidate.indexOf(char) > -1);
-                        // The only case that newline charaxcters would be preserved here is if parsePaste used Papa.parse to parse the tsv,
-                        // in which case extra qutoes are already removed by Papa.parse, so no need for extra parsing.
+                        // parsePaste only keeps newlines in a cell after unquoting it, so no need for extra parsing.
                         if (!isMultiLinePasting) {
                             // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
                             // generateColumnFillValues/getCopyValue uses joinMultiValueForExport to prepare copied value, needs to remove the extra quotes before validating

@@ -33,6 +33,7 @@ jest.mock('./actions', () => ({
 }));
 
 const DEFAULT_PROPS = {
+    allowTextChoiceValueRenames: true,
     index: 1,
     domainIndex: 1,
     domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,

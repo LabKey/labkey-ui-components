@@ -137,6 +137,7 @@ interface IDomainDesign {
     allowMultiChoiceProperties: boolean;
     allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
+    allowTextChoiceValueRenames: boolean;
     allowTimepointProperties: boolean;
     allowUniqueConstraintProperties: boolean;
     allowUserProperties: boolean;
@@ -171,6 +172,7 @@ export class DomainDesign
         allowAttachmentProperties: false,
         allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
+        allowTextChoiceValueRenames: true,
         allowMultiChoiceProperties: true,
         allowTimepointProperties: false,
         allowUniqueConstraintProperties: false,
@@ -202,6 +204,7 @@ export class DomainDesign
     declare allowAttachmentProperties: boolean;
     declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
+    declare allowTextChoiceValueRenames: boolean;
     declare allowMultiChoiceProperties: boolean;
     declare allowTimepointProperties: boolean;
     declare allowUniqueConstraintProperties: boolean;

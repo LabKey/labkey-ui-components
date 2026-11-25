@@ -63,6 +63,7 @@ import { Collapsible } from './Collapsible';
 
 export interface DomainRowProps {
     allowMultiChoiceField: boolean;
+    allowTextChoiceValueRenames: boolean;
     allowUniqueConstraintProperties: boolean;
     appPropertiesOnly?: boolean;
     availableTypes: PropDescType[];
@@ -217,7 +218,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
         const value = evt.target.value;
         // set value for the field
-        const nameAndErrorList: IFieldChange[] = [{ id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value }];
+        const nameAndErrorList: IFieldChange[] = [
+            { id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value },
+        ];
 
         // TODO: Why don't we make isLegalName return false if there is a space?
         if (isLegalName(value) && !value.includes(' ')) {
@@ -368,6 +371,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             appPropertiesOnly,
             domainFormDisplayOptions,
             allowMultiChoiceField,
+            allowTextChoiceValueRenames,
             getDomainFields,
             domainContainerPath,
             schemaName,
@@ -555,6 +559,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                             <div>
                                 <DomainRowExpandedOptions
                                     allowMultiChoiceField={allowMultiChoiceField}
+                                    allowTextChoiceValueRenames={allowTextChoiceValueRenames}
                                     appPropertiesOnly={appPropertiesOnly}
                                     domainContainerPath={domainContainerPath}
                                     domainFormDisplayOptions={domainFormDisplayOptions}

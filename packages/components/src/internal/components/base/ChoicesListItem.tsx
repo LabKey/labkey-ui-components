@@ -24,10 +24,11 @@ export const ChoicesListItem: FC<Props> = memo(props => {
 
     return (
         <button
+            aria-current={active || undefined}
             className={classNames('list-group-item', { active })}
+            disabled={disabled}
             onClick={onClick}
             type="button"
-            disabled={disabled}
         >
             {label}
             {subLabel && <span className="choices-list__sub-label">{subLabel}</span>}

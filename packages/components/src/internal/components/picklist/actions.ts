@@ -136,12 +136,13 @@ export async function getPicklistCountsBySampleType(listName: string): Promise<S
         schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
         sql: [
             'SELECT COUNT(*) as ItemCount,',
-            'SampleId.SampleSet.Name AS SampleType,',
-            'SampleId.LabelColor',
-            `FROM ${SCHEMAS.PICKLIST_TABLES.SCHEMA}."${listName}"`,
-            'WHERE SampleId.Name IS NOT NULL',
-            'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor',
-            'ORDER BY SampleId.SampleSet.Name',
+            'm.SampleSet.Name AS SampleType,',
+            'm.SampleSet.LabelColor AS LabelColor',
+            `FROM ${SCHEMAS.PICKLIST_TABLES.SCHEMA}."${listName}" p`,
+            // Kanban Issue 2239: join to exp.material to avoid pulling in SampleId column from inventory.SampleItems
+            'INNER JOIN exp.materials m ON p.SampleID = m.RowId',
+            'GROUP BY m.SampleSet.Name, m.SampleSet.LabelColor',
+            'ORDER BY m.SampleSet.Name',
         ].join('\n'),
     });
 
@@ -292,7 +293,8 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
     if (loadSampleTypes) {
         const result = await executeSql({
             schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-            sql: `SELECT DISTINCT SampleID.SampleSet, SampleID.SampleSet.Category FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
+            // Joins exp.materials rather than traversing the SampleID lookup, for the reason in getPicklistCountsBySampleType
+            sql: `SELECT DISTINCT m.SampleSet, m.SampleSet.Category FROM "${picklist.name}" p INNER JOIN exp.materials m ON p.SampleID = m.RowId`,
         });
 
         picklist = picklist.mutate({

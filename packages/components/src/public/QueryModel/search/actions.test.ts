@@ -6,7 +6,7 @@ import { Filter, Query } from '@labkey/api';
 
 import { request } from '../../../internal/request';
 
-import { getFilterSuggestions } from './actions';
+import { getFilterSuggestions, getQuerySize } from './actions';
 import { FilterSuggestionsRequest, FilterSuggestionsResponse } from './models';
 
 jest.mock('../../../internal/request', () => ({

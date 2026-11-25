@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "rootDir": "src",
+    "outDir": "dist",
     "declaration": true,
     "esModuleInterop": true,
-    "jsx": "react",
     "lib": ["ES2023", "DOM"],
     "moduleResolution": "bundler",
     "resolveJsonModule": true,

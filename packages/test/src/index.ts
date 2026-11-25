@@ -44,6 +44,7 @@ import {
     getAllRows,
     importData
 } from './ExperimentCrudUtils';
+import { mockFile, mockFiles } from './mockFiles';
 
 const ExperimentCRUDUtils = {
     insertRows,
@@ -86,4 +87,6 @@ export {
     generateNamingExpressionConstant,
     generateFieldName,
     getEscapedNameExpression,
+    mockFile,
+    mockFiles,
 };

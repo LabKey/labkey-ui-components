@@ -218,7 +218,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
         const value = evt.target.value;
         // set value for the field
-        const nameAndErrorList: IFieldChange[] = [{ id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value }];
+        const nameAndErrorList: IFieldChange[] = [
+            { id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value },
+        ];
 
         // TODO: Why don't we make isLegalName return false if there is a space?
         if (isLegalName(value) && !value.includes(' ')) {

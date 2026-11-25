@@ -4,7 +4,6 @@
  */
 import React, { ReactNode } from 'react';
 
-
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
 import { DomainField, GetDomainFields, IDomainFormDisplayOptions, IFieldChange } from './models';

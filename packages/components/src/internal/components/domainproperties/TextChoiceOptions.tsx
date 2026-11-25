@@ -469,9 +469,7 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                 setLoading(false);
             }
         },
-        [
-            /* none, only call once on mount*/
-        ]
+        [/* none, only call once on mount*/]
     );
 
     return (

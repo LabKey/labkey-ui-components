@@ -11,8 +11,10 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
 import { handleQueryFailure, RequestHandler } from '../request';
 
-export interface ExecuteSqlOptions
-    extends Omit<Query.ExecuteSqlOptions, 'failure' | 'requiredVersion' | 'scope' | 'success'> {
+export interface ExecuteSqlOptions extends Omit<
+    Query.ExecuteSqlOptions,
+    'failure' | 'requiredVersion' | 'scope' | 'success'
+> {
     requestHandler?: RequestHandler;
 }
 

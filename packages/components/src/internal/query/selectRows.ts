@@ -17,11 +17,10 @@ export interface SelectRowsMessage {
     type?: string;
 }
 
-export interface SelectRowsOptions
-    extends Omit<
-        Query.SelectRowsOptions,
-        'failure' | 'queryName' | 'requiredVersion' | 'schemaName' | 'scope' | 'success'
-    > {
+export interface SelectRowsOptions extends Omit<
+    Query.SelectRowsOptions,
+    'failure' | 'queryName' | 'requiredVersion' | 'schemaName' | 'scope' | 'success'
+> {
     requestHandler?: RequestHandler;
     schemaQuery: SchemaQuery;
 }

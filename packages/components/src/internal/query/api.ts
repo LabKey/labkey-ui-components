@@ -63,9 +63,7 @@ function getQueryDetailsCacheKey(
     return parts.join(QUERY_CACHE_KEY_SEPARATOR);
 }
 
-export function invalidateQueryDetailsCache(
-    schemaQuery: SchemaQuery,
-): void {
+export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery): void {
     const prefix = getQueryDetailsCacheKey(schemaQuery);
     Object.keys(queryDetailsCache).forEach(cacheKey => {
         if (cacheKey.toLowerCase().startsWith(prefix.toLowerCase())) {

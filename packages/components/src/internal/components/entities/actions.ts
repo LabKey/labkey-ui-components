@@ -28,7 +28,7 @@ import {
     getFilterForSampleOperation,
     isSamplesSchema,
     isWorkflowInputSamplesSchema,
-    isWorkflowInputSourcesSchema
+    isWorkflowInputSourcesSchema,
 } from '../samples/utils';
 import { getQueryDetails, getRequestAuditDetail, importData, InsertOptions, selectDistinctRows } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
@@ -1565,7 +1565,7 @@ export function getSampleTypesFromTransactionIds(
 
 export async function getDataClassesFromTransactionIds(
     transactionAuditId: number | string,
-    includeDataRows?: boolean,
+    includeDataRows?: boolean
 ): Promise<DataTypeRowIdsFromTransactionIds> {
     const results = await getDataTypesFromTransactionId(
         transactionAuditId,
@@ -1595,8 +1595,7 @@ export async function getDataClassesFromTransactionIds(
         });
     }
 
-    if (!includeDataRows)
-        return { ...results, typeNameRowCounts };
+    if (!includeDataRows) return { ...results, typeNameRowCounts };
 
     const typeNameRows: Record<string, any[]> = {};
     const dataRows = await selectRows({
@@ -1610,8 +1609,7 @@ export async function getDataClassesFromTransactionIds(
         const dataClass = caseInsensitive(row, 'DataClass/Name')?.value;
         if (dataClass) {
             const rowId = caseInsensitive(row, 'RowId').value;
-            if (!typeNameRows[dataClass])
-                typeNameRows[dataClass] = [];
+            if (!typeNameRows[dataClass]) typeNameRows[dataClass] = [];
             typeNameRows[dataClass].push({ rowId });
         }
     });

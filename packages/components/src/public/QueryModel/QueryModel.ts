@@ -491,6 +491,11 @@ export class QueryModel {
      */
     readonly selectionsLoadingState: LoadingState;
     /**
+     * True when selections still need loading; the next successful rows load fetches them, even one that canceled
+     * and replaced the original (GH Issue 1938).
+     */
+    readonly selectionsPending: boolean;
+    /**
      * Error message from API call to load the total count.
      */
     readonly totalCountError?: string;
@@ -577,6 +582,7 @@ export class QueryModel {
         this.selections = undefined;
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
+        this.selectionsPending = false;
         this.title = queryConfig.title;
         this.totalCountError = undefined;
         this.totalCountLoadingState = LoadingState.INITIALIZED;

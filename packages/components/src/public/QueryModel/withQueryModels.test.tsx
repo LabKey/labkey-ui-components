@@ -2,17 +2,23 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useState } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Filter } from '@labkey/api';
 
 import { LoadingState } from '../LoadingState';
 import { QueryInfo } from '../QueryInfo';
+import { QuerySort, SORT_DESC } from '../QuerySort';
 import { SchemaQuery } from '../SchemaQuery';
 import { selectRows } from '../../internal/query/selectRows';
 
 import { QueryModelLoader, RowsResponse } from './QueryModelLoader';
 import { ChangeType, InjectedQueryModels, RequestManager, withQueryModels } from './withQueryModels';
+
+// require() returns the same __mocks__/react-router.ts instance withQueryModels uses; jest.requireMock does not
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const rrd = require('react-router');
 
 jest.mock('../../internal/query/selectRows', () => ({
     selectRows: jest.fn(),
@@ -180,6 +186,20 @@ describe('withQueryModels request failures', () => {
     const ModelState: FC<InjectedQueryModels> = ({ actions, queryModels }) => {
         const model = queryModels[MODEL_ID];
         const onReloadRows = useCallback(() => actions.loadRows(MODEL_ID), [actions]);
+        const onSort = useCallback(
+            () => actions.setSorts(MODEL_ID, [new QuerySort({ fieldKey: 'Name', dir: SORT_DESC })]),
+            [actions]
+        );
+        const onSetPageSize = useCallback(() => actions.setMaxRows(MODEL_ID, 50), [actions]);
+        const onFilter = useCallback(() => actions.setFilters(MODEL_ID, [Filter.create('Name', 'a')], true), [actions]);
+        const onDeleteRows = useCallback(
+            () =>
+                actions.onModelChange(MODEL_ID, {
+                    changeType: ChangeType.delete,
+                    options: { selectionsForReplace: ['1'] },
+                }),
+            [actions]
+        );
 
         return (
             <div>
@@ -190,6 +210,10 @@ describe('withQueryModels request failures', () => {
                 <div className="total-count-state">{model.totalCountLoadingState}</div>
                 <div className="total-count-error">{model.totalCountError}</div>
                 <button className="reload-rows" onClick={onReloadRows} type="button" />
+                <button className="sort-rows" onClick={onSort} type="button" />
+                <button className="set-page-size" onClick={onSetPageSize} type="button" />
+                <button className="filter-rows" onClick={onFilter} type="button" />
+                <button className="delete-rows" onClick={onDeleteRows} type="button" />
             </div>
         );
     };
@@ -262,6 +286,135 @@ describe('withQueryModels request failures', () => {
         // The request that replaced it already settled the state, so the cancellation must not report an error
         expect(textOf('.rows-error')).toBe('');
         expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+    });
+
+    // Resolves rows immediately, except for the loads listed in `deferred` (1-based call numbers), which wait to be
+    // rejected so the test can cancel them first
+    function rowsLoader(...deferred: number[]): { loadRows: jest.Mock; rejectLoad: (call: number) => void } {
+        const rejects: Record<number, (reason: unknown) => void> = {};
+        let calls = 0;
+        const loadRows = jest.fn((model, requestHandler) => {
+            const call = ++calls;
+            requestHandler?.(mockXHR());
+            if (!deferred.includes(call)) return Promise.resolve(ROWS_RESPONSE);
+            return new Promise((resolve, reject) => {
+                rejects[call] = reject;
+            });
+        });
+        // A load we canceled rejects with status 0
+        return { loadRows, rejectLoad: call => rejects[call]({ status: 0 }) };
+    }
+
+    it.each([
+        ['a sort', '.sort-rows'],
+        ['a page size change', '.set-page-size'],
+    ])('loads selections when %s cancels the initial rows load', async (_, trigger) => {
+        const { loadRows, rejectLoad } = rowsLoader(1);
+        const loadSelections = jest.fn().mockResolvedValue(new Set<string>());
+        renderModel(testLoader({ loadRows, loadSelections }));
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADING);
+        });
+
+        await userEvent.click(document.querySelector(trigger));
+        rejectLoad(1);
+
+        await waitFor(() => {
+            expect(textOf('.selections-state')).toBe(LoadingState.LOADED);
+        });
+        expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+        expect(loadSelections).toHaveBeenCalledTimes(1);
+    });
+
+    it('loads selections when a URL change cancels the initial rows load', async () => {
+        const { loadRows, rejectLoad } = rowsLoader(1);
+        const loadSelections = jest.fn().mockResolvedValue(new Set<string>());
+        const modelLoader = testLoader({ loadRows, loadSelections });
+        const queryConfigs = { [MODEL_ID]: { id: MODEL_ID, bindURL: true, schemaQuery: SCHEMA_QUERY } };
+        // A fresh element each time, since rerendering an identical element is a no-op
+        const component = (): ReactNode => (
+            <ModelStateWithQueryModels autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />
+        );
+        rrd.__setSearchParams(new URLSearchParams());
+        rrd.__setSetSearchParams(jest.fn());
+        const { rerender } = render(component());
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADING);
+        });
+
+        // e.g. browser back/forward while the slow initial load is in flight
+        rrd.__setSearchParams(new URLSearchParams({ 'query.sort': 'Name' }));
+        rerender(component());
+        rejectLoad(1);
+
+        await waitFor(() => {
+            expect(textOf('.selections-state')).toBe(LoadingState.LOADED);
+        });
+        expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+        expect(loadSelections).toHaveBeenCalledTimes(1);
+    });
+
+    it('loads selections when a sort cancels a filter reload', async () => {
+        const { loadRows, rejectLoad } = rowsLoader(2);
+        const loadSelections = jest.fn().mockResolvedValue(new Set<string>());
+        renderModel(testLoader({ loadRows, loadSelections }));
+
+        await waitFor(() => {
+            expect(textOf('.selections-state')).toBe(LoadingState.LOADED);
+        });
+
+        // Filtering reloads rows and selections; the previous rows stay rendered, so a user can sort mid-load
+        await userEvent.click(document.querySelector('.filter-rows'));
+        await userEvent.click(document.querySelector('.sort-rows'));
+        rejectLoad(2);
+
+        await waitFor(() => {
+            expect(loadSelections).toHaveBeenCalledTimes(2);
+        });
+        await waitFor(() => {
+            expect(textOf('.selections-state')).toBe(LoadingState.LOADED);
+        });
+    });
+
+    it('does not reload selections for a sort once they have loaded', async () => {
+        const loadSelections = jest.fn().mockResolvedValue(new Set<string>());
+        const loadRows = jest.fn().mockResolvedValue(ROWS_RESPONSE);
+        renderModel(testLoader({ loadRows, loadSelections }));
+
+        await waitFor(() => {
+            expect(textOf('.selections-state')).toBe(LoadingState.LOADED);
+        });
+
+        await userEvent.click(document.querySelector('.sort-rows'));
+
+        await waitFor(() => {
+            expect(loadRows).toHaveBeenCalledTimes(2);
+        });
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+        });
+        expect(loadSelections).toHaveBeenCalledTimes(1);
+    });
+
+    it('replaces selections after a delete while the initial rows load is still in flight', async () => {
+        const { loadRows } = rowsLoader(1);
+        const loadSelections = jest.fn().mockResolvedValue(new Set<string>());
+        const replaceSelections = jest.fn().mockResolvedValue({ count: 1 });
+        renderModel(testLoader({ loadRows, loadSelections, replaceSelections }));
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADING);
+        });
+
+        // The delete's reload is untracked, so it neither cancels the initial load nor takes over its selection load
+        await userEvent.click(document.querySelector('.delete-rows'));
+
+        await waitFor(() => {
+            expect(replaceSelections).toHaveBeenCalledWith(expect.anything(), ['1']);
+        });
+        expect(loadSelections).not.toHaveBeenCalled();
     });
 
     it('keeps the saved grid settings when another source aborted the rows request', async () => {

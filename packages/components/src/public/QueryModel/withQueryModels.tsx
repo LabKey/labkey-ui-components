@@ -214,6 +214,7 @@ const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selections = undefined;
     model.selectionsError = undefined;
     model.selectionsLoadingState = LoadingState.INITIALIZED;
+    model.selectionsPending = false;
     model.selectionPivot = undefined;
 };
 
@@ -862,16 +863,23 @@ export function withQueryModels<Props>(
                     const model = draft.queryModels[id];
                     model.rowsLoadingState = LoadingState.LOADING;
                     model.selectionsError = undefined;
+                    if (loadSelections) model.selectionsPending = true;
                 })
             );
 
             try {
                 const result = await loadRows(this.state.queryModels[id], request?.handler);
                 const { messages, rows, orderedRows, rowCount } = result;
+                let shouldLoadSelections = loadSelections;
 
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
+                        // Loading selections and replacing them are mutually exclusive
+                        if (selectionsForReplace === undefined) {
+                            shouldLoadSelections = loadSelections || model.selectionsPending;
+                            model.selectionsPending = false;
+                        }
                         model.messages = messages;
                         model.rows = rows;
                         model.orderedRows = orderedRows;
@@ -880,7 +888,7 @@ export function withQueryModels<Props>(
                         model.rowsError = undefined;
                         model.selectionPivot = undefined;
                     }),
-                    () => this.maybeLoad(id, false, false, loadSelections, false, selectionsForReplace)
+                    () => this.maybeLoad(id, false, false, shouldLoadSelections, false, selectionsForReplace)
                 );
             } catch (error) {
                 // GitHub Issue 1364: only ignore the failure if we canceled the request ourselves, otherwise the

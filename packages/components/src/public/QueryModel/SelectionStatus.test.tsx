@@ -80,10 +80,7 @@ describe('SelectionStatus', () => {
 
     test('no selections, rowCount greater than maxRows', () => {
         const model = MODEL_LOADED.mutate({ selections: new Set(), rowCount: 21 });
-        renderWithAppContext(
-            <SelectionStatus actions={ACTIONS} model={model} />,
-            APP_CONTEXT
-        );
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(0);
         expect(document.querySelectorAll('.selection-status__clear-all')).toHaveLength(0);
@@ -142,10 +139,7 @@ describe('SelectionStatus', () => {
             selectionSet.push(i.toString());
         }
         const model = MODEL_LOADED.mutate({ rowCount: 41321, selections: new Set(selectionSet) });
-        renderWithAppContext(
-            <SelectionStatus actions={ACTIONS} model={model} />,
-            APP_CONTEXT
-        );
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(1);
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1,031 of 41,321 selected');
@@ -168,10 +162,7 @@ describe('SelectionStatus', () => {
 
     test('selection loaded, rowCount greater than maxRows and maxSelectionSize', () => {
         const model = MODEL_LOADED.mutate({ rowCount: 1_115_000 });
-        renderWithAppContext(
-            <SelectionStatus actions={ACTIONS} model={model} />,
-            APP_CONTEXT
-        );
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
         expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(1);
         expect(document.querySelector('.selection-status__select-all')).toHaveTextContent('Select first 100,000');
     });

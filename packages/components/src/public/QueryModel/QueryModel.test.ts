@@ -312,7 +312,7 @@ describe('QueryModel', () => {
         expect(model.intSelections).toBe(undefined);
         model = model.mutate({ selections: new Set([]) });
         expect(model.intSelections.length).toBe(0);
-        model = model.mutate({ selections: new Set(['1', '3', '2']) });
+        model = model.mutate({ selections: new Set(['1', '2', '3']) });
         expect(model.intSelections.length).toBe(3);
         expect(model.intSelections[0]).toBe(1);
         expect(model.intSelections[1]).toBe(3);
@@ -324,7 +324,7 @@ describe('QueryModel', () => {
         expect(model.getSelectedIds()).toBe(undefined);
         model = model.mutate({ selections: new Set([]) });
         expect(model.getSelectedIds().length).toBe(0);
-        model = model.mutate({ selections: new Set(['1', '3', '2']) });
+        model = model.mutate({ selections: new Set(['1', '2', '3']) });
         expect(model.getSelectedIds().length).toBe(3);
         expect(model.getSelectedIds()[0]).toBe('1');
         expect(model.getSelectedIds()[1]).toBe('3');

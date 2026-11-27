@@ -15,7 +15,7 @@ import { AppURL } from '../../url/AppURL';
 import { Placement } from '../../useOverlayPositioning';
 
 interface Props {
-    href?: string | AppURL;
+    href?: AppURL | string;
     maxSelection?: number;
     maxSelectionDisabledMsg?: string;
     nounPlural: string; // always used, doesn't need default value
@@ -68,7 +68,8 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({
 DisabledSelectionMenuItem.displayName = 'DisabledSelectionMenuItem';
 
 export const SelectionMenuItem: FC<Props> = props => {
-    const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, popoverPlacement, queryModel, text } = props;
+    const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, popoverPlacement, queryModel, text } =
+        props;
     const selectionSize = queryModel?.selections?.size;
     let disabledMessage: string;
 

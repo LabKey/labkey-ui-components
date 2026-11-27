@@ -362,7 +362,13 @@ describe('withQueryModels capped total count', () => {
                 autoLoad
                 modelLoader={testLoader()}
                 queryConfigs={{
-                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                    [MODEL_ID]: {
+                        id: MODEL_ID,
+                        includeTotalCount: true,
+                        maxCount: 100,
+                        maxRows: 20,
+                        schemaQuery: SCHEMA_QUERY,
+                    },
                 }}
             />
         );
@@ -391,7 +397,13 @@ describe('withQueryModels capped total count', () => {
                 autoLoad
                 modelLoader={testLoader()}
                 queryConfigs={{
-                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                    [MODEL_ID]: {
+                        id: MODEL_ID,
+                        includeTotalCount: true,
+                        maxCount: 100,
+                        maxRows: 20,
+                        schemaQuery: SCHEMA_QUERY,
+                    },
                 }}
             />
         );
@@ -418,7 +430,13 @@ describe('withQueryModels capped total count', () => {
                 autoLoad
                 modelLoader={testLoader()}
                 queryConfigs={{
-                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                    [MODEL_ID]: {
+                        id: MODEL_ID,
+                        includeTotalCount: true,
+                        maxCount: 100,
+                        maxRows: 20,
+                        schemaQuery: SCHEMA_QUERY,
+                    },
                 }}
             />
         );

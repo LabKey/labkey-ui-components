@@ -312,6 +312,7 @@ describe('QueryModel', () => {
         expect(model.intSelections).toBe(undefined);
         model = model.mutate({ selections: new Set([]) });
         expect(model.intSelections.length).toBe(0);
+        // eslint-disable-next-line perfectionist/sort-sets -- the unsorted order is what the test checks
         model = model.mutate({ selections: new Set(['1', '3', '2']) });
         expect(model.intSelections.length).toBe(3);
         expect(model.intSelections[0]).toBe(1);
@@ -324,6 +325,7 @@ describe('QueryModel', () => {
         expect(model.getSelectedIds()).toBe(undefined);
         model = model.mutate({ selections: new Set([]) });
         expect(model.getSelectedIds().length).toBe(0);
+        // eslint-disable-next-line perfectionist/sort-sets -- the unsorted order is what the test checks
         model = model.mutate({ selections: new Set(['1', '3', '2']) });
         expect(model.getSelectedIds().length).toBe(3);
         expect(model.getSelectedIds()[0]).toBe('1');
@@ -545,6 +547,26 @@ describe('urlQueryParams', () => {
         });
     });
 
+    test('pageSize is bound relative to the configured page size', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, maxRows: 40, urlPrefix: 'test' });
+        expect(model.urlQueryParams).toEqual({});
+        expect(model.mutate({ maxRows: DEFAULT_MAX_ROWS }).urlQueryParams).toEqual({
+            'test.pageSize': DEFAULT_MAX_ROWS.toString(),
+        });
+
+        const defaultModel = new QueryModel({ schemaQuery: SCHEMA_QUERY, urlPrefix: 'test' });
+        expect(defaultModel.urlQueryParams).toEqual({});
+        expect(defaultModel.mutate({ maxRows: 40 }).urlQueryParams).toEqual({ 'test.pageSize': '40' });
+    });
+
+    test('a model spread into a config keeps its page size on the URL', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, urlPrefix: 'test' }).mutate({ maxRows: 40 });
+        // withQueryModels builds each model this way, e.g. when a nested grid registers its caller's model
+        const copy = new QueryModel({ id: 'copy', ...model });
+        expect(copy.defaultMaxRows).toEqual(DEFAULT_MAX_ROWS);
+        expect(copy.urlQueryParams).toEqual(model.urlQueryParams);
+    });
+
     test('config query parameters are not bound', () => {
         const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, queryParameters: { Foo: 1 }, urlPrefix: 'test' });
         expect(model.bindURLQueryParameters).toBe(false);
@@ -556,7 +578,7 @@ describe('attributesForURLQueryParams', () => {
     test('without useExistingValues', () => {
         const defaultExpected = {
             filterArray: [],
-            maxRows: DEFAULT_MAX_ROWS,
+            maxRows: 10,
             offset: DEFAULT_OFFSET,
             schemaQuery: SCHEMA_QUERY,
             selectedReportIds: [],
@@ -569,7 +591,7 @@ describe('attributesForURLQueryParams', () => {
         });
         let searchParams = new URLSearchParams({});
 
-        // Empty search params should result in all default values
+        // Empty search params should result in all default values, with the model's configured page size
         let values = model.attributesForURLQueryParams(searchParams);
         expect(values).toEqual(defaultExpected);
 
@@ -580,7 +602,7 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams);
         expect(values).toEqual({
             ...defaultExpected,
-            offset: 40,
+            offset: 20,
         });
 
         // Issue 52143: Grid paging parameter in URL is not always respected
@@ -700,7 +722,7 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             ...defaultExpected,
-            offset: 40,
+            offset: 20,
         });
 
         // Issue 52143: Grid paging parameter in URL is not always respected
@@ -799,5 +821,24 @@ describe('attributesForURLQueryParams', () => {
         // The model's parameters are kept when the URL has none
         values = paramModel.attributesForURLQueryParams(new URLSearchParams(), true);
         expect(values.queryParameters).toEqual({ Foo: 1, Bar: 2 });
+    });
+
+    test('pageSize missing from the URL after the page size changed', () => {
+        // Configured with 10 rows, then the user picked 250
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, maxRows: 10 }).mutate({ maxRows: 250 });
+        const page3 = new URLSearchParams({ 'query.p': '3' });
+
+        // Without useExistingValues the URL is the whole state, so the configured page size applies
+        expect(model.attributesForURLQueryParams(new URLSearchParams())).toMatchObject({ maxRows: 10 });
+        expect(model.attributesForURLQueryParams(page3)).toMatchObject({ maxRows: 10, offset: 20 });
+
+        // With useExistingValues the current page size is kept
+        expect(model.attributesForURLQueryParams(new URLSearchParams(), true)).toMatchObject({ maxRows: 250 });
+        expect(model.attributesForURLQueryParams(page3, true)).toMatchObject({ maxRows: 250, offset: 500 });
+
+        // A URL pageSize wins either way
+        const pageSize = new URLSearchParams({ 'query.p': '3', 'query.pageSize': '40' });
+        expect(model.attributesForURLQueryParams(pageSize)).toMatchObject({ maxRows: 40, offset: 80 });
+        expect(model.attributesForURLQueryParams(pageSize, true)).toMatchObject({ maxRows: 40, offset: 80 });
     });
 });

@@ -6,6 +6,7 @@ import React, { FC, useMemo } from 'react';
 
 import { createPortal } from 'react-dom';
 
+import { LoadingState } from '../../../public/LoadingState';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { MenuItem } from '../../dropdowns';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
@@ -14,7 +15,7 @@ import { AppURL } from '../../url/AppURL';
 import { Placement } from '../../useOverlayPositioning';
 
 interface Props {
-    href?: string | AppURL;
+    href?: AppURL | string;
     maxSelection?: number;
     maxSelectionDisabledMsg?: string;
     nounPlural: string; // always used, doesn't need default value
@@ -48,8 +49,17 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({
         ),
         [message, popoverPlacement, targetRef]
     );
+    // Keyboard and screen reader users get the reason via focus and aria-description, not just hover
     return (
-        <MenuItem disabled onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={targetRef}>
+        <MenuItem
+            aria-description={message}
+            disabled
+            onBlur={onMouseLeave}
+            onFocus={onMouseEnter}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            ref={targetRef}
+        >
             {text}
             {show && createPortal(overlay, portalEl)}
         </MenuItem>
@@ -58,22 +68,27 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({
 DisabledSelectionMenuItem.displayName = 'DisabledSelectionMenuItem';
 
 export const SelectionMenuItem: FC<Props> = props => {
-    const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, popoverPlacement, queryModel, text } = props;
+    const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, popoverPlacement, queryModel, text } =
+        props;
     const selectionSize = queryModel?.selections?.size;
-    const { tooFewSelected, tooManySelected } = useMemo(
-        () => ({
-            tooFewSelected: selectionSize !== undefined && selectionSize === 0,
-            tooManySelected: selectionSize !== undefined && selectionSize > maxSelection,
-        }),
-        [maxSelection, selectionSize]
-    );
-    const disabled = tooFewSelected || tooManySelected;
+    let disabledMessage: string;
 
-    if (disabled) {
-        const message = tooFewSelected
-            ? `Select one or more ${nounPlural}.`
-            : maxSelectionDisabledMsg || `At most ${maxSelection?.toLocaleString()} ${nounPlural} can be selected.`;
-        return <DisabledSelectionMenuItem message={message} popoverPlacement={popoverPlacement} text={text} />;
+    // Selections that were never requested leave the item enabled, since not every caller loads them
+    if (selectionSize === undefined) {
+        if (queryModel?.selectionsLoadingState === LoadingState.LOADING) {
+            disabledMessage = 'Loading selections...';
+        } else if (queryModel?.selectionsError) {
+            disabledMessage = `Select one or more ${nounPlural}.`;
+        }
+    } else if (selectionSize === 0) {
+        disabledMessage = `Select one or more ${nounPlural}.`;
+    } else if (selectionSize > maxSelection) {
+        disabledMessage =
+            maxSelectionDisabledMsg || `At most ${maxSelection?.toLocaleString()} ${nounPlural} can be selected.`;
+    }
+
+    if (disabledMessage) {
+        return <DisabledSelectionMenuItem message={disabledMessage} popoverPlacement={popoverPlacement} text={text} />;
     }
 
     return (

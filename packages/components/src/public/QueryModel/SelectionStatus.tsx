@@ -3,24 +3,27 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useMemo } from 'react';
+import classNames from 'classnames';
 
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 import { RequiresModelAndActions } from './withQueryModels';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
-    const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, rowCountCapped, selections } = model;
+    const { hasData, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, rowCountCapped, selections } = model;
     const selectionSize = selections?.size;
     const { moduleContext } = useServerContext();
     const maxSelectionSize = moduleContext?.query?.maxQuerySelection;
 
     const clearSelections = useCallback((): void => {
-        actions.clearSelections(model.id);
-    }, [actions, model.id]);
+        if (!isLoadingSelections) actions.clearSelections(model.id);
+    }, [actions, isLoadingSelections, model.id]);
 
     const selectAll = useCallback((): void => {
-        actions.selectAllRows(model.id);
-    }, [actions, model.id]);
+        if (!isLoadingSelections) actions.selectAllRows(model.id);
+    }, [actions, isLoadingSelections, model.id]);
+
+    const buttonClassName = classNames('btn btn-default btn-xs', { disabled: isLoadingSelections });
 
     const clearText = useMemo((): string => {
         let text = 'Clear';
@@ -34,7 +37,8 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         return text;
     }, [selectionSize]);
 
-    if (isLoading || isLoadingSelections || !selections) {
+    // Kept on screen while paging or a selection change loads, so the grid info row doesn't jump
+    if (!hasData || !selections) {
         return null;
     }
 
@@ -60,7 +64,13 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
 
         clearAllButton = (
             <span className="selection-status__clear-all">
-                <button className="btn btn-default btn-xs" onClick={clearSelections} type="button">
+                <button
+                    // aria-disabled, unlike disabled, keeps focus on the button while the selection change it started saves
+                    aria-disabled={isLoadingSelections}
+                    className={buttonClassName}
+                    onClick={clearSelections}
+                    type="button"
+                >
                     {clearText}
                 </button>
             </span>
@@ -76,7 +86,12 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
     ) {
         selectAllButton = (
             <span className="selection-status__select-all">
-                <button className="btn btn-default btn-xs" onClick={selectAll} type="button">
+                <button
+                    aria-disabled={isLoadingSelections}
+                    className={buttonClassName}
+                    onClick={selectAll}
+                    type="button"
+                >
                     {tooManyRows && <>Select first {maxSelectionSize.toLocaleString()}</>}
                     {!tooManyRows && <>Select all {rowCount.toLocaleString()}</>}
                 </button>

@@ -160,6 +160,11 @@ export interface QueryConfig {
      */
     containerPath?: string;
     /**
+     * The page size a bound URL omits (defaults to maxRows). A model spread into a config carries its own, so the copy
+     * doesn't drop the original model's page size from the URL.
+     */
+    defaultMaxRows?: number;
+    /**
      * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
      * they keyValue filter, and view filters when applicable.
@@ -261,7 +266,7 @@ export interface QueryConfig {
 }
 
 export const DEFAULT_OFFSET = 0;
-export const DEFAULT_MAX_ROWS = 20;
+export const DEFAULT_MAX_ROWS = 100;
 // Cap the pagination count so a large grid's COUNT(*) is fixed-cost; above this the grid shows "100,000+". 0 counts exactly.
 export const DEFAULT_MAX_COUNT = 100000;
 
@@ -349,10 +354,14 @@ export class QueryModel {
      */
     readonly maxCount: number;
     /**
-     * The maximum number of rows to return from the server (defaults to 20).
+     * The maximum number of rows to return from the server (defaults to 100).
      * If you want to return all possible rows, set this config property to -1.
      */
     readonly maxRows: number;
+    /**
+     * The maxRows this model was configured with. A bound URL only carries a page size that differs from it.
+     */
+    readonly defaultMaxRows: number;
     /**
      * The index of the first row to return from the server (defaults to 0). Use this along with the
      * maxRows config property to request pages of data.
@@ -543,6 +552,7 @@ export class QueryModel {
         this.keyValue = queryConfig.keyValue;
         this.maxCount = queryConfig.maxCount ?? DEFAULT_MAX_COUNT;
         this.maxRows = queryConfig.maxRows ?? DEFAULT_MAX_ROWS;
+        this.defaultMaxRows = queryConfig.defaultMaxRows ?? this.maxRows;
         this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
         this.omittedColumns = queryConfig.omittedColumns ?? [];
         this.queryParameters = queryConfig.queryParameters;
@@ -848,8 +858,17 @@ export class QueryModel {
      * true.
      */
     get urlQueryParams(): Record<string, string> {
-        const { currentPage, urlPrefix, filterArray, maxRows, queryParameters, selectedReportIds, sorts, viewName } =
-            this;
+        const {
+            currentPage,
+            defaultMaxRows,
+            filterArray,
+            maxRows,
+            queryParameters,
+            selectedReportIds,
+            sorts,
+            urlPrefix,
+            viewName,
+        } = this;
         const filters = filterArray.filter(f => f.getColumnName() !== '*');
         const searches = filterArray
             .filter(f => f.getColumnName() === '*')
@@ -862,7 +881,7 @@ export class QueryModel {
             modelParams[`${urlPrefix}.p`] = currentPage.toString(10);
         }
 
-        if (maxRows !== DEFAULT_MAX_ROWS) {
+        if (maxRows !== defaultMaxRows) {
             modelParams[`${urlPrefix}.pageSize`] = maxRows.toString(10);
         }
 
@@ -1261,7 +1280,7 @@ export class QueryModel {
         const columnFilters = Filter.getFiltersFromParameters(getQueryParams(searchParams), prefix);
         let filterArray = columnFilters.concat(searchFilters);
         let maxRows = parseInt(searchParams.get(`${prefix}.pageSize`), 10);
-        if (isNaN(maxRows)) maxRows = DEFAULT_MAX_ROWS;
+        if (isNaN(maxRows)) maxRows = useExistingValues ? this.maxRows : this.defaultMaxRows;
         let offset = offsetFromString(maxRows, searchParams.get(`${prefix}.p`)) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
         let selectedReportIds = searchParams.get(`${prefix}.selectedReportIds`)?.split(';') ?? [];
@@ -1275,10 +1294,6 @@ export class QueryModel {
         if (useExistingValues) {
             if (filterArray.length === 0 && this.filterArray.length > 0) {
                 filterArray = this.filterArray;
-            }
-
-            if (maxRows === DEFAULT_MAX_ROWS && this.maxRows !== DEFAULT_MAX_ROWS) {
-                maxRows = this.maxRows;
             }
 
             if (offset === 0 && this.offset !== 0) {

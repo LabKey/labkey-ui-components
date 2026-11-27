@@ -28,7 +28,7 @@ import {
     getFilterForSampleOperation,
     isSamplesSchema,
     isWorkflowInputSamplesSchema,
-    isWorkflowInputSourcesSchema
+    isWorkflowInputSourcesSchema,
 } from '../samples/utils';
 import { getQueryDetails, getRequestAuditDetail, importData, InsertOptions, selectDistinctRows } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
@@ -375,7 +375,7 @@ async function initParents(
             Filter.create('Container', insertPermissionContainers, Filter.Types.IN),
         ];
         if (jobId && (isWorkflowInputSamplesSchema(schemaQuery) || isWorkflowInputSourcesSchema(schemaQuery))) {
-            filterArray.push(Filter.create('JobId', jobId, Filter.Types.EQUAL));
+            filterArray.push(Filter.create('JobId', jobId));
         }
         if (isSamplesSchema(schemaQuery)) {
             const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
@@ -557,7 +557,7 @@ export async function getEntityTypeOptions(
     const result = await selectRows({
         columns: 'LSID,Name,RowId,Folder/Path',
         containerFilter:
-            containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
+            containerFilter ?? entityDataType.containerFilter ?? Query.ContainerFilter.currentPlusProjectAndShared,
         containerPath,
         filterArray: filters,
         // Use of default view here is ok. Assumed that view is overridden only if there is desire to hide types.
@@ -585,29 +585,24 @@ export async function getFolderConfigurableEntityTypeOptions(
         columns:
             'LSID,Name,RowId,Description' + (entityDataType.labelColorCol ? ',' + entityDataType.labelColorCol : ''),
         containerFilter:
-            containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
+            containerFilter ?? entityDataType.containerFilter ?? Query.ContainerFilter.currentPlusProjectAndShared,
         containerPath,
         filterArray,
         schemaQuery: typeListingSchemaQuery,
     });
 
-    const entities: DataTypeEntity[] = result.rows
-        .map(
-            row =>
-                ({
-                    label: caseInsensitive(row, 'Name').value,
-                    labelColor: entityDataType.labelColorCol
-                        ? caseInsensitive(row, entityDataType.labelColorCol).value
-                        : undefined,
-                    rowId: caseInsensitive(row, 'RowId').value,
-                    description: caseInsensitive(row, 'Description').value,
-                    type: entityDataType.folderConfigurableDataType as FolderConfigurableDataType,
-                    lsid: caseInsensitive(row, 'LSID').value,
-                }) as DataTypeEntity
-        )
+    return result.rows
+        .map<DataTypeEntity>(row => ({
+            label: caseInsensitive(row, 'Name').value,
+            labelColor: entityDataType.labelColorCol
+                ? caseInsensitive(row, entityDataType.labelColorCol).value
+                : undefined,
+            rowId: caseInsensitive(row, 'RowId').value,
+            description: caseInsensitive(row, 'Description').value,
+            type: entityDataType.folderConfigurableDataType,
+            lsid: caseInsensitive(row, 'LSID').value,
+        }))
         .sort(naturalSortByProperty('label'));
-
-    return entities;
 }
 
 /**
@@ -798,10 +793,10 @@ async function getParentRowIdAndDataType(
     containerPath?: string
 ): Promise<Record<string, ParentIdData>> {
     const response = await selectRows({
+        columns: ['LSID', 'RowId', 'DataClass', 'SampleSet'], // only one of DataClass or SampleSet will exist
         containerPath,
-        schemaQuery: parentDataType.listingSchemaQuery.detailView, // use this to avoid filters on the default view
-        columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
         filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
+        schemaQuery: parentDataType.listingSchemaQuery.detailView, // use this to avoid filters on the default view
     });
 
     const filteredParentItems: Record<string, ParentIdData> = {};
@@ -1030,10 +1025,10 @@ export const initParentOptionsSelects = (
     if (includeSampleTypes) {
         promises.push(
             selectRows({
+                columns: ['LSID', 'Name', 'RowId', 'Folder'],
+                containerFilter: Query.ContainerFilter.currentPlusProjectAndShared,
                 containerPath,
                 schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
-                columns: 'LSID, Name, RowId, Folder',
-                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
             })
         );
     }
@@ -1042,10 +1037,10 @@ export const initParentOptionsSelects = (
     if (includeDataClasses) {
         promises.push(
             selectRows({
+                columns: ['LSID', 'Name', 'RowId', 'Folder', 'Category'],
+                containerFilter: Query.ContainerFilter.currentPlusProjectAndShared,
                 containerPath,
                 schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
-                columns: 'LSID, Name, RowId, Folder, Category',
-                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
             })
         );
     }
@@ -1562,7 +1557,7 @@ export function getSampleTypesFromTransactionIds(
 
 export async function getDataClassesFromTransactionIds(
     transactionAuditId: number | string,
-    includeDataRows?: boolean,
+    includeDataRows?: boolean
 ): Promise<DataTypeRowIdsFromTransactionIds> {
     const results = await getDataTypesFromTransactionId(
         transactionAuditId,
@@ -1582,7 +1577,7 @@ export async function getDataClassesFromTransactionIds(
             schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
             columns: ['Name', 'RowId'],
             filterArray: [Filter.create('rowId', Object.keys(dataTypeRowCounts), Filter.Types.IN)],
-            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+            containerFilter: Query.ContainerFilter.currentPlusProjectAndShared,
         });
 
         dataClasses.rows.forEach(row => {
@@ -1592,23 +1587,21 @@ export async function getDataClassesFromTransactionIds(
         });
     }
 
-    if (!includeDataRows)
-        return { ...results, typeNameRowCounts };
+    if (!includeDataRows) return { ...results, typeNameRowCounts };
 
     const typeNameRows: Record<string, any[]> = {};
     const dataRows = await selectRows({
         schemaQuery: SCHEMAS.EXP_TABLES.DATA.detailView,
         columns: ['DataClass/Name', 'RowId'],
         filterArray: [Filter.create('rowId', rowIds, Filter.Types.IN)],
-        containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+        containerFilter: Query.ContainerFilter.currentPlusProjectAndShared,
     });
 
     dataRows.rows.forEach(row => {
         const dataClass = caseInsensitive(row, 'DataClass/Name')?.value;
         if (dataClass) {
             const rowId = caseInsensitive(row, 'RowId').value;
-            if (!typeNameRows[dataClass])
-                typeNameRows[dataClass] = [];
+            if (!typeNameRows[dataClass]) typeNameRows[dataClass] = [];
             typeNameRows[dataClass].push({ rowId });
         }
     });

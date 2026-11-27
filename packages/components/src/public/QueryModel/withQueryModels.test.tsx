@@ -19,7 +19,7 @@ import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDetails.json';
 import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 
-import { QueryModel } from './QueryModel';
+import { DEFAULT_MAX_ROWS, QueryModel } from './QueryModel';
 import { QueryModelLoader, RowsResponse } from './QueryModelLoader';
 import { Actions, InjectedQueryModels, QueryModelMap, RequestManager, withQueryModels } from './withQueryModels';
 
@@ -362,7 +362,13 @@ describe('withQueryModels capped total count', () => {
                 autoLoad
                 modelLoader={testLoader()}
                 queryConfigs={{
-                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                    [MODEL_ID]: {
+                        id: MODEL_ID,
+                        includeTotalCount: true,
+                        maxCount: 100,
+                        maxRows: 20,
+                        schemaQuery: SCHEMA_QUERY,
+                    },
                 }}
             />
         );
@@ -391,7 +397,13 @@ describe('withQueryModels capped total count', () => {
                 autoLoad
                 modelLoader={testLoader()}
                 queryConfigs={{
-                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                    [MODEL_ID]: {
+                        id: MODEL_ID,
+                        includeTotalCount: true,
+                        maxCount: 100,
+                        maxRows: 20,
+                        schemaQuery: SCHEMA_QUERY,
+                    },
                 }}
             />
         );
@@ -418,7 +430,13 @@ describe('withQueryModels capped total count', () => {
                 autoLoad
                 modelLoader={testLoader()}
                 queryConfigs={{
-                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                    [MODEL_ID]: {
+                        id: MODEL_ID,
+                        includeTotalCount: true,
+                        maxCount: 100,
+                        maxRows: 20,
+                        schemaQuery: SCHEMA_QUERY,
+                    },
                 }}
             />
         );
@@ -551,7 +569,7 @@ describe('withQueryModels actions and URL binding', () => {
 
         // Assert - last page jumps to the last page offset and reloads
         expect(injectedModel.offset).toEqual(injectedModel.lastPageOffset);
-        expect(injectedModel.currentPage).toEqual(34);
+        expect(injectedModel.currentPage).toEqual(7);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
         await waitForRowsLoaded();
 
@@ -745,7 +763,7 @@ describe('withQueryModels actions and URL binding', () => {
 
         // Assert - the initial load starts on the page from the URL
         await waitForRowsLoaded();
-        expect(injectedModel.offset).toEqual(20);
+        expect(injectedModel.offset).toEqual(DEFAULT_MAX_ROWS);
 
         // Act
         rrd.__setSearchParams(new URLSearchParams({ 'query.view': 'noMixtures' }));
@@ -820,7 +838,7 @@ describe('withQueryModels actions and URL binding', () => {
         dispatch(() => injectedActions.loadLastPage(injectedModel.id));
 
         // Assert - the page is written to the URL and params without the model's prefix are kept
-        await expectURLUpdate({ 'query.p': '34', other: 'still here' }, new URLSearchParams({ other: 'still here' }));
+        await expectURLUpdate({ 'query.p': '7', other: 'still here' }, new URLSearchParams({ other: 'still here' }));
         await waitForRowsLoaded();
 
         // Act

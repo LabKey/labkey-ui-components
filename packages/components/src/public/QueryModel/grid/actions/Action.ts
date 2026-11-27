@@ -2,7 +2,6 @@
  * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-
 export enum ActionKeyword {
     Filter = 'filter',
     Search = 'search',
@@ -47,17 +46,4 @@ export interface Value {
 
 export interface ActionValue extends Value {
     action: Action;
-}
-
-export interface ActionOption {
-    action?: Action;
-    appendValue?: boolean;
-    isAction?: boolean;
-    isComplete?: boolean;
-    isOverwrite?: boolean;
-    isSelected?: boolean;
-    label: string;
-    nextLabel?: string;
-    selectable?: boolean;
-    value?: string;
 }

@@ -4,12 +4,16 @@
  */
 import React, {
     ChangeEvent,
+    ChangeEventHandler,
     ComponentType,
+    createContext,
+    createRef,
     FC,
     memo,
     PureComponent,
     ReactNode,
     useCallback,
+    useContext,
     useMemo,
     useState,
 } from 'react';
@@ -420,6 +424,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         </h2>
     );
 });
+GridTitle.displayName = 'GridTitle';
 
 interface ComposeFilterState {
     draft: FilterDraft;
@@ -443,6 +448,58 @@ interface State {
     showManageViewsModal: boolean;
     showSaveViewModal: boolean;
 }
+
+// Delivered via context so toggling it re-renders only the checkboxes, not every grid row
+const RowSelectionDisabledContext = createContext<boolean>(false);
+
+interface RowSelectCheckboxProps {
+    onSelect: (row: Map<string, any>, event: ChangeEvent<HTMLInputElement>) => void;
+    row: Map<string, any>;
+    selected: boolean;
+}
+
+const RowSelectCheckbox: FC<RowSelectCheckboxProps> = memo(({ onSelect, row, selected }) => {
+    const disabled = useContext(RowSelectionDisabledContext);
+    const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+        (event): void => {
+            if (!disabled) onSelect(row, event);
+        },
+        [disabled, onSelect, row]
+    );
+
+    // aria-disabled, unlike disabled, keeps focus on the checkbox while the selection it started saves
+    return (
+        <input
+            aria-disabled={disabled}
+            aria-label="Select a row"
+            checked={selected}
+            className="grid-panel__row-checkbox"
+            onChange={onChange}
+            type="checkbox"
+        />
+    );
+});
+RowSelectCheckbox.displayName = 'RowSelectCheckbox';
+
+interface GridDataCache {
+    orderedRows: string[];
+    rows: Record<string, any>;
+    selections: Set<string>;
+    value: Record<string, any>[];
+}
+
+type HeaderCellRenderer = (column: GridColumn, index: number, columnCount?: number) => ReactNode;
+
+interface GridColumnsCache {
+    allowSelections: boolean;
+    omittedColumns: string[];
+    queryInfo: QueryModel['queryInfo'];
+    value: List<GridColumn | QueryColumn>;
+    viewName: string;
+}
+
+const isGridBusy = (model: QueryModel, allowSelections: boolean): boolean =>
+    model.isLoading || (allowSelections && model.isLoadingSelections);
 
 /**
  * Render a QueryModel as an interactive grid. For in-depth documentation and examples see components/docs/QueryModel.md.
@@ -497,6 +554,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     componentDidMount(): void {
         const { model, actions, allowSelections, loadOnMount } = this.props;
+        this.setLoadCount(0);
         if (loadOnMount) {
             actions.loadModel(model.id, allowSelections);
         }
@@ -506,7 +564,22 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
             this.populateGridActions();
         }
+
+        const { allowSelections, model } = this.props;
+        if (isGridBusy(prevProps.model, prevProps.allowSelections) && !isGridBusy(model, allowSelections)) {
+            this.setLoadCount(this.loadCount + 1);
+        }
     }
+
+    private readonly bodyRef = createRef<HTMLDivElement>();
+    private loadCount = 0;
+
+    // data-load-count lets tests wait for a load to finish, which a fast load's spinner can't reliably signal.
+    // Set directly rather than rendered so counting loads costs no extra render.
+    private setLoadCount = (count: number): void => {
+        this.loadCount = count;
+        if (this.bodyRef.current) this.bodyRef.current.dataset.loadCount = count.toString();
+    };
 
     gridActions: {
         filter: FilterAction;
@@ -1046,9 +1119,47 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
     };
 
+    private gridColumnsCache: GridColumnsCache;
+    private gridDataCache: GridDataCache;
+
+    getGridData = (): Record<string, any>[] => {
+        const { model } = this.props;
+        const { orderedRows, rows, selections } = model;
+        const cache = this.gridDataCache;
+
+        if (!cache || cache.orderedRows !== orderedRows || cache.rows !== rows || cache.selections !== selections) {
+            this.gridDataCache = { orderedRows, rows, selections, value: model.gridData };
+        }
+
+        return this.gridDataCache.value;
+    };
+
     getGridColumns = (): List<GridColumn | QueryColumn> => {
         const { allowSelections, model } = this.props;
-        const { isLoading, isLoadingSelections } = model;
+        const { omittedColumns, queryInfo, viewName } = model;
+        const cache = this.gridColumnsCache;
+
+        if (
+            !cache ||
+            cache.allowSelections !== allowSelections ||
+            cache.omittedColumns !== omittedColumns ||
+            cache.queryInfo !== queryInfo ||
+            cache.viewName !== viewName
+        ) {
+            this.gridColumnsCache = {
+                allowSelections,
+                omittedColumns,
+                queryInfo,
+                value: this.createGridColumns(),
+                viewName,
+            };
+        }
+
+        return this.gridColumnsCache.value;
+    };
+
+    createGridColumns = (): List<GridColumn | QueryColumn> => {
+        const { allowSelections, model } = this.props;
 
         let columns: List<GridColumn | QueryColumn> = model?.displayColumns ? List(model.displayColumns) : List();
         columns.forEach(col => {
@@ -1063,18 +1174,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 index: GRID_SELECTION_INDEX,
                 title: '',
                 showHeader: true,
-                cell: (selected: boolean, row: Map<string, any>): ReactNode => {
-                    return (
-                        <input
-                            aria-label="Select a row"
-                            checked={selected === true}
-                            className="grid-panel__row-checkbox"
-                            disabled={isLoading || isLoadingSelections}
-                            onChange={this.selectRow.bind(this, row)}
-                            type="checkbox"
-                        />
-                    );
-                },
+                cell: (selected: boolean, row: Map<string, any>): ReactNode => (
+                    <RowSelectCheckbox onSelect={this.selectRow} row={row} selected={selected === true} />
+                ),
             });
             columns = columns.insert(0, selectColumn);
         }
@@ -1110,7 +1212,18 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
     };
 
-    headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
+    private headerCellCache: { props: Readonly<Props<T>>; value: HeaderCellRenderer };
+
+    // GridHeader is pure, so its renderer takes a new identity whenever the props headerCell reads change
+    getHeaderCell = (): HeaderCellRenderer => {
+        if (this.headerCellCache?.props !== this.props) {
+            this.headerCellCache = { props: this.props, value: (...args) => this.headerCell(...args) };
+        }
+
+        return this.headerCellCache.value;
+    };
+
+    headerCell: HeaderCellRenderer = (column, index, columnCount) => {
         const { allowSelections, allowSorting, allowFiltering, allowViewCustomization, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
         const nonSelectableColumnCount = allowSelections ? columnCount - 1 : columnCount;
@@ -1118,8 +1231,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (column.index === GRID_SELECTION_INDEX) {
             return (
                 <HeaderSelectionCell
+                    busy={isLoadingSelections || isLoading}
                     className="grid-panel__page-checkbox"
-                    disabled={isLoadingSelections || isLoading || (hasRows && rowCount === 0)}
+                    disabled={hasRows && rowCount === 0}
                     handleSelection={this.selectPage}
                     selectedState={model.selectedState}
                 />
@@ -1195,7 +1309,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } = model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
         const hasError = hasGridError || selectionsError !== undefined || errorMsg;
-        let loadingMessage;
+        let loadingMessage: ReactNode;
         const gridIsLoading = !hasGridError && isLoading;
         const selectionsAreLoading = !hasError && allowSelections && isLoadingSelections;
 
@@ -1226,6 +1340,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
                     <div
                         className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-padding': !hasHeader })}
+                        ref={this.bodyRef}
                     >
                         {!gridIsLoading && <ChartList actions={actions} model={model} />}
 
@@ -1246,11 +1361,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
                         {(loadingMessage || allowSelections || actionValues?.length > 0) && (
                             <div className="grid-panel__info">
-                                {loadingMessage && (
-                                    <div className="grid-panel__loading">
-                                        <LoadingSpinner msg={loadingMessage} />
-                                    </div>
-                                )}
                                 {allowSelections && <SelectionStatus actions={actions} model={model} />}
                                 {showFilterStatus && (
                                     <FilterStatus
@@ -1261,10 +1371,21 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                         onSearchClick={this.onSearchPillClick}
                                     />
                                 )}
+                                {loadingMessage && (
+                                    <div className="grid-panel__loading">
+                                        <LoadingSpinner msg={loadingMessage} />
+                                    </div>
+                                )}
                             </div>
                         )}
 
+                        {/* Always mounted, since screen readers only announce changes to an existing live region */}
+                        <span className="sr-only" role="status">
+                            {gridIsLoading && loadingMessage}
+                        </span>
+
                         <div
+                            aria-busy={gridIsLoading}
                             className={classNames('grid-panel__grid ', 'grid-panel__lock-left', {
                                 'grid-panel__lock-left-with-checkboxes': allowSelections,
                             })}
@@ -1273,21 +1394,23 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             {hasError && <Alert>{errorMsg || queryInfoError || rowsError || selectionsError}</Alert>}
 
                             {hasData && (
-                                <Grid
-                                    columns={this.getGridColumns()}
-                                    condensed
-                                    data={model.gridData}
-                                    emptyText={gridEmptyText}
-                                    fixedHeight
-                                    gridId={id}
-                                    headerCell={this.headerCell}
-                                    highlightRowIndexes={this.getHighlightRowIndexes()}
-                                    messages={fromJS(messages)}
-                                    onColumnDrop={
-                                        allowViewCustomization && !disableColumnDrag ? this.onColumnDrop : undefined
-                                    }
-                                    showHeader={showHeader}
-                                />
+                                <RowSelectionDisabledContext.Provider value={isLoading || isLoadingSelections}>
+                                    <Grid
+                                        columns={this.getGridColumns()}
+                                        condensed
+                                        data={this.getGridData()}
+                                        emptyText={gridEmptyText}
+                                        fixedHeight
+                                        gridId={id}
+                                        headerCell={this.getHeaderCell()}
+                                        highlightRowIndexes={this.getHighlightRowIndexes()}
+                                        messages={fromJS(messages)}
+                                        onColumnDrop={
+                                            allowViewCustomization && !disableColumnDrag ? this.onColumnDrop : undefined
+                                        }
+                                        showHeader={showHeader}
+                                    />
+                                </RowSelectionDisabledContext.Provider>
                             )}
                         </div>
                     </div>
@@ -1340,10 +1463,9 @@ interface GridPaneWithModelBodyProps<T = {}> extends GridPanelProps<T> {
 }
 
 const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryModels> = memo(
-    ({ actions, id, queryModels, ...props }) => {
-        return <GridPanel actions={actions} model={queryModels[id]} {...props} />;
-    }
+    ({ actions, id, queryModels, ...props }) => <GridPanel actions={actions} model={queryModels[id]} {...props} />
 );
+GridPanelWithModelBodyImpl.displayName = 'GridPanelWithModelBodyImpl';
 
 const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps>(GridPanelWithModelBodyImpl);
 
@@ -1359,3 +1481,4 @@ export const GridPanelWithModel: FC<GridPanelWithModelProps> = memo(({ queryConf
     const queryConfigs = useMemo(() => ({ [id]: { ...queryConfig } }), [id, queryConfig]);
     return <GridPanelWithModelBody {...props} id={id} key={id} queryConfigs={queryConfigs} />;
 });
+GridPanelWithModel.displayName = 'GridPanelWithModel';

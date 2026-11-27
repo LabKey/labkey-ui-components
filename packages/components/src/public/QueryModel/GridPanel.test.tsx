@@ -183,6 +183,105 @@ describe('GridPanel', () => {
         return calls.at(-1)[1].map(sort => sort.toRequestString());
     };
 
+    test('aria-busy, status, and data-load-count track loads', () => {
+        const { rows, orderedRows, rowCount } = DATA;
+        const body = (): HTMLElement => document.querySelector('.grid-panel__body');
+        const dataRegion = (): HTMLElement => document.querySelector('.grid-panel__grid');
+        const status = (): HTMLElement => document.querySelector('[role="status"]');
+        const loaded = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({
+            selections: new Set(),
+            selectionsLoadingState: LoadingState.LOADED,
+        });
+
+        const { rerender } = renderWithAppContext(
+            <GridPanel actions={actions} model={makeTestQueryModel(SCHEMA_QUERY)} />
+        );
+        expect(dataRegion()).toHaveAttribute('aria-busy', 'true');
+        expect(status()).toHaveTextContent('Loading data...');
+        expect(body().dataset.loadCount).toBe('0');
+
+        rerender(<GridPanel actions={actions} model={loaded} />);
+        expect(dataRegion()).toHaveAttribute('aria-busy', 'false');
+        expect(status()).toBeEmptyDOMElement();
+        expect(body().dataset.loadCount).toBe('1');
+
+        // Paging: rows reload while the previous rows stay on screen
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ rowsLoadingState: LoadingState.LOADING })} />);
+        expect(dataRegion()).toHaveAttribute('aria-busy', 'true');
+        expect(status()).toHaveTextContent('Loading data...');
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ offset: 20 })} />);
+        expect(body().dataset.loadCount).toBe('2');
+
+        // A selection change counts as a load, but leaves the grid, and the control just used, un-busy
+        rerender(
+            <GridPanel actions={actions} model={loaded.mutate({ selectionsLoadingState: LoadingState.LOADING })} />
+        );
+        expect(dataRegion()).toHaveAttribute('aria-busy', 'false');
+        expect(status()).toBeEmptyDOMElement();
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ selections: new Set(['1']) })} />);
+        expect(body().dataset.loadCount).toBe('3');
+
+        // An update that loads nothing leaves the count alone
+        rerender(<GridPanel actions={actions} model={loaded.mutate({ offset: 40 })} />);
+        expect(body().dataset.loadCount).toBe('3');
+    });
+
+    test('row checkboxes stay focusable but ignore input while selections load', async () => {
+        const { rows, orderedRows, rowCount } = DATA;
+        const loaded = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({
+            selections: new Set(),
+            selectionsLoadingState: LoadingState.LOADED,
+        });
+        const testActions = makeTestActions(jest.fn);
+        const rowCheckbox = (): HTMLInputElement => document.querySelector('.grid-panel__row-checkbox');
+
+        const { rerender } = renderWithAppContext(<GridPanel actions={testActions} model={loaded} />);
+        await userEvent.click(rowCheckbox());
+        expect(testActions.selectRow).toHaveBeenCalledTimes(1);
+
+        rerender(
+            <GridPanel actions={testActions} model={loaded.mutate({ selectionsLoadingState: LoadingState.LOADING })} />
+        );
+        expect(rowCheckbox()).toHaveAttribute('aria-disabled', 'true');
+        expect(rowCheckbox()).toBeEnabled();
+        await userEvent.click(rowCheckbox());
+        expect(testActions.selectRow).toHaveBeenCalledTimes(1);
+        expect(rowCheckbox()).not.toBeChecked();
+        expect(rowCheckbox()).toHaveFocus();
+    });
+
+    test('header select checkbox stays focusable but ignores input while loading', async () => {
+        const { rows, orderedRows, rowCount } = DATA;
+        const pageCheckbox = (): HTMLInputElement => document.querySelector('.grid-panel__page-checkbox');
+        const loaded = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({
+            selections: new Set(),
+            selectionsLoadingState: LoadingState.LOADED,
+        });
+        const testActions = makeTestActions(jest.fn);
+
+        const { rerender } = renderWithAppContext(<GridPanel actions={testActions} model={loaded} />);
+        expect(pageCheckbox()).not.toHaveAttribute('aria-disabled');
+        await userEvent.click(pageCheckbox());
+        expect(testActions.selectPage).toHaveBeenCalledTimes(1);
+
+        rerender(
+            <GridPanel actions={testActions} model={loaded.mutate({ selectionsLoadingState: LoadingState.LOADING })} />
+        );
+        expect(pageCheckbox()).toHaveAttribute('aria-disabled', 'true');
+        expect(pageCheckbox()).toBeEnabled();
+        await userEvent.click(pageCheckbox());
+        expect(testActions.selectPage).toHaveBeenCalledTimes(1);
+        expect(pageCheckbox()).toHaveFocus();
+
+        rerender(<GridPanel actions={testActions} model={loaded.mutate({ rowsLoadingState: LoadingState.LOADING })} />);
+        expect(pageCheckbox()).toHaveAttribute('aria-disabled', 'true');
+        expect(pageCheckbox()).toBeEnabled();
+
+        // Nothing to select, so the checkbox is natively disabled
+        rerender(<GridPanel actions={testActions} model={loaded.mutate({ rowCount: 0 })} />);
+        expect(pageCheckbox()).toBeDisabled();
+    });
+
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 
@@ -218,7 +317,7 @@ describe('GridPanel', () => {
 
         // Chart menu should be disabled if no charts are present
         expectChartMenuVisible(false);
-        expect(document.querySelector(PAGINATION_INFO_SELECTOR)).toHaveTextContent('1 - 20 of 661');
+        expect(document.querySelector(PAGINATION_INFO_SELECTOR)).toHaveTextContent('1 - 100 of 661');
         expect(document.querySelector(PAGINATION_SELECTOR)).toBeInTheDocument();
         expect(document.querySelector(EXPORT_MENU_SELECTOR)).toBeInTheDocument();
         expect(document.querySelector(FILTER_STATUS_SELECTOR)).toBeInTheDocument();
@@ -263,7 +362,7 @@ describe('GridPanel', () => {
         // pageSizes should be different
         rerender(<GridPanel actions={actions} model={model} />);
         expect(document.querySelector(PAGINATION_SELECTOR + ' ul')).toHaveTextContent(
-            'Jump ToFirst PageLast Page...Page Size2040100250400'
+            'Jump ToFirst PageLast Page...Page Size20401002505001,000'
         );
         rerender(<GridPanel actions={actions} model={model} pageSizes={[5, 10, 15, 20]} />);
         expect(document.querySelector(PAGINATION_SELECTOR + ' ul')).toHaveTextContent(

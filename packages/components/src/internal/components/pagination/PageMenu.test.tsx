@@ -6,13 +6,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
-import { PageMenu } from './PageMenu';
+import { PageMenu, PageMenuProps } from './PageMenu';
 
 describe('PageMenu', () => {
-    let props;
+    let props: PageMenuProps;
     beforeEach(() => {
         props = {
-            id: 'model',
             currentPage: 2,
             disabled: false,
             isFirstPage: false,
@@ -20,9 +19,8 @@ describe('PageMenu', () => {
             loadFirstPage: jest.fn(),
             loadLastPage: jest.fn(),
             pageCount: 34,
-            showPageSizeMenu: false,
             pageSize: 20,
-            pageSizes: [20, 40, 100, 250, 400],
+            pageSizes: [20, 40, 100, 250, 500, 1000],
             setPageSize: jest.fn(),
         };
     });
@@ -52,9 +50,9 @@ describe('PageMenu', () => {
         expect(screen.getByText(pageCount)).toBeInTheDocument();
 
         for (const pageSize of props.pageSizes) {
-            expect(screen.getByText(pageSize)).toBeInTheDocument();
-
-            if (props.pageSize === pageSize) expect(screen.getByText(pageSize).parentElement).toHaveClass('active');
+            const item = screen.getByText(pageSize.toLocaleString()).parentElement;
+            if (props.pageSize === pageSize) expect(item).toHaveClass('active');
+            else expect(item).not.toHaveClass('active');
         }
     };
 
@@ -70,6 +68,10 @@ describe('PageMenu', () => {
 
         rerender(<PageMenu {...props} currentPage={34} isLastPage />);
         expectPageMenuItems(false, false, true, '34', '34 Total Pages');
+
+        props = { ...props, pageSize: 1000 };
+        rerender(<PageMenu {...props} />);
+        expectPageMenuItems(false, false, false, '2', '34 Total Pages');
     });
 
     test('capped rowCount keeps "Last Page" enabled and drops the total-pages footer', () => {

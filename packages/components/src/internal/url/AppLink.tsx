@@ -2,18 +2,9 @@
  * Copyright (c) 2025-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, {
-    AnchorHTMLAttributes,
-    DetailedHTMLProps,
-    FC,
-    memo,
-    MouseEvent,
-    useCallback,
-    useContext,
-    useMemo,
-} from 'react';
+import React, { AnchorHTMLAttributes, DetailedHTMLProps, FC, memo, MouseEvent, useCallback, useMemo } from 'react';
 
-import { createPath, Link, parsePath, Navigator as RouterNavigator, UNSAFE_DataRouterContext } from 'react-router';
+import { createPath, Link, parsePath, useNavigate } from 'react-router';
 
 import { ActionURL } from '@labkey/api';
 
@@ -46,18 +37,6 @@ export function parseAppPath(href: string): string | undefined {
     return undefined;
 }
 
-const HREF_PREFIXES = new WeakMap<RouterNavigator, string>();
-
-// Hash history's createHref scans the whole document for <base> on every call, so derive its prefix once per router
-function getHrefPrefix(navigator: RouterNavigator): string {
-    let prefix = HREF_PREFIXES.get(navigator);
-    if (prefix === undefined) {
-        prefix = navigator.createHref({ pathname: '/' }).slice(0, -1);
-        HREF_PREFIXES.set(navigator, prefix);
-    }
-    return prefix;
-}
-
 // Mirrors react-router's <Link>: leave modified, non-primary, and new-target clicks to the browser
 function shouldNavigateInApp(event: MouseEvent<HTMLAnchorElement>, target: string | undefined): boolean {
     const isModified = event.metaKey || event.altKey || event.ctrlKey || event.shiftKey;
@@ -77,6 +56,42 @@ interface Props extends InheritedHTMLAnchorProps {
     to: AppURL | string | undefined;
 }
 
+interface AppPathLinkProps extends InheritedHTMLAnchorProps {
+    appPath: string;
+}
+
+// Every LabKey app uses a hash router and no <base>, so the href is the path behind a "#"
+const AppPathLink: FC<AppPathLinkProps> = memo(props => {
+    const { appPath, children, onClick, target, ...anchorProps } = props;
+    // Grids render an AppLink per row, and paging rewrites the URL, so each link re-renders on every page change. <Link>
+    // re-resolves its href then, and hash history's createHref searches the whole document for <base> on every call, so
+    // avoiding <Link> saves ~830 ms per page change at 1,000 rows and ~220 ms at 500 (GH Issue 1790).
+    const navigate = useNavigate();
+    const href = useMemo(() => '#' + createPath(parsePath(appPath)), [appPath]);
+
+    const onAppPathClick = useCallback(
+        (event: MouseEvent<HTMLAnchorElement>): void => {
+            // The caller's handler runs first and can cancel the navigation by calling preventDefault()
+            onClick?.(event);
+            if (event.defaultPrevented || !shouldNavigateInApp(event, target)) return;
+
+            // Left to the browser, the hash change becomes a POP navigation, which skips route-leave blockers
+            event.preventDefault();
+            // As <Link> does, revisiting the current location replaces its history entry instead of duplicating it
+            const current = createPath(parsePath(window.location.hash.slice(1)));
+            navigate(appPath, { replace: current === createPath(parsePath(appPath)) });
+        },
+        [appPath, navigate, onClick, target]
+    );
+
+    return (
+        <a {...anchorProps} href={href} onClick={onAppPathClick} target={target}>
+            {children}
+        </a>
+    );
+});
+AppPathLink.displayName = 'AppPathLink';
+
 /**
  * Use this when you need to generate an anchor tag. This should be preferred to all usages of <a> or <Link>, as it
  * handles all the corner cases around moving within our apps, between our apps, to other parts of LKS, and externally.
@@ -85,12 +100,6 @@ export const AppLink: FC<Props> = memo(props => {
     const { children, onClick, rel: relProp, target: targetProp, targetBlank, to, ...anchorProps } = props;
     const rel = relProp ?? (targetBlank ? URL_REL : undefined);
     const target = targetProp ?? (targetBlank ? TARGET_BLANK : undefined);
-    // Unlike <Link>, which subscribes to the location and re-renders on every navigation, the data router is stable.
-    // Grids render one AppLink per row and paging rewrites the URL, so <Link> re-rendered every link on every page.
-    // No public react-router hook returns the router without subscribing to the location, hence the UNSAFE_ context.
-    // Its value only stays stable while <RouterProvider> is given no onError, or a stable one.
-    const dataRouter = useContext(UNSAFE_DataRouterContext);
-    const router = dataRouter?.router;
 
     const appPath = useMemo<string | undefined>(() => {
         if (to instanceof AppURL && to.isAppPath()) {
@@ -102,37 +111,15 @@ export const AppLink: FC<Props> = memo(props => {
         return undefined;
     }, [to]);
 
-    // The hand-built href resolves neither relative paths nor a basename, so <Link> handles those
-    const isPlainAppPath = !!router && !!appPath?.startsWith('/') && (router.basename ?? '/') === '/';
-
-    const appHref = useMemo<string | undefined>(
-        () => (isPlainAppPath ? getHrefPrefix(dataRouter.navigator) + createPath(parsePath(appPath)) : undefined),
-        [appPath, dataRouter, isPlainAppPath]
-    );
-
-    const onAppPathClick = useCallback(
-        (event: MouseEvent<HTMLAnchorElement>): void => {
-            // The caller's handler runs first and can cancel the navigation by calling preventDefault()
-            onClick?.(event);
-            if (event.defaultPrevented || !shouldNavigateInApp(event, target)) return;
-
-            // Left to the browser, the hash change becomes a POP navigation, which skips route-leave blockers
-            event.preventDefault();
-            // As <Link> does, revisiting the current location replaces its history entry instead of duplicating it
-            const replace = createPath(router.state.location) === createPath(parsePath(appPath));
-            router.navigate(appPath, { replace });
-        },
-        [appPath, onClick, router, target]
-    );
-
     // React Router <Link> components render as empty strings in the test environment, so we force them to render as
     // anchor tags in our tests.
     if (appPath && !isTestEnv()) {
-        if (isPlainAppPath) {
+        // The hand-built href doesn't resolve relative paths, so <Link> handles those
+        if (appPath.startsWith('/')) {
             return (
-                <a {...anchorProps} href={appHref} onClick={onAppPathClick} rel={rel} target={target}>
+                <AppPathLink {...anchorProps} appPath={appPath} onClick={onClick} rel={rel} target={target}>
                     {children}
-                </a>
+                </AppPathLink>
             );
         }
 

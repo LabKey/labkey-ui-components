@@ -4,7 +4,7 @@
  */
 import React, { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { createHashRouter, createMemoryRouter, RouterProvider } from 'react-router';
+import { createHashRouter, RouterProvider } from 'react-router';
 // @ts-expect-error These helpers exist only in the Jest mock, not the package's types
 import { __setAction, __setContainerPath, __setController } from '@labkey/api';
 
@@ -222,8 +222,8 @@ describe('AppLink in a data router', () => {
     const APP_PATH = '/rd/run/533';
     const OTHER_PATH = '/samples';
 
-    let routers: ReturnType<typeof createMemoryRouter>[] = [];
-    const trackRouter = <R extends ReturnType<typeof createMemoryRouter>>(router: R): R => {
+    let routers: ReturnType<typeof createHashRouter>[] = [];
+    const trackRouter = <R extends ReturnType<typeof createHashRouter>>(router: R): R => {
         routers.push(router);
         return router;
     };
@@ -233,17 +233,16 @@ describe('AppLink in a data router', () => {
         cleanup();
         routers.forEach(router => router.dispose());
         routers = [];
+        window.history.replaceState(null, '', window.location.pathname);
     });
 
     const renderInRouter = (link: ReactNode, initialPath = OTHER_PATH) => {
+        window.history.replaceState(null, '', `#${initialPath}`);
         const router = trackRouter(
-            createMemoryRouter(
-                [
-                    { element: link, path: OTHER_PATH },
-                    { element: link, path: APP_PATH },
-                ],
-                { initialEntries: [initialPath] }
-            )
+            createHashRouter([
+                { element: link, path: OTHER_PATH },
+                { element: link, path: APP_PATH },
+            ])
         );
         // jsdom lacks the Request a real navigation builds, so only the call is checked
         const navigate = jest.spyOn(router, 'navigate').mockResolvedValue(undefined);
@@ -267,29 +266,14 @@ describe('AppLink in a data router', () => {
         return leftToBrowser;
     };
 
-    test('href comes from the router history', () => {
-        const router = trackRouter(
-            createHashRouter([{ element: <AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>, path: '*' }])
-        );
-        render(<RouterProvider router={router} />);
+    test('href is the app path behind a hash', () => {
+        renderInRouter(<AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>);
         expect(screen.getByRole('link', { name: LINK_TEXT })).toHaveAttribute('href', `#${APP_PATH}`);
     });
 
     test('relative path resolves against the current route', () => {
         renderInRouter(<AppLink to="#run/533">{LINK_TEXT}</AppLink>);
-        expect(screen.getByRole('link', { name: LINK_TEXT })).toHaveAttribute('href', `${OTHER_PATH}/run/533`);
-    });
-
-    test('href includes the router basename', () => {
-        const link = <AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>;
-        const router = trackRouter(
-            createMemoryRouter([{ element: link, path: OTHER_PATH }], {
-                basename: '/app',
-                initialEntries: [`/app${OTHER_PATH}`],
-            })
-        );
-        render(<RouterProvider router={router} />);
-        expect(screen.getByRole('link', { name: LINK_TEXT })).toHaveAttribute('href', `/app${APP_PATH}`);
+        expect(screen.getByRole('link', { name: LINK_TEXT })).toHaveAttribute('href', `#${OTHER_PATH}/run/533`);
     });
 
     test('click navigates through the router', () => {
@@ -302,14 +286,14 @@ describe('AppLink in a data router', () => {
 
         expect(clickLink()).toBe(false);
         expect(onClick).toHaveBeenCalledTimes(1);
-        expect(navigate).toHaveBeenCalledWith(APP_PATH, { replace: false });
+        expect(navigate).toHaveBeenCalledWith(APP_PATH, expect.objectContaining({ replace: false }));
     });
 
     test('click on the current location replaces its history entry', () => {
         const navigate = renderInRouter(<AppLink to={`#${APP_PATH}`}>{LINK_TEXT}</AppLink>, APP_PATH);
 
         expect(clickLink()).toBe(false);
-        expect(navigate).toHaveBeenCalledWith(APP_PATH, { replace: true });
+        expect(navigate).toHaveBeenCalledWith(APP_PATH, expect.objectContaining({ replace: true }));
     });
 
     test.each<[string, MouseEventInit]>([

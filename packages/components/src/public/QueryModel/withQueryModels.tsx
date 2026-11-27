@@ -23,7 +23,7 @@ import { incrementClientSideMetricCount } from '../../internal/actions';
 
 import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
-import { RequestHandler } from '../../internal/request';
+import { isAbortedRequest, RequestHandler } from '../../internal/request';
 import {
     getSettingsFromLocalStorage,
     locationHasQueryParamSettings,
@@ -608,7 +608,7 @@ export function withQueryModels<Props>(
                     console.error(`Error setting selections for model ${id}:`, selectionsError);
                     model.selectionsError = selectionsError;
                     model.selectionsLoadingState = LoadingState.LOADED;
-                    removeSettingsFromLocalStorage(this.state.queryModels[id]);
+                    if (!isAbortedRequest(error)) removeSettingsFromLocalStorage(this.state.queryModels[id]);
                 })
             );
         };
@@ -901,7 +901,7 @@ export function withQueryModels<Props>(
                         }
 
                         console.error(`Error loading rows for model ${id}: `, rowsError);
-                        removeSettingsFromLocalStorage(this.state.queryModels[id]);
+                        if (!isAbortedRequest(error)) removeSettingsFromLocalStorage(this.state.queryModels[id]);
 
                         if (
                             rowsError?.indexOf('The requested view') === 0 &&
@@ -1024,7 +1024,7 @@ export function withQueryModels<Props>(
                         }
 
                         console.error(`Error loading rows for model ${id}: `, rowsError);
-                        removeSettingsFromLocalStorage(this.state.queryModels[id]);
+                        if (!isAbortedRequest(error)) removeSettingsFromLocalStorage(this.state.queryModels[id]);
                         model.totalCountLoadingState = LoadingState.LOADED;
                         model.totalCountError = rowsError;
                     })

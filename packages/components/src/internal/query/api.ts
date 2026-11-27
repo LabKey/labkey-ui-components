@@ -24,7 +24,7 @@ import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo, ViewInfoJson } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
 import { ModuleContext } from '../components/base/ServerContext';
-import { handleRequestFailure, RequestHandler } from '../request';
+import { handleQueryFailure, handleRequestFailure, RequestHandler } from '../request';
 import { EDIT_METHOD } from '../constants';
 import { Row } from './selectRows';
 
@@ -63,9 +63,7 @@ function getQueryDetailsCacheKey(
     return parts.join(QUERY_CACHE_KEY_SEPARATOR);
 }
 
-export function invalidateQueryDetailsCache(
-    schemaQuery: SchemaQuery,
-): void {
+export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery): void {
     const prefix = getQueryDetailsCacheKey(schemaQuery);
     Object.keys(queryDetailsCache).forEach(cacheKey => {
         if (cacheKey.toLowerCase().startsWith(prefix.toLowerCase())) {
@@ -480,17 +478,7 @@ export async function selectRowsDeprecated(options_: SelectRowsDeprecatedOptions
                 success: response_ => {
                     resolve(response_);
                 },
-                failure: (data, request) => {
-                    if (request.status !== 0) {
-                        console.error('There was a problem retrieving the data', data);
-                    }
-                    reject({
-                        exceptionClass: data.exceptionClass,
-                        message: data.exception,
-                        schemaQuery,
-                        status: request.status,
-                    });
-                },
+                failure: handleQueryFailure(reject, schemaQuery),
             });
             requestHandler?.(request_);
         }),
@@ -1239,8 +1227,9 @@ export function selectDistinctRows(options: SelectDistinctOptions): Promise<Quer
                 resolve(response);
             },
             failure: (error, request) => {
-                if (request.status !== 0) console.error(error);
-                reject({ ...error, status: request.status });
+                const aborted = Ajax.isAborted(request);
+                if (!aborted) console.error(error);
+                reject({ ...error, aborted, status: request.status });
             },
         });
         requestHandler?.(request_);
@@ -1269,13 +1258,15 @@ export function loadQueries(schemaQueries: SchemaQuery[]): Promise<QueryInfo[]> 
  * @param targetSchemaName - The target schemaName where the queries found on "tableFieldKey" can be found.
  * @param containerFilter - Optional Query.ContainerFilter applied to tables request.
  * @param filters - Optional Query filters applied to tables request.
+ * @param cancellable - Set to false when the result outlives the route that requested it, e.g. in an app store.
  */
 export async function loadQueriesFromTable(
     tableSchemaQuery: SchemaQuery,
     tableFieldKey: string,
     targetSchemaName: string,
     containerFilter?: Query.ContainerFilter,
-    filters?: Filter.IFilter[]
+    filters?: Filter.IFilter[],
+    cancellable?: boolean
 ): Promise<QueryInfo[]> {
     const { schemaName, queryName, viewName } = tableSchemaQuery;
     const info = await getQueryDetails({ queryName, schemaName });
@@ -1284,6 +1275,7 @@ export async function loadQueriesFromTable(
     if (queryNameField) {
         const columns = new Set(info.getPkCols().map(col => col.fieldKey)).add(queryNameField.name);
         const { key, models } = await selectRowsDeprecated({
+            cancellable,
             containerFilter,
             columns: Array.from(columns).join(','),
             filterArray: filters,

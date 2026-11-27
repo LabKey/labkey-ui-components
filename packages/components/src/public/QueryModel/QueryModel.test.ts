@@ -367,6 +367,17 @@ describe('QueryModel', () => {
         expect(model.detailFilters).toHaveLength(1);
         expect(model.detailFilters[0].getColumnName()).toBe('replaced');
     });
+
+    test('cancellable', () => {
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY }).mutate({ queryInfo: QUERY_INFO });
+        // Unset, so the request's own default applies
+        expect(model.loadRowsConfig.cancellable).toBeUndefined();
+
+        model = new QueryModel({ cancellable: false, schemaQuery: SCHEMA_QUERY }).mutate({ queryInfo: QUERY_INFO });
+        expect(model.loadRowsConfig.cancellable).toBe(false);
+        expect(model.queryConfig.cancellable).toBe(false);
+        expect(model.mutate({ offset: 20 }).loadRowsConfig.cancellable).toBe(false);
+    });
 });
 
 describe('createQueryModelId', () => {

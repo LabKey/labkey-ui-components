@@ -93,7 +93,7 @@ describe('GridFilterModal', () => {
             await waitFor(() => expect(activeTab()).toBeDefined());
         };
 
-        test("a grid its own row count already shows as large opens on Filter without waiting", async () => {
+        test('a grid its own row count already shows as large opens on Filter without waiting', async () => {
             await renderModal(countedModel(DEFAULT_MAX_COUNT), false);
             await waitFor(() => expect(activeTab()).toBe('Filter'));
         });

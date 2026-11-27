@@ -397,6 +397,7 @@ export function getAvailableTypes(domain: DomainDesign, ontologies = []): PropDe
 export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]> {
     return cache<OntologyModel[]>('ontologies-cache', containerPath, async () => {
         const result = await selectRows({
+            cancellable: false, // don't cancel cached requests
             columns: ['RowId', 'Name', 'Abbreviation'],
             containerPath,
             schemaQuery: new SchemaQuery('ontology', 'ontologies'),
